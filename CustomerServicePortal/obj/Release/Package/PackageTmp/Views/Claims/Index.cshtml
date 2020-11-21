@@ -1,0 +1,36 @@
+﻿
+    <div class="section" id="section">
+        <!--navigation-->
+
+        <!--navigation-->
+        <div class="introduction pt-5">
+            <div class="login">
+                <span><strong>C</strong></span>
+                @using (Html.BeginForm("MemebersList", "Claims", FormMethod.Post))
+                {
+                    <div class="rows">
+                        <label for="">Enter Name, ID or SSN</label>
+                        <input type="text" id="SearchMember" name="SearchMember">
+                        <input type="submit" value="Search" onclick="SearchMember()">
+                    </div>
+                }
+            </div>
+            <div class="info">
+                <h2>@((Session["LayoutDetails"] as CustomerServicePortal.Models.LayoutModel).HeaderTitle)</h2>
+                <p>Search with the member's SSN, Name or Employee Id to view claim related information for the member and dependents</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        //function SearchMember() {
+        //    GetMemebrTable($('#SearchMember').val());
+        //}
+        //function SearchMember2() {
+        //    GetMemebrTable($('#SearchMember2').val());
+        //}
+        
+       
+    
+    </script>

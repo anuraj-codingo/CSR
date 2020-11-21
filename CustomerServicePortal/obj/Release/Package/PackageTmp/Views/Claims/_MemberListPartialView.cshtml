@@ -1,0 +1,35 @@
+﻿@model List<CustomerServicePortal.Models.MemeberDetailsModel>
+
+
+
+<div class="table-responsive">
+    <table class="table w-100 table-striped">
+        <thead>
+            <tr>
+                <th class="w-122">Select</th>
+                <th>SSN</th>
+                <th>Member</th>
+                <th>ID</th>
+                <th>City</th>
+                <th>State</th>
+                <th>DOB</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td><a class="button btn-select" href="@Url.Action("Index","MemberDetails",new {SSN=item.SSN })">Select</a></td>
+                    <td>@item.SSN</td>
+                    <td>@item.Member</td>
+                    <td>@item.ID</td>
+                    <td>@item.City</td>
+                    <td>@item.State</td>
+                    <td>@item.Day-@item.Month-@item.Year</td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+
+</div>

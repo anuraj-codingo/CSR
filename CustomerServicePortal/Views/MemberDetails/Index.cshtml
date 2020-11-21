@@ -1,0 +1,362 @@
+﻿@model CustomerServicePortal.Models.ClaimDetailDashBoardModel
+@{
+    ViewBag.Title = "Index";
+}
+
+
+
+<style>
+    .no-depend
+    {
+        font-size: 13px;
+        padding: 10px 0px;
+    }
+    .loader2 {
+        width: 50px;
+        height: 50px;
+        display: inline-block;
+        padding: 0px;
+        border-radius: 100%;
+        border: 10px solid;
+        border-top-color: rgba(254, 168, 23, 0.65);
+        border-bottom-color: rgba(57, 154, 219, 0.65);
+        border-left-color: rgba(188, 84, 93, 0.95);
+        border-right-color: rgba(137, 188, 79, 0.95);
+        -webkit-animation: loader2 2s ease-in-out infinite alternate;
+        animation: loader2 2s ease-in-out infinite alternate;
+    }
+
+    @@keyframes loader2 {
+        from {
+            transform: rotate(0deg);
+        }
+
+        to {
+            transform: rotate(720deg);
+        }
+    }
+
+    @@-webkit-keyframes loader2 {
+        from {
+            -webkit-transform: rotate(0deg);
+        }
+
+        to {
+            -webkit-transform: rotate(720deg);
+        }
+    }
+
+    .loader-main {
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+        z-index: 9999;
+        display: none;
+    }
+
+    .loader-sub {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        background: rgb(255 255 255 / 50%);
+    }
+</style>
+<div class="user">
+    <div class="box info">
+        <div class="detail">
+            <div class="profilePhoto">
+                <div class="photo">
+
+                    <img src="~/Content/img/lisa-dominic.png" alt="" />
+                </div>
+            </div>
+            <div class="intro">
+               <a onclick="Reset(@Model.eMPdetails.EMSSN)" href="#"><h4>@Model.eMPdetails.Name</h4></a> 
+                <strong class="h6">ID: <span>@Model.eMPdetails.Id</span></strong>
+                <strong class="h6">Gender: <span>@Model.eMPdetails.Gender</span></strong>
+                <strong class="h6">DOB: <span>@Model.eMPdetails.DOBDay/@Model.eMPdetails.DOBMonth/@Model.eMPdetails.DOBYear</span></strong>
+                @*<p>Lorem ipsum dolor sit amet, adipiscing consectetur elit.</p>*@
+            </div>
+        </div>
+        <table>
+            <tr>
+                <th>Relation</th>
+                <th>Name</th>
+                <th>Status</th>
+                <th>Plan</th>
+                <th>Class</th>
+                <th>DOB</th>
+            </tr>
+            @if (Model.dependentDetailModels.Count > 0)
+            {
+                foreach (var item in Model.dependentDetailModels)
+                {
+                    <tr onclick="GetSpouseCliamDetailTable(@item.SSN,@item.DependentSeq)">
+                        <td>@item.Relation</td>
+                        <td>@item.DependenetName</td>
+                        <td>@item.Status</td>
+                        <td>@item.Plan</td>
+                        <td>@item.Class</td>
+                        <td>@item.Day-@item.Month-@item.Year</td>
+                    </tr>
+                }
+
+            }
+            else
+            {
+                <tr><td colspan="6" class="no-depend">No Dependant</td></tr>
+            }
+
+
+
+
+
+
+        </table>
+    </div>
+    <div class="box archive">
+        <div class="byYear">
+            <div class="year 2020">
+                <h5>2020</h5>
+                <div class="listingTable">
+                    <div class="column">
+                        <h6>DED MET</h6>
+                        <div class="datarow">
+                            <strong>1</strong>
+                            <div class="price">0.00</div>
+                        </div>
+                        <div class="datarow">
+                            <strong>F</strong>
+                            <div class="price">0.00</div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <h6>REMAINING</h6>
+                        <div class="datarow">
+                            <strong>1</strong>
+                            <div class="price">250.00</div>
+                        </div>
+                        <div class="datarow">
+                            <strong>F</strong>
+                            <div class="price">500.00</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="listingTable">
+                    <div class="column">
+                        <h6>OOP</h6>
+                        <div class="datarow">
+                            <strong>1</strong>
+                            <div class="price">0.00</div>
+                        </div>
+                        <div class="datarow">
+                            <strong>F</strong>
+                            <div class="price">0.00</div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <h6>REMAINING</h6>
+                        <div class="datarow">
+                            <strong>1</strong>
+                            <div class="price">3000.00</div>
+                        </div>
+                        <div class="datarow">
+                            <strong>F</strong>
+                            <div class="price">6000.00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="year 2020">
+                <h5>2019</h5>
+                <div class="listingTable">
+                    <div class="column">
+                        <h6>DED MET</h6>
+                        <div class="datarow">
+                            <strong>1</strong>
+                            <div class="price">250.00</div>
+                        </div>
+                        <div class="datarow">
+                            <strong>F</strong>
+                            <div class="price">250.00</div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <h6>REMAINING</h6>
+                        <div class="datarow">
+                            <strong>1</strong>
+                            <div class="price">0.00</div>
+                        </div>
+                        <div class="datarow">
+                            <strong>F</strong>
+                            <div class="price">250.00</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="listingTable">
+                    <div class="column">
+                        <h6>OOP</h6>
+                        <div class="datarow">
+                            <strong>1</strong>
+                            <div class="price">71.05</div>
+                        </div>
+                        <div class="datarow">
+                            <strong>F</strong>
+                            <div class="price">2928.95</div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <h6>REMAINING</h6>
+                        <div class="datarow">
+                            <strong>1</strong>
+                            <div class="price">71.05</div>
+                        </div>
+                        <div class="datarow">
+                            <strong>F</strong>
+                            <div class="price">5928.95</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*<div class="box">
+            <h4>Lorem ipsum</h4>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in leo velit. Vivamus tincidunt
+                ullamcorper erat quis fermentum. Sed id gravida libero. Sed elementum mollis faucibus. Fusce faucibus
+                efficitur consequat. Nullam vel nunc lobortis, feugiat nunc eu, posuere risus.
+            </p>
+        </div>
+        <div class="box">
+            <h4>Lorem ipsum</h4>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in leo velit.</p>
+        </div>*@
+</div>
+
+
+<div class="searchFilter">
+    <div class="download" onclick="ExportTable(@Model.eMPdetails.EMSSN)">
+        <span>
+            <input type="hidden" value="0" id="DEPSEQ" />
+            <img src="~/Content/img/excel-icon.png" alt="" />
+        </span>
+    </div>
+    <div class="inputWrap">
+        <div class="inputField">
+            <label>Service Date</label>
+            <input type="text" name="servicedate" id="Fromservicedate" class="datepicker input-group date">
+        </div>
+        <div class="inputField">
+            <label>To</label>
+            <input type="text" name="to" id="Toservicedate" class="datepicker input-group date">
+        </div>
+        <div class="inputField">
+            <label>Claim #</label>
+            <input type="text" name="claim" id="claim">
+        </div>
+        <div class="inputField">
+            <label>DEP #</label>
+            <input type="text" name="dep" id="dep">
+        </div>
+        <div class="inputField">
+            <input type="submit" value="Search" onclick="GetCliamDetailTable(@Model.eMPdetails.EMSSN)">
+        </div>
+        <div class="inputField">
+            <input type="reset" value="Reset" onclick="Reset(@Model.eMPdetails.EMSSN)">
+        </div>
+    </div>
+</div>
+<div class="loader-main show">
+    <div class="loader-sub">
+        <div class="loader2"></div>
+    </div>
+</div>
+<!--/searchFilter-->
+<div id="claimDetailGrid">
+    @Html.Partial("_MemeberDetailsPartialView", @Model.claimDetailModels)
+</div>
+<script type=text/javascript>
+    $('.datepicker').datepicker({
+    });
+    function GetSpouseCliamDetailTable(ssn, DependentSeq) {
+        $('#claim').val("");
+        $('#servicedate').val("");
+        $('#to').val("");
+        $('#dep').val("");
+        $('#DEPSEQ').val(DependentSeq);
+        GetCliamDetailTable(ssn);
+    }
+    function Reset(SSN) {
+        $('#claim').val("");
+        $('#servicedate').val("");
+        $('#to').val("");
+        $('#dep').val("");
+        $('#DEPSEQ').val(0);
+        GetCliamDetailTable(SSN);
+    }
+    function GetCliamDetailTable(SSN) {
+
+        var Fromdate = "";
+        var Todate = "";
+        if ($('#Fromservicedate').val() !="") {
+            Fromdate = (new Date($('#Fromservicedate').val())).toISOString();
+        }
+        if ($('#Toservicedate').val() != "") {
+            Todate = (new Date($('#Toservicedate').val())).toISOString();
+        }
+        $('.loader-main').show();
+
+            $.ajax({
+                type: "GET",
+                url:'@Url.Action("GetCliamDetailTable", "MemberDetails")',
+                data: { page: 1, SSN: SSN, DependentSeq: $('#DEPSEQ').val(), ClaimNumber: $('#claim').val(), Fromdate: Fromdate, Todate: Todate},
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    $('.loader-main').hide();
+
+                    $('#claimDetailGrid').html(response.viewContent);
+
+                },
+                failure: function (response) {
+                    alert(response.d);
+                },
+                error: function (response) {
+                    alert(response.d);
+                }
+            });
+    };
+
+    function ExportTable(SSN) {
+        var Fromdate = "";
+        var Todate = "";
+        if ($('#Fromservicedate').val() != "") {
+            Fromdate = (new Date($('#Fromservicedate').val())).toISOString();
+        }
+        if ($('#Toservicedate').val() != "") {
+            Todate = (new Date($('#Toservicedate').val())).toISOString();
+        }
+         $.ajax({
+             type: "POST",
+
+            url: '@Url.Action("ExportExcel", "MemberDetails")',
+            //contentType: "application/json; charset=utf-8",
+             dataType: "json",
+             data: { SSN: SSN, DEPSEQ: $('#DEPSEQ').val(), claim: $('#claim').val(),Fromdate: Fromdate, Todate: Todate},
+        }).done(function (data) {
+
+            //get the file name for download
+            if (data.fileName != "") {
+                $("#wait").css("display", "none");
+                //use window.location.href for redirect to download action for download the file
+                window.location.href = "@Url.RouteUrl(new { Controller = "MemberDetails", Action = "Download" })/?fileName=" + data.fileName;
+                //window.location.href = "ABC_DynamicQuery/Home/Download?fileName="+data.fileName;
+            }
+        });
+
+        }
+</script>

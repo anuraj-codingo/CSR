@@ -1,0 +1,34 @@
+﻿@model CustomerServicePortal.Models.LayoutModel
+<div class="header" id="header">
+    <div class="container">
+        <div class="logo">
+            <img src="~/Content/img/@(Model.Headerlogo)" alt="" />
+            <h1>@Model.HeaderTitle</h1>
+        </div>
+        <div class="userProfile">
+            <div><a href="#"><i class="fa fa-caret-down" aria-hidden="true"></i> Hi Rjohns</a></div>
+            <div class="userimage">
+                <img src="~/Content/img/user.png" alt="" />
+            </div>
+            <div class="user-popup-main">
+                <div class="user-popup">
+                    <div class="user-small">
+                        <img class="img-fluid" src="~/Content/img/user.png" alt="">
+                    </div>
+                    <h5>Admin</h5>
+                    <h6>admin@hansrobot.de</h6>
+                    <div class="option-block">
+                        <ul>
+                            <li>
+                                <a class="dropdown-item" href="@Url.Action("Logout","Account")">
+                                    Logout
+                                </a>
+
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

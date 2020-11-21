@@ -1,0 +1,34 @@
+﻿@model List<CustomerServicePortal.Models.ClaimDetailModel>
+<div class="dataTable">
+    <div class="resultTable">
+        <table class="table" cell>
+            <tr class="tr thead">
+                <td class="td">EOB No:</td>
+                <td class="td">Claim No:</td>
+                <td class="td">Date</td>
+                <td class="td">For</td>
+                <td class="td">Type</td>
+                <td class="td">Provider</td>
+                <td class="td">Total</td>
+                <td class="td">Plan Paid</td>
+                <td class="td">Member Resp</td>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr class="tr">
+                    <td class="td"><span>@item.EOBNO</span></td>
+                    <td class="td"><a href="#">@item.ClaimNo</a></td>
+                    <td class="td">@item.ClaimDate/@item.ClaimMonth/@item.ClaimYear</td>
+                    <td class="td">@item.For</td>
+                    <td class="td">@item.Type</td>
+                    <td class="td" style="text-align:left">@item.Provider</td>
+                    <td class="td">@item.Total</td>
+                    <td class="td">@item.PlanPaid</td>
+                    <td class="td">@item.MemerResp</td>
+                </tr>
+            }
+
+
+        </table>
+    </div>
+</div>

@@ -1,0 +1,174 @@
+﻿@model List<CustomerServicePortal.Models.MemeberDetailsModel>
+
+<style>
+    .report .tableWrap {
+        overflow-x: auto;
+    }
+    .tableWrap .btn-select {
+        display: inline-block;
+        font-size: 1rem;
+      /*  appearance: none;*/
+        border: none;
+        border-radius: 2rem;
+        padding: 0.25rem 1.5rem;
+        background: #bfe9d3;
+        color: #00a651;
+        transition: all 0.5s ease;
+    }
+    .tableWrap thead tr {
+        background: #f7931e;
+        color: #fff;
+    }
+    .tableWrap thead tr th:nth-child(1) {
+        border-top-left-radius: 0.5rem;
+    }
+    .tableWrap thead tr th:nth-last-child(1) {
+        border-top-right-radius: 0.5rem;
+    }
+    .tableWrap tbody tr td:nth-child(1) {
+        border-bottom-left-radius: 0.5rem;
+    }
+
+    .tableWrap tbody tr td:nth-last-child(1) {
+        border-bottom-right-radius: 0.5rem;
+    }
+    .Pager {
+        float: right;
+        margin: 10px 0px 0px 0px;
+    }
+
+        .Pager span {
+            color: #fff !important;
+            background-color: #333e75 !important;
+            border: 1px solid #333e75 !important;
+            border-radius: 30px;
+            width: 25px;
+            height: 25px;
+            min-width: 25px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .Pager a {
+            width: 25px;
+            color: #ffffff;
+            margin-right: 3px;
+            height: 25px;
+            border-radius: 30px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: none;
+            border: none;
+        }
+        .loader2 {
+   width:50px;
+   height:50px;
+   display:inline-block;
+   padding:0px;
+   border-radius:100%;
+   border:10px solid;
+   border-top-color:rgba(254, 168, 23, 0.65);
+   border-bottom-color:rgba(57, 154, 219, 0.65);
+   border-left-color:rgba(188, 84, 93, 0.95);
+   border-right-color:rgba(137, 188, 79, 0.95);
+   -webkit-animation: loader2 2s ease-in-out infinite alternate;
+   animation: loader2 2s ease-in-out infinite alternate;
+}
+@@keyframes loader2 {
+   from {transform: rotate(0deg);}
+   to {transform: rotate(720deg);}
+}
+@@-webkit-keyframes loader2 {
+   from {-webkit-transform: rotate(0deg);}
+   to {-webkit-transform: rotate(720deg);}
+}
+    .loader-main {
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+        z-index: 9999;
+        display: none;
+    }
+    .loader-sub {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        background: rgb(255 255 255 / 50%);
+    }
+</style>
+<div class="report">
+    <div class="filter">
+        <label for="">Enter Name, ID or SSN</label>
+        <input type="text" id="SearchMember2" value="@ViewBag.SearchMember">
+        <input type="submit" value="Search" onclick="SearchMember2()">
+    </div>
+    <hr>
+    <div class="tableWrap">
+        @Html.Partial("_MemberListPartialView", Model)
+
+    </div>
+    <div class="Pager mb-4"></div>
+    <div class="loader-main show">
+        <div class="loader-sub">
+            <div class="loader2"></div>
+        </div>
+    </div>
+
+
+</div>
+@section scripts {
+    <script>
+        $(".Pager").ASPSnippets_Pager({
+            ActiveCssClass: "current",
+            PagerCssClass: "pager",
+            PageIndex: 1,
+            PageSize: 10,
+            RecordCount: @ViewBag.TotalmemeberCount,
+        });
+
+                $("body").on("click", ".Pager .page", function () {
+          
+
+                    GetMemebrTable(parseInt($(this).attr('page')));
+                });
+
+
+        function GetMemebrTable(page) {
+            $('.loader-main').show();
+            $.ajax({
+                type: "GET",
+                url:'@Url.Action("GetMember", "Claims")',
+                data: { page: page, SearchMember: $('#SearchMember2').val() },
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+
+                    $('.loader-main').hide()
+                    $('.tableWrap').html(response.viewContent);
+                      $(".Pager").ASPSnippets_Pager({
+            ActiveCssClass: "current",
+            PagerCssClass: "pager",
+                          PageIndex: response.Page,
+            PageSize: 10,
+                          RecordCount: response.TotalCount,
+        });
+
+                },
+                failure: function (response) {
+                    alert(response.d);
+                },
+                error: function (response) {
+                    alert(response.d);
+                }
+            });
+        };
+                function SearchMember2() {
+                    GetMemebrTable(1);
+        }
+    </script>
+}

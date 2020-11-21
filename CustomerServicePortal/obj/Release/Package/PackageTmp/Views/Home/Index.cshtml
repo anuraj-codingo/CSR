@@ -1,0 +1,31 @@
+﻿<div class="banner">
+    <!--navigation-->
+    <!--wrapColumn-->
+    <div class="wrapColumn">
+        <div class="column"> <h1>@((CustomerServicePortal.DAL.GetLayoutSessionClass.GetLayoutModel() as CustomerServicePortal.Models.LayoutModel).HeaderTitle)</h1> </div>
+        <div class="column">
+            <div class="tabs">
+
+                <div class="column">
+                    <a href="@Url.Action("Index","Claims")">
+                        <span>
+                            <img src="~/Content/img/icon-02.png" alt=""/>
+                        </span>
+                        <strong>CLAIMS</strong>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--/wrapColumn-->
+</div>
+<!--/banner-->
+
+<div class="healthwelfare">
+    <div class="container">
+        <h3>Health and Welfare</h3>
+        <p>All Health and Welfare related Enquiries and Services</p>
+        <a href="#">Claims</a>
+    </div>
+</div>
