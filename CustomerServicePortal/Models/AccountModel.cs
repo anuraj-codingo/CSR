@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace CustomerServicePortal.Models
 {
@@ -16,6 +12,7 @@ namespace CustomerServicePortal.Models
 
         public string SSN { get; set; }
     }
+
     public class UserModel
     {
         public string UserName { get; set; }

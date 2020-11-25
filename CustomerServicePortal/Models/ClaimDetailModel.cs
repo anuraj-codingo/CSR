@@ -1,23 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
 namespace CustomerServicePortal.Models
 {
- 
     public class ClaimDetailDashBoardModel
     {
         public List<ClaimDetailModel> claimDetailModels { get; set; }
         public List<DependentDetailModel> dependentDetailModels { get; set; }
         public EMPdetails eMPdetails { get; set; }
-        public  List<DEDMETModel> dEDMETModel { get; set; }
+        public List<DEDMET_OOP_Model> dEDMETModelCurentYear { get; set; }
+        public List<DEDMET_OOP_Model> dEDMETModelPreviousYear { get; set; }
     }
+
     public class DependentDetailModel
     {
         public string Relation { get; set; }
-        public string DependenetName{ get; set; }
+        public string DependenetName { get; set; }
         public string Status { get; set; }
         public string Plan { get; set; }
         public string Class { get; set; }
@@ -27,6 +26,7 @@ namespace CustomerServicePortal.Models
         public string SSN { get; set; }
         public string DependentSeq { get; set; }
     }
+
     public class EMPdetails
     {
         public string Name { get; set; }
@@ -36,8 +36,8 @@ namespace CustomerServicePortal.Models
         public string DOBMonth { get; set; }
         public string DOBDay { get; set; }
         public decimal EMSSN { get; set; }
-
     }
+
     public class ClaimDetailModel
     {
         #region Instance Properties

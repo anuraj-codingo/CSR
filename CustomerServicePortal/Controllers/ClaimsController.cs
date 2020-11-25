@@ -1,14 +1,8 @@
-﻿using CustomerServicePortal.DAL;
-using CustomerServicePortal;
-using CustomerServicePortal.Models;
-using IBM.Data.DB2.iSeries;
+﻿using CustomerServicePortal.Models;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.IO;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace CustomerServicePortal.Controllers
@@ -22,48 +16,41 @@ namespace CustomerServicePortal.Controllers
         {
             return View();
         }
+
         [HttpPost]
         public ActionResult MemebersList(string SearchMember)
         {
             List<MemeberDetailsModel> memeberDetailsModels = new List<MemeberDetailsModel>();
             try
             {
-                GetmemeberListModel(SearchMember, memeberDetailsModels,1);
+                GetmemeberListModel(SearchMember, memeberDetailsModels, 1);
                 ViewBag.TotalmemeberCount = (int)Db2Connnect.GetDataTable(GetSqlQuery.TotalMemeberCount(SearchMember), CommandType.Text).Rows[0]["Total"];
                 ViewBag.SearchMember = SearchMember;
             }
             catch (Exception)
             {
-
                 throw;
             }
             return View(memeberDetailsModels);
         }
 
-
-
-        public JsonResult GetMember(int page,string SearchMember)
+        public JsonResult GetMember(int page, string SearchMember)
         {
             List<MemeberDetailsModel> memeberDetailsModels = new List<MemeberDetailsModel>();
             string viewContent = "";
             int TotalCount = 0;
             try
             {
-
-
                 GetmemeberListModel(SearchMember, memeberDetailsModels, page);
 
                 viewContent = ConvertViewToString("_MemberListPartialView", memeberDetailsModels);
-                 TotalCount = (int)Db2Connnect.GetDataTable(GetSqlQuery.TotalMemeberCount(SearchMember), CommandType.Text).Rows[0]["Total"];
+                TotalCount = (int)Db2Connnect.GetDataTable(GetSqlQuery.TotalMemeberCount(SearchMember), CommandType.Text).Rows[0]["Total"];
             }
-            
             catch (Exception ex)
             {
-
                 throw;
-            }    
-            return Json(new { Page=page,TotalCount = TotalCount, viewContent = viewContent }, JsonRequestBehavior.AllowGet);
-
+            }
+            return Json(new { Page = page, TotalCount = TotalCount, viewContent = viewContent }, JsonRequestBehavior.AllowGet);
         }
 
         private string ConvertViewToString(string viewName, object model)
@@ -90,7 +77,7 @@ namespace CustomerServicePortal.Controllers
                 {
                     MemeberDetailsModel memeberDetailsModel = new MemeberDetailsModel();
                     memeberDetailsModel.SSN = item["SSN"].ToString();
-                    memeberDetailsModel.Member = (item["Member"].ToString().Split('*')[1] + "*" + item["Member"].ToString().Split('*')[0]).Replace(" ", String.Empty);
+                    memeberDetailsModel.Member = (item["Member"].ToString().Split('*')[1] + "*" + item["Member"].ToString().Split('*')[0]);
                     memeberDetailsModel.Year = item["Year"].ToString();
                     memeberDetailsModel.Month = item["Month"].ToString();
                     memeberDetailsModel.Day = item["Day"].ToString();
@@ -98,10 +85,8 @@ namespace CustomerServicePortal.Controllers
                     memeberDetailsModel.State = item["State"].ToString();
                     memeberDetailsModel.ID = item["ID"].ToString();
                     memeberDetailsModels.Add(memeberDetailsModel);
-
                 }
             }
         }
-
     }
-    }
+}
