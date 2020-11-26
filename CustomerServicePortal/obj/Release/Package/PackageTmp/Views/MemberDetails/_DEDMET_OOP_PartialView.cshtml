@@ -1,0 +1,52 @@
+﻿@model IEnumerable<CustomerServicePortal.Models.DEDMET_OOP_Model>
+<div class="year 2020">
+    <h5>@Model.Select(x=>x.Year).First()</h5>
+    <div class="listingTable">
+        <div class="column">
+            <h6>DED MET</h6>
+            <div class="datarow">
+                <strong>I</strong>
+                <div class="price">@Model.Where(x=>x.DESC== "Deductible -PPO- Individual").Select(x=>x.APPLIED).FirstOrDefault()</div>
+            </div>
+            <div class="datarow">
+                <strong>F</strong>
+                <div class="price">@Model.Where(x => x.DESC == "Deductible -PPO- Family").Select(x => x.APPLIED).FirstOrDefault()</div>
+            </div>
+        </div>
+        <div class="column">
+            <h6>REMAINING</h6>
+            <div class="datarow">
+                <strong>I</strong>
+                <div class="price">@Model.Where(x => x.DESC == "Deductible -PPO- Individual").Select(x => x.REMAINING).FirstOrDefault()</div>
+            </div>
+            <div class="datarow">
+                <strong>F</strong>
+                <div class="price">@Model.Where(x => x.DESC == "Deductible -PPO- Family").Select(x => x.REMAINING).FirstOrDefault()</div>
+            </div>
+        </div>
+    </div>
+    <div class="listingTable">
+        <div class="column">
+            <h6>OOP</h6>
+            <div class="datarow">
+                <strong>I</strong>
+                <div class="price">@Model.Where(x => x.DESC == "OOP -PPO- Individual").Select(x => x.APPLIED).FirstOrDefault()</div>
+            </div>
+            <div class="datarow">
+                <strong>F</strong>
+                <div class="price">@Model.Where(x => x.DESC == "OOP -PPO- Family").Select(x => x.APPLIED).FirstOrDefault()</div>
+            </div>
+        </div>
+        <div class="column">
+            <h6>REMAINING</h6>
+            <div class="datarow">
+                <strong>I</strong>
+                <div class="price">@Model.Where(x => x.DESC == "OOP -PPO- Individual").Select(x => x.REMAINING).FirstOrDefault()</div>
+            </div>
+            <div class="datarow">
+                <strong>F</strong>
+                <div class="price">@Model.Where(x => x.DESC == "OOP -PPO- Family").Select(x => x.REMAINING).FirstOrDefault()</div>
+            </div>
+        </div>
+    </div>
+</div>

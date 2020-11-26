@@ -235,7 +235,12 @@
 </div>
 <script type=text/javascript>
     $('.datepicker').datepicker({
+        dateFormat: 'dd-mm-yy',
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "-100:+100"
     });
+   
     function GetSpouseCliamDetailTable(ssn, DependentSeq) {
         $('#claim').val("");
         $('#servicedate').val("");

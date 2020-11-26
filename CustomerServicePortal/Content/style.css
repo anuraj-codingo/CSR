@@ -159,8 +159,8 @@ body {
         margin-top: -1px;
         color: #fff; }
       .navigation ul li:last-of-type a {
-        cursor: none;
-        pointer-events: none;
+       /* cursor: none;
+        pointer-events: none;*/
         color: #ffffff; }
 
 .introduction {
