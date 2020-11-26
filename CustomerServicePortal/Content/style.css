@@ -2,7 +2,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Karla:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&display=swap");
-
+body {
+    font-family: 'Poppins', sans-serif !important;
+    font-size: 14px !important;
+}
 .wrapper {
   width: 100%;
   overflow: hidden;
@@ -68,7 +71,10 @@
         letter-spacing: -1px; }
     .header .container .userProfile {
       display: inline-flex;
-      align-items: center; }
+      align-items: center;
+      position: relative;
+      cursor: pointer;
+      }
       .header .container .userProfile div {
         margin-left: 1rem; }
       .header .container .userProfile .userimage {
@@ -111,7 +117,7 @@
 
 .navigation {
     width: 100%;
-    background: rgba(0, 158, 206, 0.8);
+    background: rgb(64 69 101);
     position: relative;
     z-index: 1000;
     padding: 0px 20px;
@@ -153,9 +159,9 @@
         margin-top: -1px;
         color: #fff; }
       .navigation ul li:last-of-type a {
-        cursor: none;
-        pointer-events: none;
-        color: #0c3c60; }
+       /* cursor: none;
+        pointer-events: none;*/
+        color: #ffffff; }
 
 .introduction {
   display: grid;
@@ -265,28 +271,36 @@
   width: 90%;
   max-width: 1140px;
   margin: 2rem auto; }
-  .report .filter {
-    float: left;
-    display: inline-flex;
-    align-items: center;
-    background: #e6e6e6;
-    border: 1px solid #a7a9ae;
-    padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
-    margin-bottom: 2rem;
-    box-shadow: 0px 0px 15px -5px rgba(0, 0, 0, 0.4); }
+    .report .filter {
+        float: left;
+        display: inline-flex;
+        align-items: center;
+        background: #ffffff;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        margin-bottom: 2rem;
+        box-shadow: 0px 0px 30px 0px rgb(129 136 181 / 23%);
+        border: solid 1px #ececec;
+   
+        }
+        .report .filter label {
+            margin: 0;
+        }
+
+
     .report .filter label {
       color: #6d6e71; }
-    .report .filter input[type="text"] {
-      display: block;
-      font-size: 1rem;
-      margin: 0 1rem;
-      appearance: none;
-      padding: 0.25rem;
-      background: #fff;
-      border: 1px solid #fff;
-      border-radius: 0.25rem;
-      transition: all 0.5s ease; }
+        .report .filter input[type="text"] {
+            display: block;
+            font-size: 1rem;
+            margin: 0 1rem;
+            appearance: none;
+            padding: 0.25rem;
+            background: #EEEEEE;
+            border: 1px solid #E0E0E0;
+            border-radius: 0.25rem;
+            transition: all 0.5s ease;
+        }
       .report .filter input[type="text"]:focus {
         border: 1px solid #c4c1c1;
         outline: none; }
@@ -662,11 +676,12 @@
         margin-bottom: 1rem; } }
 
 .searchFilter {
-  width: 100%;
-  float: left;
-  background: #f2f1f4;
-  padding: 1.25rem 0;
-  position: relative; }
+    width: 100%;
+    float: left;
+    background: #FAFAFA;
+    padding: 1.25rem 0;
+    position: relative;
+}
   .searchFilter .download {
     position: absolute;
     width: 70px;
@@ -703,14 +718,18 @@
         align-items: center;
         margin: 0px 15px;
     }
-      .searchFilter .inputWrap .inputField input[type="text"] {
-        display: inline-block;
-        appearance: none;
-        padding: 0.5rem;
-        background: #d1d3d4;
-        border: 1px solid #97999c;
-        border-radius: 0.25rem;
-        transition: all 0.5s ease; }
+        .searchFilter .inputWrap .inputField input[type="text"] {
+            display: inline-block;
+            appearance: none;
+            padding: 0.5rem 0.5rem;
+            background: #ffffff;
+            border: 1px solid #E0E0E0;
+            border-radius: 0.25rem;
+            transition: all 0.5s ease;
+            height: 35px;
+            font-size: 14px;
+            letter-spacing: 0.3px;
+        }
         .searchFilter .inputWrap .inputField input[type="text"]:focus {
           border: 1px solid #c4c1c1;
           outline: none; }
@@ -791,7 +810,7 @@
       float: left;
       border-collapse: collapse; }
       .dataTable .resultTable .table .tr {
-        background: #ffffff;
+        /*background: #ffffff;*/
         color: #414042; }
         .dataTable .resultTable .table .tr .td {
           text-align: center;
@@ -814,7 +833,7 @@
             border-right: none;
             border-top-right-radius: 0.5rem; }
         .dataTable .resultTable .table .tr:nth-of-type(even) {
-          background: #d1d3d4; }
+          /*background: #d1d3d4;*/ }
         .dataTable .resultTable .table .tr:last-of-type .td:first-of-type {
           border-bottom-left-radius: 0.5rem; }
         .dataTable .resultTable .table .tr:last-of-type .td:last-of-type {
@@ -858,7 +877,7 @@
 
 .user-popup-main {
     position: absolute;
-    right: 15px;
+    right: 0px;
     top: 80px;
     background: white;
     width: 200px;
@@ -866,6 +885,12 @@
     box-shadow: 0px 0px 10px 0px rgb(31 47 70 / 15%);
     z-index: 9999;
     display: none;
+}
+
+.userProfile a {
+    font-weight: 500;
+    color: #252525 !important;
+    text-decoration: none !important;
 }
 
 .user-popup h5 {
@@ -930,4 +955,35 @@
 .date-input {
     max-width: 110px;
 }
+.tableWrap {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+}
+.table thead th {
+    font-weight: 600;
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.2px;
+}
+.Pager {
+    font-weight: 300;
+    font-family: 'Poppins', sans-serif;
+}
+    .Pager b {
+        margin-right: 30px;
+    }
+
+.dataTable {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+}
+.table th, .table td {
+    padding: 0.75rem !important;
+    vertical-align: middle !important;
+}
+
+
+
+
+
     /*# sourceMappingURL=style.css.map */

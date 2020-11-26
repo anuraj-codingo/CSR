@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace CustomerServicePortal.Models
+﻿namespace CustomerServicePortal.Models
 {
     public class LayoutModel
     {

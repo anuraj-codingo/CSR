@@ -6,7 +6,7 @@
             <h1>@Model.HeaderTitle</h1>
         </div>
         <div class="userProfile">
-            <div><a href="#"><i class="fa fa-caret-down" aria-hidden="true"></i> Hi Rjohns</a></div>
+            <div><a href="#"><i class="fa fa-caret-down" aria-hidden="true"></i> Hi Ryan Jones</a></div>
             <div class="userimage">
                 <img src="~/Content/img/user.png" alt="" />
             </div>
@@ -15,15 +15,14 @@
                     <div class="user-small">
                         <img class="img-fluid" src="~/Content/img/user.png" alt="">
                     </div>
-                    <h5>Admin</h5>
-                    <h6>admin@hansrobot.de</h6>
+                 
+                    <h6>@User.Identity.Name</h6>
                     <div class="option-block">
                         <ul>
                             <li>
                                 <a class="dropdown-item" href="@Url.Action("Logout","Account")">
                                     Logout
                                 </a>
-
                             </li>
                         </ul>
                     </div>

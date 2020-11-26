@@ -1,11 +1,7 @@
-﻿using CustomerServicePortal.DAL;
-using IBM.Data.DB2.iSeries;
+﻿using IBM.Data.DB2.iSeries;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Linq;
-using System.Web;
 
 namespace CustomerServicePortal
 {
@@ -17,13 +13,11 @@ namespace CustomerServicePortal
             {
                 using (iDB2Connection connection = new iDB2Connection(ConfigurationManager.ConnectionStrings["DB2"].ConnectionString))
                 {
-
-
                     connection.Open();
 
                     using (iDB2Command command = new iDB2Command(commandText, commandType, connection))
                     {
-                        command.CommandTimeout = 300;
+                        command.CommandTimeout = 1000;
                         if (parameters != null)
                         {
                             foreach (var parameter in parameters)
@@ -38,25 +32,20 @@ namespace CustomerServicePortal
                         connection.Close();
                         return dataset.Tables[0];
                     }
-
                 }
             }
             catch (Exception ex)
             {
-
                 throw;
             }
-
-           
         }
+
         public static DataSet GetDataSet(string commandText, CommandType commandType, iDB2Parameter[] parameters = null)
         {
             try
             {
                 using (iDB2Connection connection = new iDB2Connection(ConfigurationManager.ConnectionStrings["DB2"].ConnectionString))
                 {
-
-
                     connection.Open();
 
                     using (iDB2Command command = new iDB2Command(commandText, commandType, connection))
@@ -76,20 +65,16 @@ namespace CustomerServicePortal
                         connection.Close();
                         return dataset;
                     }
-
                 }
             }
             catch (Exception ex)
             {
-
                 throw;
             }
-
-
         }
+
         public static iDB2Parameter CreateParameter(string name, object value, iDB2DbType dbType)
         {
-            
             iDB2Parameter parm1 = new iDB2Parameter();
             parm1.iDB2DbType = dbType;
             parm1.ParameterName = name;

@@ -3,8 +3,6 @@
     ViewBag.Title = "Index";
 }
 
-
-
 <style>
     .no-depend
     {
@@ -63,6 +61,9 @@
         height: 100%;
         background: rgb(255 255 255 / 50%);
     }
+    .table th, .table td {
+        border-top: none !important;
+    }
 </style>
 <div class="user">
     <div class="box info">
@@ -74,7 +75,7 @@
                 </div>
             </div>
             <div class="intro">
-               <a onclick="Reset(@Model.eMPdetails.EMSSN)" href="#"><h4>@Model.eMPdetails.Name</h4></a> 
+               <a onclick="Reset(@Model.eMPdetails.EMSSN)" href="#"><h4>@Model.eMPdetails.Name</h4></a>
                 <strong class="h6">ID: <span>@Model.eMPdetails.Id</span></strong>
                 <strong class="h6">Gender: <span>@Model.eMPdetails.Gender</span></strong>
                 <strong class="h6">DOB: <span>@Model.eMPdetails.DOBDay/@Model.eMPdetails.DOBMonth/@Model.eMPdetails.DOBYear</span></strong>
@@ -100,7 +101,7 @@
                         <td>@item.Status</td>
                         <td>@item.Plan</td>
                         <td>@item.Class</td>
-                        <td>@item.Day-@item.Month-@item.Year</td>
+                        <td>@item.Month-@item.Day-@item.Year</td>
                     </tr>
                 }
 
@@ -109,118 +110,72 @@
             {
                 <tr><td colspan="6" class="no-depend">No Dependant</td></tr>
             }
-
-
-
-
-
-
         </table>
     </div>
     <div class="box archive">
         <div class="byYear">
-            <div class="year 2020">
-                <h5>2020</h5>
-                <div class="listingTable">
-                    <div class="column">
-                        <h6>DED MET</h6>
-                        <div class="datarow">
-                            <strong>1</strong>
-                            <div class="price">0.00</div>
-                        </div>
-                        <div class="datarow">
-                            <strong>F</strong>
-                            <div class="price">0.00</div>
-                        </div>
+
+            @Html.Partial("_DEDMET_OOP_PartialView", Model.dEDMETModelCurentYear)
+            @Html.Partial("_DEDMET_OOP_PartialView", Model.dEDMETModelPreviousYear)
+            @*@{
+
+            Html.RenderPartial("_DEDMET_OOP_PreviousYear_PartialView");
+        }
+        @{
+            Html.RenderPartial("_DEDMET_OOP_CurentYear_PartialView", Model.dEDMETModelCurentYear);
+        }*@
+
+            @*<div class="year 2020">
+            <h5>2019</h5>
+            <div class="listingTable">
+                <div class="column">
+                    <h6>DED MET</h6>
+                    <div class="datarow">
+                        <strong>1</strong>
+                        <div class="price">250.00</div>
                     </div>
-                    <div class="column">
-                        <h6>REMAINING</h6>
-                        <div class="datarow">
-                            <strong>1</strong>
-                            <div class="price">250.00</div>
-                        </div>
-                        <div class="datarow">
-                            <strong>F</strong>
-                            <div class="price">500.00</div>
-                        </div>
+                    <div class="datarow">
+                        <strong>F</strong>
+                        <div class="price">250.00</div>
                     </div>
                 </div>
-                <div class="listingTable">
-                    <div class="column">
-                        <h6>OOP</h6>
-                        <div class="datarow">
-                            <strong>1</strong>
-                            <div class="price">0.00</div>
-                        </div>
-                        <div class="datarow">
-                            <strong>F</strong>
-                            <div class="price">0.00</div>
-                        </div>
+                <div class="column">
+                    <h6>REMAINING</h6>
+                    <div class="datarow">
+                        <strong>1</strong>
+                        <div class="price">0.00</div>
                     </div>
-                    <div class="column">
-                        <h6>REMAINING</h6>
-                        <div class="datarow">
-                            <strong>1</strong>
-                            <div class="price">3000.00</div>
-                        </div>
-                        <div class="datarow">
-                            <strong>F</strong>
-                            <div class="price">6000.00</div>
-                        </div>
+                    <div class="datarow">
+                        <strong>F</strong>
+                        <div class="price">250.00</div>
                     </div>
                 </div>
             </div>
-            <div class="year 2020">
-                <h5>2019</h5>
-                <div class="listingTable">
-                    <div class="column">
-                        <h6>DED MET</h6>
-                        <div class="datarow">
-                            <strong>1</strong>
-                            <div class="price">250.00</div>
-                        </div>
-                        <div class="datarow">
-                            <strong>F</strong>
-                            <div class="price">250.00</div>
-                        </div>
+            <div class="listingTable">
+                <div class="column">
+                    <h6>OOP</h6>
+                    <div class="datarow">
+                        <strong>1</strong>
+                        <div class="price">71.05</div>
                     </div>
-                    <div class="column">
-                        <h6>REMAINING</h6>
-                        <div class="datarow">
-                            <strong>1</strong>
-                            <div class="price">0.00</div>
-                        </div>
-                        <div class="datarow">
-                            <strong>F</strong>
-                            <div class="price">250.00</div>
-                        </div>
+                    <div class="datarow">
+                        <strong>F</strong>
+                        <div class="price">2928.95</div>
                     </div>
                 </div>
-                <div class="listingTable">
-                    <div class="column">
-                        <h6>OOP</h6>
-                        <div class="datarow">
-                            <strong>1</strong>
-                            <div class="price">71.05</div>
-                        </div>
-                        <div class="datarow">
-                            <strong>F</strong>
-                            <div class="price">2928.95</div>
-                        </div>
+                <div class="column">
+                    <h6>REMAINING</h6>
+                    <div class="datarow">
+                        <strong>1</strong>
+                        <div class="price">71.05</div>
                     </div>
-                    <div class="column">
-                        <h6>REMAINING</h6>
-                        <div class="datarow">
-                            <strong>1</strong>
-                            <div class="price">71.05</div>
-                        </div>
-                        <div class="datarow">
-                            <strong>F</strong>
-                            <div class="price">5928.95</div>
-                        </div>
+                    <div class="datarow">
+                        <strong>F</strong>
+                        <div class="price">5928.95</div>
                     </div>
                 </div>
             </div>
+        </div>*@
         </div>
     </div>
     @*<div class="box">
@@ -236,7 +191,6 @@
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in leo velit.</p>
         </div>*@
 </div>
-
 
 <div class="searchFilter">
     <div class="download" onclick="ExportTable(@Model.eMPdetails.EMSSN)">
@@ -281,7 +235,12 @@
 </div>
 <script type=text/javascript>
     $('.datepicker').datepicker({
+        dateFormat: 'dd-mm-yy',
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "-100:+100"
     });
+   
     function GetSpouseCliamDetailTable(ssn, DependentSeq) {
         $('#claim').val("");
         $('#servicedate').val("");

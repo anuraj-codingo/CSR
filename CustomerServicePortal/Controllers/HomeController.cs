@@ -1,11 +1,8 @@
 ﻿using CustomerServicePortal.DAL;
 using CustomerServicePortal.Models;
-using IBM.Data.DB2.iSeries;
 using System;
-using System.Configuration;
-using System.Data;
 using System.Web.Mvc;
-using DataTable = System.Data.DataTable;
+
 //using IBM.Data.DB2.iSeries;
 
 namespace CustomerServicePortal.Controllers
@@ -15,7 +12,7 @@ namespace CustomerServicePortal.Controllers
     {
         [Obsolete]
         public ActionResult Index()
-        {   
+        {
             return View();
         }
 
@@ -25,6 +22,7 @@ namespace CustomerServicePortal.Controllers
 
             return View();
         }
+
         public ActionResult LoadFooterHtml()
         {
             try
@@ -38,33 +36,27 @@ namespace CustomerServicePortal.Controllers
             }
             catch (Exception)
             {
-
                 throw;
             }
-            return PartialView("_LayoutFooterPartialView",(LayoutModel)Session["LayoutDetails"]);
+            return PartialView("_LayoutFooterPartialView", (LayoutModel)Session["LayoutDetails"]);
         }
+
         public ActionResult LoadHeaderHtml()
         {
-
             try
             {
-                if (Session["LayoutDetails"]==null)
+                if (Session["LayoutDetails"] == null)
                 {
                     LayoutModel layoutModel = new LayoutModel();
                     layoutModel = GetLayoutSessionClass.GetLayoutModel();
                     Session["LayoutDetails"] = layoutModel;
                 }
-
-
-
             }
             catch (Exception ex)
             {
-
                 throw;
             }
-            return PartialView("_layoutHeaderPartialView",(LayoutModel)Session["LayoutDetails"]);
+            return PartialView("_layoutHeaderPartialView", (LayoutModel)Session["LayoutDetails"]);
         }
-
     }
 }

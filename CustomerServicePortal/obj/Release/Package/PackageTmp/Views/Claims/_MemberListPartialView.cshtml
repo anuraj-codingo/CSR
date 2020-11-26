@@ -1,7 +1,5 @@
 ﻿@model List<CustomerServicePortal.Models.MemeberDetailsModel>
 
-
-
 <div class="table-responsive">
     <table class="table w-100 table-striped">
         <thead>
@@ -18,18 +16,30 @@
         <tbody>
             @foreach (var item in Model)
             {
-                <tr>
-                    <td><a class="button btn-select" href="@Url.Action("Index","MemberDetails",new {SSN=item.SSN })">Select</a></td>
+            <tr>
+              
+                    
+                    @*href = "@Url.Action("Index", "MemberDetails", new { SSN = item.SSN })"*@
+                  
+                    <td>
+
+                        @using (Html.BeginForm("Index", "MemberDetails", FormMethod.Post))
+                        {
+                            <input type="hidden" name="SSN" value="@item.SSN" />
+                            <button class="button btn-select" style="cursor:pointer" type="submit">Select</button>
+                        }
+
+
+                    </td>
                     <td>@item.SSN</td>
                     <td>@item.Member</td>
                     <td>@item.ID</td>
                     <td>@item.City</td>
                     <td>@item.State</td>
-                    <td>@item.Day-@item.Month-@item.Year</td>
+                    <td>@item.Month-@item.Day-@item.Year</td>
+                
                 </tr>
             }
         </tbody>
-
     </table>
-
 </div>

@@ -16,10 +16,7 @@ namespace CustomerServicePortal.DAL
         {
             IDatabaseHandler database = null;
 
-   
             database = new SqlDataAccess(connectionStringSettings.ConnectionString);
-
-
 
             return database;
         }

@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
 namespace CustomerServicePortal.Models
 {
-
-  
     public class MemeberDetailsModel
     {
         #region Instance Properties
@@ -43,5 +38,3 @@ namespace CustomerServicePortal.Models
         #endregion Instance Properties
     }
 }
-
-
