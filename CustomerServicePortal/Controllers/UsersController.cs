@@ -10,37 +10,47 @@ using System.Web.Mvc;
 
 namespace CustomerServicePortal.Controllers
 {
+    [Authorize]
     public class UsersController : Controller
     {
         private DBManager db = new DBManager("CustomerServicePortal");
         // GET: Users
         public ActionResult Index()
         {
+            UserRegModel userRegModel = new UserRegModel();
             try
             {
-                DataTable dt = new DataTable();
-                string commandText = "select Client as Value,Fundds as Text from [BICC_REPORTING].[dbo].[CLIENTS_ABC] order by FUNDDS asc";
-                dt = db.GetDataTable(commandText, CommandType.Text);
+                List<SelectListItem> Clients = GetFundDropDownListFill();
 
-                List<SelectListItem> Clients = new List<SelectListItem>();
-                Clients.Add(new SelectListItem() { Value = "", Text = "Select Client" });
-                foreach (DataRow item in dt.Rows)
-                {
-                    SelectListItem Client = new SelectListItem();
-                    Client.Text = item["Text"].ToString();
-                    Client.Value = item["Value"].ToString();
-                    Clients.Add(Client);
-                }
-                ViewBag.Fund = new SelectList(Clients, "Value", "Text");
+                userRegModel.FundList = Clients;
+                //ViewBag.Fund = new SelectList(Clients, "Value", "Text");
             }
             catch (Exception ex)
             {
 
                 throw;
             }
-            return View(new UserRegModel());
+            return View(userRegModel);
         }
 
+        private List<SelectListItem> GetFundDropDownListFill()
+        {
+            DataTable dt = new DataTable();
+            string commandText = "select Client as Value,Fundds as Text from [BICC_REPORTING].[dbo].[CLIENTS_ABC] order by FUNDDS asc";
+            dt = db.GetDataTable(commandText, CommandType.Text);
+
+            List<SelectListItem> Clients = new List<SelectListItem>();
+            Clients.Add(new SelectListItem() { Value = "", Text = "Select Client" });
+            foreach (DataRow item in dt.Rows)
+            {
+                SelectListItem Client = new SelectListItem();
+                Client.Text = item["Text"].ToString();
+                Client.Value = item["Value"].ToString();
+                Clients.Add(Client);
+            }
+
+            return Clients;
+        }
 
         public ActionResult UsersList()
         {
@@ -53,8 +63,9 @@ namespace CustomerServicePortal.Controllers
             {
                 string Commandtext = "select * from [dbo].[UserLogin] where Id="+Id;
                 DataTable dt = new DataTable();
-                dt = db.GetDataTable(Commandtext,CommandType.StoredProcedure);
-           
+                dt = db.GetDataTable(Commandtext,CommandType.Text);
+                List<SelectListItem> Clients = GetFundDropDownListFill();
+               
                 foreach (DataRow item in dt.Rows)
                 {
                  
@@ -67,6 +78,7 @@ namespace CustomerServicePortal.Controllers
                     User.ID = Convert.ToInt32(item["Id"]);
 
                 }
+                User.FundList = Clients;
             }
             catch (Exception ex)
             {
@@ -74,6 +86,35 @@ namespace CustomerServicePortal.Controllers
                 throw;
             }
             return View(User);
+        }
+
+        [HttpPost]
+        public ActionResult EditUser(UserRegModel userRegModel)
+        {
+            try
+            {
+
+                string CommandText = "UserReg";
+                var parameters = new List<IDbDataParameter>();
+                parameters.Add(db.CreateParameter("@id", userRegModel.ID, DbType.Int16));
+                parameters.Add(db.CreateParameter("@FirstName", userRegModel.FirstName, DbType.String));
+                parameters.Add(db.CreateParameter("@LastName", userRegModel.LastName, DbType.String));
+                parameters.Add(db.CreateParameter("@Role", userRegModel.Roles, DbType.String));
+                parameters.Add(db.CreateParameter("@UserName", userRegModel.UserName, DbType.String));
+                parameters.Add(db.CreateParameter("@Email", userRegModel.Email, DbType.String));
+                parameters.Add(db.CreateParameter("@Fund", userRegModel.fund, DbType.String));
+                DataTable dt = new DataTable();
+                dt = db.GetDataTable(CommandText, CommandType.StoredProcedure, parameters.ToArray());
+                return RedirectToAction("UsersList", "Users");
+
+                //}
+                //return RedirectToAction("index");
+            }
+            catch (Exception ex)
+            {
+                TempData["Message"] = "Update failed";
+            }
+            return RedirectToAction("UsersList", "Users");
         }
         [HttpPost]   
         public ActionResult AddUser(UserRegModel userRegModel)

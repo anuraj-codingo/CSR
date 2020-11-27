@@ -231,7 +231,7 @@
 </div>
 <!--/searchFilter-->
 <div id="claimDetailGrid">
-    @Html.Partial("_MemeberDetailsPartialView", @Model.claimDetailModels)
+    @{Html.RenderPartial("_MemeberDetailsPartialView",Model.claimDetailModels);}
 </div>
 <script type=text/javascript>
     $('.datepicker').datepicker({

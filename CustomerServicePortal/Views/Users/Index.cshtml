@@ -278,7 +278,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Firstname</label>
-                                    @Html.HiddenFor(model => model.ID, new { @Value = 0 })
+                                    @Html.HiddenFor(model => model.ID)
                                     @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control Required", @placeholder = "First Name" })
 
                                     @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
@@ -303,7 +303,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Fund</label>
-                                    @Html.DropDownListFor(m => m.fund, new SelectList(ViewBag.Fund, "Value", "Text"), new { @class = "form-control", @style = "padding: 6px;" })
+                                    @Html.DropDownListFor(m => m.fund,Model.FundList, new { @class = "form-control", @style = "padding: 6px;" })
 
 
                                     @Html.ValidationMessageFor(model => model.fund, "", new { @class = "text-danger" })
