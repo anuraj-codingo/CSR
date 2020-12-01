@@ -14,10 +14,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>09/10/2013 16:29:20</publishTime>
     </File>
     <File Include="bin/CustomerServicePortal.dll">
-      <publishTime>11/21/2020 17:29:13</publishTime>
+      <publishTime>11/23/2020 23:21:55</publishTime>
     </File>
     <File Include="bin/CustomerServicePortal.pdb">
-      <publishTime>11/21/2020 17:29:13</publishTime>
+      <publishTime>11/23/2020 23:21:55</publishTime>
     </File>
     <File Include="bin/DocumentFormat.OpenXml.dll">
       <publishTime>07/17/2020 18:55:04</publishTime>
@@ -212,7 +212,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>01/23/2014 13:57:34</publishTime>
     </File>
     <File Include="Content/bootstrap-theme.css">
-      <publishTime>10/06/2020 11:23:48</publishTime>
+      <publishTime>11/23/2020 14:11:05</publishTime>
     </File>
     <File Include="Content/bootstrap-theme.css.map">
       <publishTime>09/26/2020 17:40:10</publishTime>
@@ -224,7 +224,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>09/26/2020 17:40:10</publishTime>
     </File>
     <File Include="Content/bootstrap.css">
-      <publishTime>10/06/2020 11:23:48</publishTime>
+      <publishTime>11/23/2020 14:11:05</publishTime>
     </File>
     <File Include="Content/bootstrap.css.map">
       <publishTime>09/26/2020 17:40:10</publishTime>
@@ -236,22 +236,22 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>09/26/2020 17:40:10</publishTime>
     </File>
     <File Include="Content/css/animate.css">
-      <publishTime>10/06/2020 11:23:50</publishTime>
+      <publishTime>11/23/2020 14:11:06</publishTime>
     </File>
     <File Include="Content/css/bootstrap-datepicker.min.css">
       <publishTime>11/21/2020 16:24:15</publishTime>
     </File>
     <File Include="Content/css/custom.css">
-      <publishTime>10/22/2020 17:40:32</publishTime>
+      <publishTime>11/23/2020 18:54:13</publishTime>
     </File>
     <File Include="Content/css/font-awesome.min.css">
       <publishTime>11/03/2020 14:59:54</publishTime>
     </File>
     <File Include="Content/css/jquery-ui.css">
-      <publishTime>10/06/2020 11:23:52</publishTime>
+      <publishTime>11/23/2020 14:11:07</publishTime>
     </File>
     <File Include="Content/css/login-custom.css">
-      <publishTime>10/06/2020 11:23:52</publishTime>
+      <publishTime>11/23/2020 14:11:08</publishTime>
     </File>
     <File Include="Content/css/mCustomScrollbar.min.css">
       <publishTime>09/27/2020 16:38:34</publishTime>
@@ -308,13 +308,13 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>11/02/2020 15:17:40</publishTime>
     </File>
     <File Include="Content/reset.css">
-      <publishTime>11/02/2020 15:19:24</publishTime>
+      <publishTime>11/23/2020 14:11:09</publishTime>
     </File>
     <File Include="Content/Site.css">
-      <publishTime>10/06/2020 11:24:20</publishTime>
+      <publishTime>11/23/2020 14:11:09</publishTime>
     </File>
     <File Include="Content/style.css">
-      <publishTime>11/11/2020 16:57:33</publishTime>
+      <publishTime>11/23/2020 18:54:18</publishTime>
     </File>
     <File Include="favicon.ico">
       <publishTime>11/02/2020 14:45:00</publishTime>
@@ -338,13 +338,13 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>11/02/2020 14:45:00</publishTime>
     </File>
     <File Include="Scripts/bootstrap.js">
-      <publishTime>11/02/2020 14:45:03</publishTime>
+      <publishTime>11/23/2020 14:11:44</publishTime>
     </File>
     <File Include="Scripts/bootstrap.min.js">
       <publishTime>11/02/2020 14:45:03</publishTime>
     </File>
     <File Include="Scripts/jquery-3.4.1.js">
-      <publishTime>11/02/2020 14:45:04</publishTime>
+      <publishTime>11/23/2020 14:11:47</publishTime>
     </File>
     <File Include="Scripts/jquery-3.4.1.min.js">
       <publishTime>11/02/2020 14:45:04</publishTime>
@@ -353,7 +353,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>11/02/2020 14:45:04</publishTime>
     </File>
     <File Include="Scripts/jquery-3.4.1.slim.js">
-      <publishTime>11/02/2020 14:45:04</publishTime>
+      <publishTime>11/23/2020 14:11:48</publishTime>
     </File>
     <File Include="Scripts/jquery-3.4.1.slim.min.js">
       <publishTime>11/02/2020 14:45:04</publishTime>
@@ -362,13 +362,13 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>11/02/2020 14:45:04</publishTime>
     </File>
     <File Include="Scripts/jquery.validate.js">
-      <publishTime>11/02/2020 14:45:07</publishTime>
+      <publishTime>11/23/2020 14:11:49</publishTime>
     </File>
     <File Include="Scripts/jquery.validate.min.js">
       <publishTime>11/02/2020 14:45:07</publishTime>
     </File>
     <File Include="Scripts/jquery.validate.unobtrusive.js">
-      <publishTime>11/02/2020 14:45:07</publishTime>
+      <publishTime>11/23/2020 14:11:50</publishTime>
     </File>
     <File Include="Scripts/jquery.validate.unobtrusive.min.js">
       <publishTime>11/02/2020 14:45:07</publishTime>
@@ -377,49 +377,52 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>11/20/2020 11:30:53</publishTime>
     </File>
     <File Include="Scripts/modernizr-2.8.3.js">
-      <publishTime>11/02/2020 14:45:06</publishTime>
+      <publishTime>11/23/2020 14:11:50</publishTime>
     </File>
     <File Include="Views/Account/Login.cshtml">
       <publishTime>11/02/2020 14:59:04</publishTime>
     </File>
     <File Include="Views/Claims/Index.cshtml">
-      <publishTime>11/21/2020 17:04:21</publishTime>
+      <publishTime>11/23/2020 20:53:21</publishTime>
     </File>
     <File Include="Views/Claims/MemebersList.cshtml">
-      <publishTime>11/20/2020 16:10:57</publishTime>
+      <publishTime>11/23/2020 18:54:17</publishTime>
     </File>
     <File Include="Views/Claims/_MemberListPartialView.cshtml">
-      <publishTime>11/20/2020 16:08:50</publishTime>
+      <publishTime>11/23/2020 23:16:16</publishTime>
     </File>
     <File Include="Views/Home/Index.cshtml">
-      <publishTime>11/10/2020 13:22:05</publishTime>
+      <publishTime>11/23/2020 14:11:54</publishTime>
     </File>
     <File Include="Views/MemberDetails/Index.cshtml">
-      <publishTime>11/21/2020 17:27:21</publishTime>
+      <publishTime>11/23/2020 22:44:08</publishTime>
+    </File>
+    <File Include="Views/MemberDetails/_DEDMET_OOP_PartialView.cshtml">
+      <publishTime>11/23/2020 22:49:11</publishTime>
     </File>
     <File Include="Views/MemberDetails/_MemeberDetailsPartialView.cshtml">
-      <publishTime>11/21/2020 17:21:51</publishTime>
+      <publishTime>11/23/2020 22:27:51</publishTime>
     </File>
     <File Include="Views/Shared/Error.cshtml">
-      <publishTime>11/02/2020 14:45:02</publishTime>
+      <publishTime>11/23/2020 14:11:57</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>11/21/2020 16:44:12</publishTime>
+      <publishTime>11/23/2020 16:51:23</publishTime>
     </File>
     <File Include="Views/Shared/_LayoutFooterPartialView.cshtml">
       <publishTime>11/10/2020 12:57:06</publishTime>
     </File>
     <File Include="Views/Shared/_layoutHeaderPartialView.cshtml">
-      <publishTime>11/10/2020 16:15:35</publishTime>
+      <publishTime>11/23/2020 22:18:25</publishTime>
     </File>
     <File Include="Views/Web.config">
-      <publishTime>11/02/2020 14:45:02</publishTime>
+      <publishTime>11/23/2020 14:11:58</publishTime>
     </File>
     <File Include="Views/_ViewStart.cshtml">
-      <publishTime>11/02/2020 14:45:02</publishTime>
+      <publishTime>11/23/2020 14:11:51</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>11/20/2020 18:46:50</publishTime>
+      <publishTime>11/23/2020 19:54:06</publishTime>
     </File>
   </ItemGroup>
 </Project>
