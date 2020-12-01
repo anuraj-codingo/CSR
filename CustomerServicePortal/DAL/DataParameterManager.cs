@@ -16,12 +16,27 @@ namespace CustomerServicePortal.DAL
         {
             return CreateSqlParameter(name, size, value, dbType, direction);
         }
+        public static IDbDataParameter CreateParameter(string providerName, string name, object value, SqlDbType dbType, ParameterDirection direction = ParameterDirection.Input)
+        {
+            //IDbDataParameter parameter = null;
 
+            return CreateSqlParameter(name, value, dbType, direction);
+        }
         private static IDbDataParameter CreateSqlParameter(string name, object value, DbType dbType, ParameterDirection direction)
         {
             return new SqlParameter
             {
                 DbType = dbType,
+                ParameterName = name,
+                Direction = direction,
+                Value = value
+            };
+        }
+        private static IDbDataParameter CreateSqlParameter(string name, object value, SqlDbType dbType, ParameterDirection direction)
+        {
+            return new SqlParameter
+            {
+                SqlDbType = dbType,
                 ParameterName = name,
                 Direction = direction,
                 Value = value

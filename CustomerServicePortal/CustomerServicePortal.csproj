@@ -66,6 +66,7 @@
     <Reference Include="System.IO.Packaging, Version=4.0.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IO.Packaging.4.7.0\lib\net46\System.IO.Packaging.dll</HintPath>
     </Reference>
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -161,6 +162,7 @@
     <Compile Include="Models\AccountModel.cs" />
     <Compile Include="Models\ClaimDetailModel.cs" />
     <Compile Include="Models\DEDMET_OOPModel.cs" />
+    <Compile Include="Models\EmailSendingModel.cs" />
     <Compile Include="Models\LayoutModel.cs" />
     <Compile Include="Models\MemeberDetailsModel.cs" />
     <Compile Include="Models\UserRegModel.cs" />
@@ -183,6 +185,7 @@
     <Content Include="Content\css\jquery-ui.css" />
     <Content Include="Content\css\login-custom.css" />
     <Content Include="Content\css\mCustomScrollbar.min.css" />
+    <Content Include="Content\css\sumoselect.css" />
     <Content Include="Content\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\img\bg-01.jpg" />
     <Content Include="Content\img\bg-02.jpg" />
@@ -224,7 +227,10 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\js\ASPSnippets_Pager.min.js" />
+    <Content Include="Scripts\js\jquery.sumoselect.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\popper.js" />
+    <Content Include="Scripts\popper.min.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -267,6 +273,9 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

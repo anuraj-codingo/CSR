@@ -30,7 +30,10 @@ namespace CustomerServicePortal.DAL
         {
             return DataParameterManager.CreateParameter(providerName, name, value, dbType, ParameterDirection.Input);
         }
-
+        public IDbDataParameter CreateParameter(string name, DataTable dt, SqlDbType structured)
+        {
+            return DataParameterManager.CreateParameter(providerName, name, dt, structured, ParameterDirection.Input);
+        }
         public IDbDataParameter CreateParameter(string name, int size, object value, DbType dbType)
         {
             return DataParameterManager.CreateParameter(providerName, name, size, value, dbType, ParameterDirection.Input);

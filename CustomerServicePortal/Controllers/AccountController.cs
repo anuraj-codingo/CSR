@@ -24,11 +24,30 @@ namespace CustomerServicePortal.Controllers
         {
             try
             {
-                //if (!ModelState.IsValid)
+
+
+
+                //if (ModelState.IsValid)
                 //{
-                //    return View(loginModel);
-                //}
-                if (loginModel.UserName != "" && loginModel.UserPassword != "")
+                    //if (Membership.ValidateUser(loginModel.UserName, loginModel.UserPassword))
+                    //{
+                    //    FormsAuthentication.SetAuthCookie(loginModel.UserName, true);
+
+                    //    return RedirectToAction("Index", "Home");
+                    //                     }
+                    //}
+                    //else
+                    //{
+                    //    ModelState.AddModelError("", "The user name or password provided is incorrect");
+                    //}
+
+
+
+                    //if (!ModelState.IsValid)
+                    //{
+                    //    return View(loginModel);
+                    //}
+                    if (loginModel.UserName != "" && loginModel.UserPassword != "")
                 {
                     DataTable dt = new DataTable();
                     string commandText = " select * from  [dbo].[UserLogin] where [UserName]='" + loginModel.UserName + "' and [PassWord]='" + loginModel.UserPassword + "'";

@@ -25,7 +25,7 @@
         cursor: pointer;
     }
 
-    ​
+
     .open > .dropdown-menu {
         box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2);
         border: none;
@@ -244,18 +244,22 @@
         background: #ffffff;
         padding: 30px 30px;
     }
-    .form-box .form-control {
-        border-radius: 0px !important;
-        font-size: 12px;
-    }
-    .form-box label {
-        font-size: 12px;
-        color: #757575;
-        font-weight: 300;
-    }
+
+        .form-box .form-control {
+            border-radius: 0px !important;
+            font-size: 12px;
+        }
+
+        .form-box label {
+            font-size: 12px;
+            color: #757575;
+            font-weight: 300;
+        }
+
     .gradiant-bg {
         background-image: linear-gradient(to left bottom, #f8f8f8, #e7e7ec, #d6d6e0, #c5c6d4, #b3b6c9);
     }
+
     .form-box .submit-btn {
         border-radius: 0px;
         background: #404565;
@@ -264,8 +268,9 @@
         text-transform: uppercase;
         font-weight: 300;
     }
-
 </style>
+<link href="~/Content/css/sumoselect.css" rel="stylesheet" />
+<script src="~/Scripts/js/jquery.sumoselect.js"></script>
 
 <div class="page-content-main gradiant-bg m-0">
     <div class="page-content">
@@ -289,6 +294,32 @@
 
                                     @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
                                 </div>
+
+
+
+                                <div class="form-group">
+                                    <label>Authentication Type</label>
+                                    @Html.DropDownListFor(model => model.AuthenticationType,
+                     new List<SelectListItem> {
+                          new SelectListItem { Value = "Active_Directory " , Text = "Active Directory " },
+                          new SelectListItem { Value = "Username_and_Password" , Text = "Username and Password" }
+                       }, "Select Authentication",
+                     new { @class = "form-control" })
+
+                                </div>
+                                @Html.ValidationMessageFor(model => model.AuthenticationType, "", new { @class = "text-danger" })
+
+                                <div class="form-group">
+                                    <label>Role</label>
+                                    @Html.DropDownListFor(model => model.Roles,
+                     new List<SelectListItem> {
+                          new SelectListItem { Value = "ABC_User" , Text = "ABC User" },
+                          new SelectListItem { Value = "Fund_User" , Text = "Fund User" }
+                       }, "Select Role",
+                     new { @class = "form-control", @onchange = "RoleChange()" })
+
+                                </div>
+                                @Html.ValidationMessageFor(model => model.Roles, "", new { @class = "text-danger" })
                                 <div class="form-group">
                                     <label>User name</label>
                                     @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", @placeholder = "User Name", @onkeyup = "FillEmail()" })
@@ -301,25 +332,21 @@
 
                                     @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group d-none mul">
                                     <label>Fund</label>
-                                    @Html.DropDownListFor(m => m.fund,Model.FundList, new { @class = "form-control", @style = "padding: 6px;" })
+                                    @Html.ListBoxFor(m => m.fundMultiple, Model.FundList, new { @class = "form-control multiselect", @style = "padding: 6px;", @multiple = "multiple" })
 
 
-                                    @Html.ValidationMessageFor(model => model.fund, "", new { @class = "text-danger" })
+                                    @Html.ValidationMessageFor(model => model.fundMultiple, "", new { @class = "text-danger" })
                                 </div>
-                                <div class="form-group">
-                                    <label>Role</label>
+                                <div class="form-group d-none sing">
+                                    <label>Fund</label>
+                                    @Html.DropDownListFor(m => m.fundSingle, Model.FundList, new { @class = "form-control single", @style = "padding: 6px;", })
 
-                                    @Html.DropDownListFor(model => model.Roles,
-                                   new List<SelectListItem> {
-                                        new SelectListItem { Value = "ABC_User" , Text = "ABC User" },
-                                        new SelectListItem { Value = "Fund_User" , Text = "Fund User" }
-                                     }, "Select Role",
-                                   new { @class = "form-control" })
 
-                                    @Html.ValidationMessageFor(model => model.Roles, "", new { @class = "text-danger" })
+                                    @Html.ValidationMessageFor(model => model.fundSingle, "", new { @class = "text-danger" })
                                 </div>
+
                             </div>
                         </div>
                         <div class="btn-form-submit" align="right">
@@ -338,4 +365,25 @@
         $('#Email').val($('#UserName').val());
 
     }
+    function RoleChange() {
+        if ($('#Roles').val() == "ABC_User") {
+            $('.mul').removeClass('d-none');
+            $('.sing').addClass('d-none');
+        }
+        else {
+            $('.mul').addClass('d-none');
+            $('.sing').removeClass('d-none');
+        }
+
+    }
+    $(document).ready(function () {
+        $(".multiselect").SumoSelect({ placeholder: 'Select From Multiple Choice', csvDispCount: 5, floatWidth: 3 });
+        //$('.multiselect').multiselect({
+        //    //buttonWidth: '160px',
+        //    includeSelectAllOption: true,
+        //    //nonSelectedText: 'Select an Option',
+        //    //enableFiltering: true,
+
+        //});
+    });
 </script>

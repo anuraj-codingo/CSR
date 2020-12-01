@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
 
@@ -40,7 +42,7 @@ namespace CustomerServicePortal.Controllers
             dt = db.GetDataTable(commandText, CommandType.Text);
 
             List<SelectListItem> Clients = new List<SelectListItem>();
-            Clients.Add(new SelectListItem() { Value = "", Text = "Select Client" });
+            //Clients.Add(new SelectListItem() { Value = "", Text = "Select Client" });
             foreach (DataRow item in dt.Rows)
             {
                 SelectListItem Client = new SelectListItem();
@@ -72,13 +74,32 @@ namespace CustomerServicePortal.Controllers
                     User.FirstName = item["FirstName"].ToString();
                     User.LastName = item["LastName"].ToString();
                     User.UserName = item["UserName"].ToString();
-                    User.fund = item["Fund"].ToString();
+                    User.AuthenticationType = item["AuthenticationType"].ToString();
                     User.Email = item["Email"].ToString();
                     User.Roles = item["Role"].ToString();
                     User.ID = Convert.ToInt32(item["Id"]);
 
                 }
+
                 User.FundList = Clients;
+                DataTable dt1 = new DataTable();
+                string Commandtext1 = "select Fund from [dbo].[User_Funds] where UserId="+Id;
+                dt1 = db.GetDataTable(Commandtext1, CommandType.Text);
+
+                if (User.Roles== "ABC_User")
+                {
+                    User.fundMultiple = dt1.Rows.OfType<DataRow>().Select(k => k[0].ToString()).ToArray();
+                }
+                else
+                {
+                    User.fundSingle = dt1.Rows[0]["Fund"].ToString();
+                }
+              
+                //foreach (var item in User.fundMultiple)
+                //{
+                //    Clients.Find(x => x.Value == item).Selected = true;
+                //}
+               
             }
             catch (Exception ex)
             {
@@ -102,7 +123,8 @@ namespace CustomerServicePortal.Controllers
                 parameters.Add(db.CreateParameter("@Role", userRegModel.Roles, DbType.String));
                 parameters.Add(db.CreateParameter("@UserName", userRegModel.UserName, DbType.String));
                 parameters.Add(db.CreateParameter("@Email", userRegModel.Email, DbType.String));
-                parameters.Add(db.CreateParameter("@Fund", userRegModel.fund, DbType.String));
+                parameters.Add(db.CreateParameter("@Fund", userRegModel.fundSingle, DbType.String));
+                parameters.Add(db.CreateParameter("@User_FundTableType", userRegModel.fundMultiple, DbType.String));
                 DataTable dt = new DataTable();
                 dt = db.GetDataTable(CommandText, CommandType.StoredProcedure, parameters.ToArray());
                 return RedirectToAction("UsersList", "Users");
@@ -121,7 +143,33 @@ namespace CustomerServicePortal.Controllers
         {
             try
             {
+                DataTable _myDataTable = new DataTable();
 
+                _myDataTable.Columns.Add(new DataColumn("UserId"));
+                _myDataTable.Columns.Add(new DataColumn("Fund"));
+                if (userRegModel.Roles== "ABC_User")
+                {
+                    for (int j = 0; j < userRegModel.fundMultiple.Length; j++)
+                    {
+                        DataRow dr = _myDataTable.NewRow();
+                        dr[0] = userRegModel.ID;
+                        dr[1] = userRegModel.fundMultiple[j];
+                        _myDataTable.Rows.Add(dr);
+                    }
+                }
+                else
+                {
+                  
+                        DataRow dr = _myDataTable.NewRow();
+                        dr[0] = userRegModel.ID;
+                         dr[1] = userRegModel.fundSingle;
+                        _myDataTable.Rows.Add(dr);                    
+
+                }
+               
+
+               
+                
                 string CommandText = "UserReg";
                 var parameters = new List<IDbDataParameter>();
                 parameters.Add(db.CreateParameter("@id", userRegModel.ID, DbType.Int16));
@@ -129,8 +177,9 @@ namespace CustomerServicePortal.Controllers
                 parameters.Add(db.CreateParameter("@LastName", userRegModel.LastName, DbType.String));
                 parameters.Add(db.CreateParameter("@Role", userRegModel.Roles, DbType.String));
                 parameters.Add(db.CreateParameter("@UserName", userRegModel.UserName, DbType.String));
+                parameters.Add(db.CreateParameter("@AuthenticationType", userRegModel.AuthenticationType, DbType.String));
                 parameters.Add(db.CreateParameter("@Email", userRegModel.Email, DbType.String));
-                parameters.Add(db.CreateParameter("@Fund", userRegModel.fund, DbType.String));
+                parameters.Add(db.CreateParameter("@User_FundTableType", _myDataTable, SqlDbType.Structured ));
                 DataTable dt = new DataTable();
                 dt = db.GetDataTable(CommandText, CommandType.StoredProcedure, parameters.ToArray());
                 return RedirectToAction("Index", "Users");
@@ -200,9 +249,9 @@ namespace CustomerServicePortal.Controllers
                     User.FirstName = item["FirstName"].ToString();
                     User.LastName = item["LastName"].ToString();
                     User.UserName = item["UserName"].ToString();
-                    User.fund = item["Fund"].ToString();
+                    User.AuthenticationType = item["AuthenticationType"].ToString()== "Username_and_Password"? "Username and Password": "Active Directory";
                     User.Email = item["Email"].ToString();
-                    User.Roles = item["Role"].ToString();
+                    User.Roles = item["Role"].ToString()== "ABC_User"? "ABC User": "Fund User";
                     User.ID = Convert.ToInt32(item["Id"]);
                     UserModel.Add(User);
 
@@ -230,5 +279,72 @@ namespace CustomerServicePortal.Controllers
                 return writer.ToString();
             }
         }
+
+        //[HttpPost]
+        //public async System.Threading.Tasks.Task<ActionResult> UserReg(Userdetails userdetails)
+        //{
+        //    try
+        //    {
+
+        //        DataTable dt = new DataTable();
+        //        string commandtext = "UserReg";
+        //        var parameters = new List<IDbDataParameter>();
+        //        parameters.Add(db.CreateParameter("@Id", userdetails.Id, DbType.Int32));
+        //        parameters.Add(db.CreateParameter("@UserName", userdetails.UsereName, DbType.String));
+        //        parameters.Add(db.CreateParameter("@FirstName", userdetails.FirstName, DbType.String));
+        //        parameters.Add(db.CreateParameter("@LastName", userdetails.LastName, DbType.String));
+        //        parameters.Add(db.CreateParameter("@Phone", userdetails.PhoneNumber, DbType.String));
+        //        parameters.Add(db.CreateParameter("@BloodGroup", userdetails.Bloodgroup, DbType.String));
+        //        parameters.Add(db.CreateParameter("@Designation", userdetails.Designation, DbType.String));
+        //        parameters.Add(db.CreateParameter("@Role", userdetails.RoleId, DbType.String));
+        //        parameters.Add(db.CreateParameter("@DOB", userdetails.DOB, DbType.Date));
+        //        parameters.Add(db.CreateParameter("@EmployPositionId", 1, DbType.Int32));
+
+
+        //        if (userdetails.Id == 0)
+        //        {
+        //            dt = db.GetDataTable(commandtext, CommandType.StoredProcedure, parameters.ToArray());
+        //            var senderEmail = new MailAddress("codingo2019@gmail.com", "codingofam");
+        //            var receiverEmail = new MailAddress(userdetails.UsereName, "Receiver");
+        //            var password = "codingoTeam@2020";
+        //            var sub = "Login Details";
+        //            var body = "HI {0}, <br><br> Username: " +
+        //                "{1}" +
+        //                "<br> Password: {2}<br><br>Thanks<br>Codingo Fam<br> &nbsp;";
+        //            var smtp = new SmtpClient
+        //            {
+        //                Host = "smtp.gmail.com",
+        //                Port = 587,
+        //                EnableSsl = true,
+        //                DeliveryMethod = SmtpDeliveryMethod.Network,
+        //                UseDefaultCredentials = false,
+        //                Credentials = new NetworkCredential(senderEmail.Address, password)
+        //            };
+        //            using (var mess = new MailMessage(senderEmail, receiverEmail)
+        //            {
+        //                Subject = sub,
+        //                Body = string.Format(body, userdetails.FirstName, userdetails.UsereName, dt.Rows[0]["password"].ToString()),
+        //                IsBodyHtml = true,
+        //            })
+        //            {
+        //                await smtp.SendMailAsync(mess);
+        //            }
+
+        //        }
+        //        else
+        //        {
+        //            db.Insert(commandtext, CommandType.StoredProcedure, parameters.ToArray());
+        //        }
+        //        //url = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, string.Empty) + "/ABC_SecureCardAdding?Id=" + dt.Rows[0]["Id"].ToString();
+
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //        throw;
+        //    }
+        //    return RedirectToAction("Index", "Users");
+        //}
     }
 }

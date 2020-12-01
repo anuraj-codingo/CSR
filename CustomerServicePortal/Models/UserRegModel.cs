@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace CustomerServicePortal.Models
 {
@@ -31,9 +32,18 @@ namespace CustomerServicePortal.Models
 
         [Display(Name = "Fund")]
         [Required(ErrorMessage = "{0} is required.")]
-        public string fund { get; set; }
+        public string[] fundMultiple { get; set; }
+
+        [Display(Name = "Fund")]
+        [Required(ErrorMessage = "{0} is required.")]
+        public string fundSingle { get; set; }
 
         [Required]
         public string Roles { get; set; }
+
+        [Required]
+        public string AuthenticationType { get; set; }
+
+        public List<SelectListItem> FundList { get; set; }
     }
 }

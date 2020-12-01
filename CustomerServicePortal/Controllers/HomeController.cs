@@ -11,6 +11,7 @@ namespace CustomerServicePortal.Controllers
     public class HomeController : Controller
     {
         [Obsolete]
+        //[OutputCache(Duration = 10, VaryByParam = "none", Location = OutputCacheLocation.Client, NoStore = true)]      
         public ActionResult Index()
         {
             return View();
