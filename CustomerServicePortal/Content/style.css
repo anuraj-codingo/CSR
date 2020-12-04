@@ -564,9 +564,11 @@ body {
             border-radius: 100%;
             transform: translateX(-50%) translateY(-50%);
             max-width: 100%; }
-      .user .info .detail .intro {
-        color: #666666;
-        border-bottom: 1px solid #666666; }
+        .user .info .detail .intro {
+            color: #666666;
+            font-family: 'Poppins', sans-serif !important;
+            /*border-bottom: 1px solid #666666;*/
+        }
         .user .info .detail .intro h4 {
           margin-bottom: 0; }
         .user .info .detail .intro strong {
@@ -1039,5 +1041,53 @@ body {
     justify-content: space-between;
     width: 100%;
 }
+.IdCardRequest {
+    font-size: 12px !important;
+    background: #404565 !important;
+    border: solid 1px #404565 !important;
+    background-color: #404565 !important;
+}
+.userTable-block table {
+    position: relative !important;
+}
+.userTable-block button {
+    background: none;
+    border: solid 1px #404565;
+    font-size: 12px;
+    margin: 0px 0px 15px 0px;
+    color: #404565;
+}
+.editBtn-block {
+    border: none;
+    background: none;
+    margin: 0px 0px 0px 15px;
+    color: #404565;
+    outline: none !important;
+    box-shadow: none !important;
+    cursor: pointer;
+}
+.table thead th {
+    font-weight: 500;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.2px;
+    border: none !important;
+    padding: 10px 5px !important;
+}
+.m-30
+{
+    margin: 30px 30px;
+}
+.pt-20
+{
+    padding-top: 20px;
+}
+{
+    font-size: 12px;
+    padding: 0px;
+    margin: 0px 0px 5px 0px;
+}
+
+
 
     /*# sourceMappingURL=style.css.map */

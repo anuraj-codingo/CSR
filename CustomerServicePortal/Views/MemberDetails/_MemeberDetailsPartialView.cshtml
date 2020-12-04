@@ -1,32 +1,43 @@
 ﻿@model List<CustomerServicePortal.Models.ClaimDetailModel>
 <div class="dataTable">
     <div class="resultTable">
-        <table class="table" cell>
-            <tr class="tr thead">
-                <td class="td">EOB No:</td>
-                <td class="td">Claim No:</td>
-                <td class="td">Date</td>
-                <td class="td">For</td>
-                <td class="td">Type</td>
-                <td class="td">Provider</td>
-                <td class="td">Total</td>
-                <td class="td">Plan Paid</td>
-                <td class="td">Member Resp</td>
-            </tr>
-            @foreach (var item in Model)
-            {
-                <tr class="tr">
-                    <td class="td"><span>@item.EOBNO</span></td>
-                    <td class="td"><a href="#">@item.ClaimNo</a></td>
-                    <td class="td">@item.ClaimMonth/@item.ClaimDate/@item.ClaimYear</td>
-                    <td class="td">@item.For</td>
-                    <td class="td">@item.Type</td>
-                    <td class="td" style="text-align:left">@item.Provider</td>
-                    <td class="td">@item.Total</td>
-                    <td class="td">@item.PlanPaid</td>
-                    <td class="td">@item.MemerResp</td>
-                </tr>
-            }
-        </table>
+        <div class="col-lg-12">
+            <div class="main-box clearfix m-30 pt-20">
+                <div class="tableWrap">
+                    <div class="table-responsive">
+                        <table class="table user-list w-100 table-striped" cell>
+                            <thead>
+                                <tr>
+                                    <th>EOB No:</th>
+                                    <th>Claim No:</th>
+                                    <th>Date</th>
+                                    <th>For</th>
+                                    <th>Type</th>
+                                    <th>Provider</th>
+                                    <th>Total</th>
+                                    <th>Plan Paid</th>
+                                    <th>Member Resp</th>
+                                </tr>
+                            </thead>
+                            @foreach (var item in Model)
+                            {
+                                <tr class="tr">
+                                    <td><span>@item.EOBNO</span></td>
+                                    <td><a href="#">@item.ClaimNo</a></td>
+                                    <td>@item.ClaimMonth/@item.ClaimDate/@item.ClaimYear</td>
+                                    <td>@item.For</td>
+                                    <td>@item.Type</td>
+                                    <td style="text-align:left">@item.Provider</td>
+                                    <td>@item.Total</td>
+                                    <td>@item.PlanPaid</td>
+                                    <td>@item.MemerResp</td>
+                                </tr>
+                            }
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
 </div>

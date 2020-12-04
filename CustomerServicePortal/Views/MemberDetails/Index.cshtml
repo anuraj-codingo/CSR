@@ -21,121 +21,127 @@
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <div class="user">
     <div class="box info">
-        <div class="detail">
-            <div class="profilePhoto">
-                <div class="photo">
+        <div class="col-12">
+            <div class="detail">
+                <div class="profilePhoto">
+                    <div class="photo">
 
-                    <img src="~/Content/img/lisa-dominic.png" alt="" />
+                        <img src="~/Content/img/lisa-dominic.png" alt="" />
+                    </div>
+                </div>
+                <div class="intro">
+                    <a onclick="Reset(@Model.eMPdetails.EMSSN)" href="#"><h4>@Model.eMPdetails.Name</h4></a>
+                    <strong class="h6">ID: <span>@Model.eMPdetails.Id</span></strong>
+                    <strong class="h6">Gender: <span>@Model.eMPdetails.Gender</span></strong>
+                    <strong class="h6">DOB: <span>@Model.eMPdetails.DOBDay/@Model.eMPdetails.DOBMonth/@Model.eMPdetails.DOBYear</span></strong>
+                    @if (Model.eMPdetails.ShowRequestId)
+                    {
+                        <button type="button" class="btn btn-primary IdCardRequest" onclick="IdCardRequest(@Model.eMPdetails.EMSSN,'@Model.eMPdetails.Name','@Model.eMPdetails.Gender')">Request Id</button>
+                    }
+
+                    @*<p>Lorem ipsum dolor sit amet, adipiscing consectetur elit.</p>*@
                 </div>
             </div>
-            <div class="intro">
-                <a onclick="Reset(@Model.eMPdetails.EMSSN)" href="#"><h4>@Model.eMPdetails.Name</h4></a>
-                <strong class="h6">ID: <span>@Model.eMPdetails.Id</span></strong>
-                <strong class="h6">Gender: <span>@Model.eMPdetails.Gender</span></strong>
-                <strong class="h6">DOB: <span>@Model.eMPdetails.DOBDay/@Model.eMPdetails.DOBMonth/@Model.eMPdetails.DOBYear</span></strong>
-                @if (Model.eMPdetails.ShowRequestId)
+        </div>
+        <div class="col-12 userTable-block">
+            <table>
+                <tr>
+                    <th>Relation</th>
+                    <th>Name</th>
+                    <th>Status</th>
+                    <th>Plan</th>
+                    <th>Class</th>
+                    <th>DOB</th>
+                    <th>Action</th>
+                </tr>
+                @if (Model.dependentDetailModels.Count > 0)
                 {
-                    <button type="button" class="btn btn-primary IdCardRequest" onclick="IdCardRequest(@Model.eMPdetails.EMSSN,'@Model.eMPdetails.Name','@Model.eMPdetails.Gender')">Request Id</button>
-                }
+                    foreach (var item in Model.dependentDetailModels)
+                    {
+            <tr onclick="GetSpouseCliamDetailTable(@item.SSN,@item.DependentSeq)">
+                <td>@item.Relation</td>
+                <td>@item.DependenetName</td>
+                <td>@item.Status</td>
+                <td>@item.Plan</td>
+                <td>@item.Class</td>
+                <td>@item.Month-@item.Day-@item.Year</td>
+                <td><i class="fa fa-pencil"></i></td>
+            </tr>
+                    }
 
-                @*<p>Lorem ipsum dolor sit amet, adipiscing consectetur elit.</p>*@
+                }
+                else
+                {
+                    <tr><td colspan="6" class="no-depend">No Dependant</td></tr>
+                }
+            </table>
+            <button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Add Dependent</button>
+        </div>
+    </div>
+        <div class="box archive">
+            <div class="byYear">
+
+                @Html.Partial("_DEDMET_OOP_PartialView", Model.dEDMETModelCurentYear)
+                @Html.Partial("_DEDMET_OOP_PartialView", Model.dEDMETModelPreviousYear)
+
+
+
             </div>
         </div>
-        <table>
-            <tr>
-                <th>Relation</th>
-                <th>Name</th>
-                <th>Status</th>
-                <th>Plan</th>
-                <th>Class</th>
-                <th>DOB</th>
-            </tr>
-            @if (Model.dependentDetailModels.Count > 0)
-            {
-                foreach (var item in Model.dependentDetailModels)
-                {
-                    <tr onclick="GetSpouseCliamDetailTable(@item.SSN,@item.DependentSeq)">
-                        <td>@item.Relation</td>
-                        <td>@item.DependenetName</td>
-                        <td>@item.Status</td>
-                        <td>@item.Plan</td>
-                        <td>@item.Class</td>
-                        <td>@item.Month-@item.Day-@item.Year</td>
-                    </tr>
+        <div class="box">
+            <h4>Address</h4>
+            <p>
+                @{
+                    var x = "";
                 }
 
-            }
-            else
-            {
-                <tr><td colspan="6" class="no-depend">No Dependant</td></tr>
-            }
-        </table>
-        <button type="button" class="btn btn-primary">Add Dependent</button>
-    </div>
-    <div class="box archive">
-        <div class="byYear">
+                @if (Model.eMPdetails.Addr1.Trim() != "")
+                {
+                    x += Model.eMPdetails.Addr1;
+                }
+                @if (Model.eMPdetails.Addr2.Trim() != "")
+                {
+                    x += "," + Model.eMPdetails.Addr2;
+                }
+                @if (Model.eMPdetails.Addr3.Trim() != "")
+                {
+                    x += "," + Model.eMPdetails.Addr3;
+                }
+                @if (Model.eMPdetails.Addr4.Trim() != "")
+                {
+                    x += "," + Model.eMPdetails.Addr4;
+                }
+                @if (Model.eMPdetails.City.Trim() != "")
+                {
+                    x += "," + Model.eMPdetails.City;
+                }
+                @if (Model.eMPdetails.State.Trim() != "")
+                {
+                    x += "," + Model.eMPdetails.State;
+                }
+                @if (Model.eMPdetails.Zip1.Trim() != "")
+                {
+                    x += "," + Model.eMPdetails.Zip1;
+                }
+                @if (Model.eMPdetails.Zip2.Trim() != "")
+                {
+                    x += "," + Model.eMPdetails.Zip2;
+                }
+                @if (Model.eMPdetails.Zip3.Trim() != "")
+                {
+                    x += "," + Model.eMPdetails.Zip3;
+                }
 
-            @Html.Partial("_DEDMET_OOP_PartialView", Model.dEDMETModelCurentYear)
-            @Html.Partial("_DEDMET_OOP_PartialView", Model.dEDMETModelPreviousYear)
 
-
-
+                @x <button class="editBtn-block" href="" onclick="EditAddress(@Model.eMPdetails.EMSSN)"><i class="fa fa-pencil"></i></button>
+            </p>
         </div>
+        <div class="box">
+            <h4>Lorem ipsum</h4>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in leo velit.</p>
+        </div>
+
     </div>
-    <div class="box">
-        <h4>Address</h4>
-        <p>
-            @{
-                var x = "";
-            }
-
-            @if (Model.eMPdetails.Addr1.Trim() != "")
-            {
-                x += Model.eMPdetails.Addr1;
-            }
-            @if (Model.eMPdetails.Addr2.Trim() != "")
-            {
-                x += "," + Model.eMPdetails.Addr2;
-            }
-            @if (Model.eMPdetails.Addr3.Trim() != "")
-            {
-                x += "," + Model.eMPdetails.Addr3;
-            }
-            @if (Model.eMPdetails.Addr4.Trim() != "")
-            {
-                x += "," + Model.eMPdetails.Addr4;
-            }
-            @if (Model.eMPdetails.City.Trim() != "")
-            {
-                x += "," + Model.eMPdetails.City;
-            }
-            @if (Model.eMPdetails.State.Trim() != "")
-            {
-                x += "," + Model.eMPdetails.State;
-            }
-            @if (Model.eMPdetails.Zip1.Trim() != "")
-            {
-                x += "," + Model.eMPdetails.Zip1;
-            }
-            @if (Model.eMPdetails.Zip2.Trim() != "")
-            {
-                x += "," + Model.eMPdetails.Zip2;
-            }
-            @if (Model.eMPdetails.Zip3.Trim() != "")
-            {
-                x += "," + Model.eMPdetails.Zip3;
-            }
-
-
-            @x <button class="fa fa-edit" href="" onclick="EditAddress(@Model.eMPdetails.EMSSN)"></button>
-        </p>
-    </div>
-    <div class="box">
-        <h4>Lorem ipsum</h4>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in leo velit.</p>
-    </div>
-
-</div>
 
 <div class="searchFilter">
     <div class="download" onclick="ExportTable(@Model.eMPdetails.EMSSN)">
