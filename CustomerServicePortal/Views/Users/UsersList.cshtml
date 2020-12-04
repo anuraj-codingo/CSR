@@ -268,6 +268,7 @@
         letter-spacing: 0.2px;
     }
 </style>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <div class="page-content-main gradiant-bg">
     
     <div class="page-content">
@@ -278,10 +279,10 @@
             <div class="col-lg-12">
                 <div class="main-box clearfix">
                     <div class="note page-title">
-                        
+                        @*href="@Url.Action("Index", "Users")"*@
                     </div>
                     <div class="pull-right action-btn-block">
-                        <p class="m-0">User List</p><a class="btn btn-primary add-btn btnCustom" href="@Url.Action("Index", "Users")" role="button"><i class="fal fa fa-plus mr-2"></i> Add User</a>
+                        <p class="m-0">User List</p><button class="btn btn-primary add-btn btnCustom" onclick="UserAddEdit(0)"  role="button"><i class="fal fa fa-plus mr-2"></i> Add User</button>
                     </div>
                     <div class="tableWrap">
                         <div class="table-responsive">
@@ -305,8 +306,70 @@
         </div>
     </div>
 </div>
+<div id="UserAddedit" class="modal fade" role="dialog">
+    <div class="modal-dialog  modal-lg" role="document" style="margin-top: 144px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">User Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+         
+          
+                <div class="modal-body">
 
+
+
+                </div>
+              
+        </div>
+    </div>
+</div>
+<div class="loader-main">
+    <div class="loader-sub">
+        <div class="loader2"></div>
+    </div>
+</div>
 <script>
+    function SubmitAdduser() {
+        $('.loader-main').show();
+        $('#UserAddedit').modal('hide');
+        //$('#Adduser').submit();
+      
+    }
+    function OnSuccess(response) {
+        $('.loader-main').hide();
+        GetUsers(1);
+    }
+    function OnFailure(response) {
+        GetUsers(1);
+    }
+        function UserAddEdit(Id) {
+            $('.loader-main').show();
+                  $.ajax({
+                type: "GET",
+                url:'@Url.Action("GetUserAddEditHtml", "Users")',
+                data: {  Id: Id},
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+
+                    $('.loader-main').hide();
+                    $('.modal-body').html(response.viewContent);
+
+                    $('#UserAddedit').modal('show');
+
+                },
+                failure: function (response) {
+                    alert(response.d);
+                },
+                error: function (response) {
+                    alert(response.d);
+                }
+            });
+
+    }
     $(function () {
         GetUsers(1);
     });
@@ -321,6 +384,7 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (response) {
+                $(".user-list tbody").empty();
                 $(".user-list tbody").append(response.viewContent);
             },
             failure: function (response) {
