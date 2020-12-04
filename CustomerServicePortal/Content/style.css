@@ -19,9 +19,11 @@ body {
   margin: 0 auto; }
 
 .pageBody {
-  width: 100%;
-  float: left;
-  position: relative; }
+    width: 100%;
+    float: left;
+    position: relative;
+    background-image: linear-gradient(to left bottom, #f8f8f8, #ffffff, #f7f7f8, #f6f6f8, #f3f4f8);
+}
     .pageBody.setbackgrond {
         background: url('img/bg-02.jpg') no-repeat right top;
         background-size: 100%;
@@ -107,11 +109,12 @@ body {
           top: 2.5rem; } }
 
 .footer {
-  width: 100%;
-  float: left;
-  background: #0c3c60;
-  padding: 2rem 0;
-  color: #fff; }
+    width: 100%;
+    float: left;
+    background: #404565;
+    padding: 1rem 0;
+    color: #fff;
+}
   .footer .container {
     text-align: center; }
 
@@ -128,12 +131,17 @@ body {
     align-content: center;
     margin: 0; }
     .navigation ul li {
-      position: relative;
-      padding-left: 1.25rem; }
-      .navigation ul li a {
-        display: block;
-        padding: 1rem 0;
-        color: #fff; }
+        position: relative;
+        padding-left: 1.25rem;
+    }
+        .navigation ul li a {
+            display: block;
+            padding: 1rem 0;
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+            text-decoration: none;
+            font-weight: 300;
+        }
       .navigation ul li.home a {
         color: #ffffff; }
         .navigation ul li.home a:before {
@@ -142,7 +150,7 @@ body {
             left: 0;
             top: 50%;
             transform: translateY(-50%);
-            font-family: "FontAwesome";
+            font-family: "FontAwesome" !important;
             margin-top: -1px;
             color: #ffffff;
         }
@@ -158,10 +166,11 @@ body {
         font-family: "FontAwesome";
         margin-top: -1px;
         color: #fff; }
-      .navigation ul li:last-of-type a {
-       /* cursor: none;
+        .navigation ul li:last-of-type a {
+            /* cursor: none;
         pointer-events: none;*/
-        color: #ffffff; }
+            color: #ffffff;
+        }
 
 .introduction {
   display: grid;
@@ -981,9 +990,32 @@ body {
     padding: 0.75rem !important;
     vertical-align: middle !important;
 }
+.tableWrap thead tr {
+    background: #f7931e;
+    color: #fff;
+}
 
+    .tableWrap thead tr th:nth-child(1) {
+        border-top-left-radius: 0.5rem;
+    }
 
+    .tableWrap thead tr th:nth-last-child(1) {
+        border-top-right-radius: 0.5rem;
+    }
 
+.tableWrap tbody tr:nth-last-child(1) td:nth-child(1) {
+    border-bottom-left-radius: 0.5rem;
+}
 
+.tableWrap tbody tr:nth-last-child(1) td:nth-last-child(1) {
+    border-bottom-right-radius: 0.5rem;
+}
+
+.table th, .table td {
+    border-top: none !important;
+}
+.table {
+    border-collapse: separate;
+}
 
     /*# sourceMappingURL=style.css.map */
