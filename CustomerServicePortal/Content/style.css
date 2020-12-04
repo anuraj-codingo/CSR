@@ -281,7 +281,7 @@ body {
   max-width: 1140px;
   margin: 2rem auto; }
     .report .filter {
-        float: left;
+        /*float: left;*/
         display: inline-flex;
         align-items: center;
         background: #ffffff;
@@ -333,13 +333,13 @@ body {
     float: left; }
   .report .tableWrap {
     width: 100%;
-    float: left;
+    /*float: left;*/
     overflow-x: scroll;
     margin-bottom: 2rem; }
     .report .tableWrap .table {
       width: 100%;
       float: left;
-      margin-top: 2rem; }
+      /*margin-top: 2rem;*/ }
       .report .tableWrap .table .tr {
         display: flex;
         flex-wrap: nowrap;
@@ -1016,6 +1016,28 @@ body {
 }
 .table {
     border-collapse: separate;
+}
+.main-box {
+    /*margin: 5% auto 5% auto;*/
+    background: #ffffff;
+    padding: 0px 20px;
+    border-radius: 15px;
+    box-shadow: 0px 0px 30px 0px rgb(129 136 181 / 23%);
+    border: solid 1px #ececec;
+    position: relative !important;
+}
+.action-btn-block p {
+    font-size: 18px;
+    font-weight: 500;
+    text-transform: capitalize;
+    letter-spacing: 0.2px;
+}
+.action-btn-block {
+    padding: 20px 3px 10px 3px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
 }
 
     /*# sourceMappingURL=style.css.map */

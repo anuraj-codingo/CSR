@@ -107,27 +107,37 @@
     }
 </style>
 <div class="report">
-    <div class="filter">
-        <label for="">Enter Name, ID or SSN</label>
-        <input type="text" id="SearchMember2" value="@ViewBag.SearchMember">
-        <input type="submit" value="Search" onclick="SearchMember2()">
-    </div>
-    <hr>
-    <div class="tableWrap">
-        @Html.Partial("_MemberListPartialView", Model)
-
-    </div>
-    <div class="Pager mb-4"></div>
-    <div class="loader-main">
-        <div class="loader-sub">
-            <div class="loader2"></div>
+    <div class="col-12 p-0">
+        <div class="filter">
+            <label for="">Enter Name, ID or SSN</label>
+            <input type="text" id="SearchMember2" value="@ViewBag.SearchMember">
+            <input type="submit" value="Search" onclick="SearchMember2()">
         </div>
     </div>
+    <div class="col-12 main-box clearfix">
+        <div class="note page-title">
+
+        </div>
+        <div class="pull-right action-btn-block">
+            <p class="m-0">User List</p>
+        </div>
+
+        <div class="tableWrap">
+            @Html.Partial("_MemberListPartialView", Model)
+
+        </div>
+    </div>
+        <div class="Pager mb-4"></div>
+        <div class="loader-main">
+            <div class="loader-sub">
+                <div class="loader2"></div>
+            </div>
+        </div>
 
 
-</div>
-@section scripts {
-    <script>
+    </div>
+    @section scripts {
+        <script>
         $(".Pager").ASPSnippets_Pager({
             ActiveCssClass: "current",
             PagerCssClass: "pager",
@@ -137,7 +147,7 @@
         });
 
                 $("body").on("click", ".Pager .page", function () {
-          
+
 
                     GetMemebrTable(parseInt($(this).attr('page')));
                 });
@@ -175,5 +185,5 @@
                 function SearchMember2() {
                     GetMemebrTable(1);
         }
-    </script>
-}
+        </script>
+    }
