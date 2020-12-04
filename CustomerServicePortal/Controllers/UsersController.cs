@@ -108,7 +108,65 @@ namespace CustomerServicePortal.Controllers
             }
             return View("Index",User);
         }
+        public JsonResult GetUserAddEditHtml(int Id)
+        {
+            UserRegModel userRegModel = new UserRegModel();
+            string viewContent = "";
+            try
+            {
+                List<SelectListItem> Clients = GetFundDropDownListFill();
 
+                userRegModel.FundList = Clients;
+
+               
+                if(Id !=0)
+                {
+                    string Commandtext = "select * from [dbo].[UserLogin] where Id=" + Id;
+                    DataTable dt = new DataTable();
+                    dt = db.GetDataTable(Commandtext, CommandType.Text);
+                 
+
+                    foreach (DataRow item in dt.Rows)
+                    {
+
+                        userRegModel.FirstName = item["FirstName"].ToString();
+                        userRegModel.LastName = item["LastName"].ToString();
+                        userRegModel.UserName = item["UserName"].ToString();
+                        userRegModel.AuthenticationType = item["AuthenticationType"].ToString();
+                        userRegModel.Email = item["Email"].ToString();
+                        userRegModel.Roles = item["Role"].ToString();
+                        userRegModel.ID = Convert.ToInt32(item["Id"]);
+
+                    }
+
+                    DataTable dt1 = new DataTable();
+                    string Commandtext1 = "select Fund from [dbo].[User_Funds] where UserId=" + Id;
+                    dt1 = db.GetDataTable(Commandtext1, CommandType.Text);
+                    if (dt1.Rows.Count > 0)
+                    {
+                        if (userRegModel.Roles == "ABC_User")
+                        {
+                            userRegModel.fundMultiple = dt1.Rows.OfType<DataRow>().Select(k => k[0].ToString()).ToArray();
+                        }
+                        else
+                        {
+                            userRegModel.fundSingle = dt1.Rows[0]["Fund"].ToString();
+                        }
+                    }
+                }
+
+
+                viewContent = ConvertViewToString("_AddUserPartialView", userRegModel);
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
+            return Json(new { viewContent = viewContent }, JsonRequestBehavior.AllowGet);
+        }
         [HttpPost]
         public ActionResult EditUser(UserRegModel userRegModel)
         {
@@ -139,7 +197,7 @@ namespace CustomerServicePortal.Controllers
             return RedirectToAction("UsersList", "Users");
         }
         [HttpPost]   
-        public ActionResult AddUser(UserRegModel userRegModel)
+        public JsonResult AddUser(UserRegModel userRegModel)
         {
             try
             {
@@ -182,7 +240,7 @@ namespace CustomerServicePortal.Controllers
                 parameters.Add(db.CreateParameter("@User_FundTableType", _myDataTable, SqlDbType.Structured ));
                 DataTable dt = new DataTable();
                 dt = db.GetDataTable(CommandText, CommandType.StoredProcedure, parameters.ToArray());
-                return RedirectToAction("Index", "Users");
+                return Json(true, JsonRequestBehavior.AllowGet);
 
                 //}
                 //return RedirectToAction("index");
@@ -190,8 +248,10 @@ namespace CustomerServicePortal.Controllers
             catch (Exception ex)
             {
                 TempData["Message"] = "Registration failed.Username and Password not supplied";
+                return Json(false, JsonRequestBehavior.AllowGet);
+               
             }
-            return RedirectToAction("index");
+         
         }
         [HttpPost]
         public JsonResult UsernameExists(string UserName,int ID)
