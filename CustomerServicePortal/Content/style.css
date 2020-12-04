@@ -1082,12 +1082,15 @@ body {
 {
     padding-top: 20px;
 }
-{
+.modalAddress label {
     font-size: 12px;
     padding: 0px;
     margin: 0px 0px 5px 0px;
+    display: block;
+    text-align: left;
+    color: #666666;
 }
-
-
-
+.modalAddress .form-control {
+    font-size: 12px;
+}
     /*# sourceMappingURL=style.css.map */
