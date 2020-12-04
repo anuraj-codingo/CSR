@@ -278,6 +278,7 @@
     }
  
     function EditAddress(SSN) {
+        $('.loader-main').show();
                   $.ajax({
                 type: "GET",
                 url:'@Url.Action("GetAddreessParialViewHtml", "MemberDetails")',
@@ -286,7 +287,7 @@
                 dataType: "json",
                 success: function (response) {
 
-
+                    $('.loader-main').hide();
                     $('.modal-body').html(response.viewContent);
 
                     $('#EditAddress').modal('show');
