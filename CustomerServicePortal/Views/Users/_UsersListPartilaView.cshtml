@@ -5,7 +5,7 @@
 <tr>
     <td>
 
-        <a href="#" class="user-link">@item.FirstName @item.LastName</a>
+       @item.FirstName @item.LastName
         @*<span class="user-subhead">@item.Roles</span>*@
     </td>
     <td>
@@ -15,21 +15,16 @@
         @item.Roles
     </td>
     <td>
-        <a href="#">@item.UserName</a>
+       @item.UserName
     </td>
     <td style="width: 20%;">
-        @*<a class="table-link" href='@Url.Action("EditUser", "Users", new { Id=item.ID })'>
-            <span class="fa-stack">
-                <i class="fa fa-square fa-stack-2x"></i>
-                <i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
-            </span>
-        </a>*@
-        <a class="table-link" @*href='@Url.Action("EditUser", "Users", new { Id=item.ID })'*@ onclick="UserAddEdit(@item.ID)">
+
+        <a class="table-link"  onclick="UserAddEdit(@item.ID)">
             <i class="fa fa-pencil mr-3"></i>
         </a>
-        @*<a href="#" class="table-link danger" onclick="DeleteUser(@item.ID)">
+        <a href="#" class="table-link danger" onclick="DeleteUser(@item.ID)">
             <i class="fa fa-trash"></i>
-        </a>*@
+        </a>
     </td>
 </tr>
 }

@@ -213,10 +213,12 @@
     .gradiant-bg {
         background-image: linear-gradient(to left bottom, #f8f8f8, #ffffff, #f7f7f8, #f6f6f8, #f3f4f8);
     }
+
     .table-content-block {
         max-width: 90%;
         margin: 0% auto 0% auto;
     }
+
     .main-box {
         margin: 5% auto 5% auto;
         background: #ffffff;
@@ -225,6 +227,7 @@
         box-shadow: 0px 0px 30px 0px rgb(129 136 181 / 23%);
         border: solid 1px #ececec;
     }
+
     .btnCustom {
         border-radius: 0px;
         font-size: 12px;
@@ -236,13 +239,15 @@
         box-shadow: none !important;
         border-radius: 5px;
     }
-    .btnCustom:hover,
-    .btnCustom:active,
-    .btnCustom:visited,
-    .btnCustom:focus {
-        background: #cacbd8 !important;
-        border: solid 1px #cacbd8 !important;
-    }
+
+        .btnCustom:hover,
+        .btnCustom:active,
+        .btnCustom:visited,
+        .btnCustom:focus {
+            background: #cacbd8 !important;
+            border: solid 1px #cacbd8 !important;
+        }
+
     .action-btn-block {
         padding: 20px 3px 10px 3px;
         display: flex;
@@ -250,6 +255,7 @@
         justify-content: space-between;
         width: 100%;
     }
+
     .table thead th {
         font-weight: 500;
         font-size: 14px;
@@ -258,9 +264,11 @@
         border: none !important;
         padding: 10px 5px !important;
     }
+
     .table th, .table td {
         padding: 5px !important;
     }
+
     .action-btn-block p {
         font-size: 18px;
         font-weight: 500;
@@ -268,13 +276,23 @@
         letter-spacing: 0.2px;
     }
 </style>
+
+
+@*<script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>*@
+
+<link href="~/Content/css/sumoselect.css" rel="stylesheet" />
+<script src="~/Scripts/js/jquery.sumoselect.js"></script>
+
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
+
 <div class="page-content-main gradiant-bg">
-    
+
     <div class="page-content">
 
         <div class="content-block table-content-block row">
-            
+
 
             <div class="col-lg-12">
                 <div class="main-box clearfix">
@@ -282,7 +300,7 @@
                         @*href="@Url.Action("Index", "Users")"*@
                     </div>
                     <div class="pull-right action-btn-block">
-                        <p class="m-0">User List</p><button class="btn btn-primary add-btn btnCustom" onclick="UserAddEdit(0)"  role="button"><i class="fal fa fa-plus mr-2"></i> Add User</button>
+                        <p class="m-0">User List</p><button class="btn btn-primary add-btn btnCustom" onclick="UserAddEdit(0)" role="button"><i class="fal fa fa-plus mr-2"></i> Add User</button>
                     </div>
                     <div class="tableWrap">
                         <div class="table-responsive">
@@ -306,7 +324,7 @@
         </div>
     </div>
 </div>
-<div id="UserAddedit" class="modal fade" role="dialog">
+<div Id="UserAddedit" class="modal fade" role="dialog">
     <div class="modal-dialog  modal-lg" role="document" style="margin-top: 144px;">
         <div class="modal-content">
             <div class="modal-header">
@@ -315,14 +333,14 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-         
-          
-                <div class="modal-body">
+
+
+            <div class="modal-body">
 
 
 
-                </div>
-              
+            </div>
+
         </div>
     </div>
 </div>
@@ -331,12 +349,17 @@
         <div class="loader2"></div>
     </div>
 </div>
+
 <script>
     function SubmitAdduser() {
-        $('.loader-main').show();
-        $('#UserAddedit').modal('hide');
-        //$('#Adduser').submit();
-      
+        if ($("#Adduser").valid()) {
+            $('#UserAddedit').modal('hide');
+            $('.loader-main').show();
+        }
+     
+
+    
+
     }
     function OnSuccess(response) {
         $('.loader-main').hide();
@@ -344,6 +367,62 @@
     }
     function OnFailure(response) {
         GetUsers(1);
+    }
+    function DeleteUser(Id) {
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger'
+            },
+            buttonsStyling: false
+        })
+
+        swalWithBootstrapButtons.fire({
+            title: 'Are you sure?',
+            //text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Delete',
+            cancelButtonText: 'cancel',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                                  $.ajax({
+                type: "GET",
+                url:'@Url.Action("DeleteUser", "Users")',
+                data: {  Id: Id},
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+
+                      swalWithBootstrapButtons.fire(
+                    'Deleted!',
+                    'User has been deleted.',
+                    'success'
+                    )
+                    GetUsers(1);
+
+                },
+                failure: function (response) {
+                    alert(response.d);
+                },
+                error: function (response) {
+                    alert(response.d);
+                }
+            });
+
+            } else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons.fire(
+                    'Cancelled',
+                    'Your imaginary file is safe :)',
+                    'error'
+                )
+            }
+        })
     }
         function UserAddEdit(Id) {
             $('.loader-main').show();
@@ -359,6 +438,11 @@
                     $('.modal-body').html(response.viewContent);
 
                     $('#UserAddedit').modal('show');
+
+                    //var form = $("#main_div").closest("form");
+                    $('#Adduser').removeData('validator');
+                    $('#Adduser').removeData('unobtrusiveValidation');
+                    $.validator.unobtrusive.parse('#Adduser');
 
                 },
                 failure: function (response) {

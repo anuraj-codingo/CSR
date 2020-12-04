@@ -10,7 +10,7 @@ namespace CustomerServicePortal.Models
         public string Name { get; set; }
         public string Gender { get; set; }
         public string Id { get; set; }
-        public decimal EMSSN { get; set; }
+        public string EMSSN { get; set; }
 
 
         //public string DOBYear { get; set; }

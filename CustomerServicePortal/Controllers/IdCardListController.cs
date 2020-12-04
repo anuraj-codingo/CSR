@@ -27,7 +27,7 @@ namespace CustomerServicePortal.Controllers
                 foreach (DataRow item in dt.Rows)
                 {
                     IdCardListModel idCardListModel = new IdCardListModel();
-                    idCardListModel.EMSSN = (decimal)item["EMSSN"];
+                    idCardListModel.EMSSN = item["EMSSN"].ToString();
                     idCardListModel.Name = item["Name"].ToString();
                     idCardListModel.Gender = item["Gender"].ToString();
                     idCardListModels.Add(idCardListModel);

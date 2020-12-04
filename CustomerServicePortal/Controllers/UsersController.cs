@@ -108,7 +108,28 @@ namespace CustomerServicePortal.Controllers
             }
             return View("Index",User);
         }
-        public JsonResult GetUserAddEditHtml(int Id)
+        public JsonResult DeleteUser(long Id)
+        {
+            UserRegModel userRegModel = new UserRegModel();
+            string viewContent = "";
+            try
+            {
+
+                string Commandtext = "DeleteUser";
+                var parameters = new List<IDbDataParameter>();
+                parameters.Add(db.CreateParameter("@Id",Id, DbType.Int64));
+                object result = db.GetScalarValue(Commandtext,CommandType.StoredProcedure,parameters.ToArray());
+                return Json( true , JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
+            return Json(new { viewContent = viewContent }, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult GetUserAddEditHtml(int Id)
         {
             UserRegModel userRegModel = new UserRegModel();
             string viewContent = "";
@@ -196,6 +217,7 @@ namespace CustomerServicePortal.Controllers
             }
             return RedirectToAction("UsersList", "Users");
         }
+
         [HttpPost]   
         public JsonResult AddUser(UserRegModel userRegModel)
         {
