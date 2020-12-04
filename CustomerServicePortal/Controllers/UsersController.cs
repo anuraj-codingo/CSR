@@ -85,20 +85,20 @@ namespace CustomerServicePortal.Controllers
                 DataTable dt1 = new DataTable();
                 string Commandtext1 = "select Fund from [dbo].[User_Funds] where UserId="+Id;
                 dt1 = db.GetDataTable(Commandtext1, CommandType.Text);
-
-                if (User.Roles== "ABC_User")
+                if (dt1.Rows.Count>0)
                 {
-                    User.fundMultiple = dt1.Rows.OfType<DataRow>().Select(k => k[0].ToString()).ToArray();
+                    if (User.Roles == "ABC_User")
+                    {
+                        User.fundMultiple = dt1.Rows.OfType<DataRow>().Select(k => k[0].ToString()).ToArray();
+                    }
+                    else
+                    {
+                        User.fundSingle = dt1.Rows[0]["Fund"].ToString();
+                    }
                 }
-                else
-                {
-                    User.fundSingle = dt1.Rows[0]["Fund"].ToString();
-                }
+             
               
-                //foreach (var item in User.fundMultiple)
-                //{
-                //    Clients.Find(x => x.Value == item).Selected = true;
-                //}
+            
                
             }
             catch (Exception ex)
@@ -106,7 +106,7 @@ namespace CustomerServicePortal.Controllers
 
                 throw;
             }
-            return View(User);
+            return View("Index",User);
         }
 
         [HttpPost]

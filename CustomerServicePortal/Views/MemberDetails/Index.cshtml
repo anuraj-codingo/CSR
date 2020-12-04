@@ -4,11 +4,15 @@
 }
 
 <style>
-    .no-depend
-    {
+    .modal.fade.in {
+        opacity: 1;
+    }
+
+    .no-depend {
         font-size: 13px;
         padding: 10px 0px;
     }
+
     .loader2 {
         width: 50px;
         height: 50px;
@@ -61,10 +65,12 @@
         height: 100%;
         background: rgb(255 255 255 / 50%);
     }
+
     .table th, .table td {
         border-top: none !important;
     }
 </style>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <div class="user">
     <div class="box info">
         <div class="detail">
@@ -75,10 +81,15 @@
                 </div>
             </div>
             <div class="intro">
-               <a onclick="Reset(@Model.eMPdetails.EMSSN)" href="#"><h4>@Model.eMPdetails.Name</h4></a>
+                <a onclick="Reset(@Model.eMPdetails.EMSSN)" href="#"><h4>@Model.eMPdetails.Name</h4></a>
                 <strong class="h6">ID: <span>@Model.eMPdetails.Id</span></strong>
                 <strong class="h6">Gender: <span>@Model.eMPdetails.Gender</span></strong>
                 <strong class="h6">DOB: <span>@Model.eMPdetails.DOBDay/@Model.eMPdetails.DOBMonth/@Model.eMPdetails.DOBYear</span></strong>
+                @if (Model.eMPdetails.ShowRequestId)
+                {
+                    <button type="button" class="btn btn-primary IdCardRequest" onclick="IdCardRequest(@Model.eMPdetails.EMSSN,'@Model.eMPdetails.Name','@Model.eMPdetails.Gender')">Request Id</button>
+                }
+
                 @*<p>Lorem ipsum dolor sit amet, adipiscing consectetur elit.</p>*@
             </div>
         </div>
@@ -111,85 +122,71 @@
                 <tr><td colspan="6" class="no-depend">No Dependant</td></tr>
             }
         </table>
+        <button type="button" class="btn btn-primary">Add Dependent</button>
     </div>
     <div class="box archive">
         <div class="byYear">
 
             @Html.Partial("_DEDMET_OOP_PartialView", Model.dEDMETModelCurentYear)
             @Html.Partial("_DEDMET_OOP_PartialView", Model.dEDMETModelPreviousYear)
-            @*@{
 
-            Html.RenderPartial("_DEDMET_OOP_PreviousYear_PartialView");
-        }
-        @{
-            Html.RenderPartial("_DEDMET_OOP_CurentYear_PartialView", Model.dEDMETModelCurentYear);
-        }*@
 
-            @*<div class="year 2020">
-            <h5>2019</h5>
-            <div class="listingTable">
-                <div class="column">
-                    <h6>DED MET</h6>
-                    <div class="datarow">
-                        <strong>1</strong>
-                        <div class="price">250.00</div>
-                    </div>
-                    <div class="datarow">
-                        <strong>F</strong>
-                        <div class="price">250.00</div>
-                    </div>
-                </div>
-                <div class="column">
-                    <h6>REMAINING</h6>
-                    <div class="datarow">
-                        <strong>1</strong>
-                        <div class="price">0.00</div>
-                    </div>
-                    <div class="datarow">
-                        <strong>F</strong>
-                        <div class="price">250.00</div>
-                    </div>
-                </div>
-            </div>
-            <div class="listingTable">
-                <div class="column">
-                    <h6>OOP</h6>
-                    <div class="datarow">
-                        <strong>1</strong>
-                        <div class="price">71.05</div>
-                    </div>
-                    <div class="datarow">
-                        <strong>F</strong>
-                        <div class="price">2928.95</div>
-                    </div>
-                </div>
-                <div class="column">
-                    <h6>REMAINING</h6>
-                    <div class="datarow">
-                        <strong>1</strong>
-                        <div class="price">71.05</div>
-                    </div>
-                    <div class="datarow">
-                        <strong>F</strong>
-                        <div class="price">5928.95</div>
-                    </div>
-                </div>
-            </div>
-        </div>*@
+
         </div>
     </div>
-    @*<div class="box">
-            <h4>Lorem ipsum</h4>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in leo velit. Vivamus tincidunt
-                ullamcorper erat quis fermentum. Sed id gravida libero. Sed elementum mollis faucibus. Fusce faucibus
-                efficitur consequat. Nullam vel nunc lobortis, feugiat nunc eu, posuere risus.
-            </p>
-        </div>
-        <div class="box">
-            <h4>Lorem ipsum</h4>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in leo velit.</p>
-        </div>*@
+    <div class="box">
+        <h4>Address</h4>
+        <p>
+            @{
+                var x = "";
+            }
+
+            @if (Model.eMPdetails.Addr1.Trim() != "")
+            {
+                x += Model.eMPdetails.Addr1;
+            }
+            @if (Model.eMPdetails.Addr2.Trim() != "")
+            {
+                x += "," + Model.eMPdetails.Addr2;
+            }
+            @if (Model.eMPdetails.Addr3.Trim() != "")
+            {
+                x += "," + Model.eMPdetails.Addr3;
+            }
+            @if (Model.eMPdetails.Addr4.Trim() != "")
+            {
+                x += "," + Model.eMPdetails.Addr4;
+            }
+            @if (Model.eMPdetails.City.Trim() != "")
+            {
+                x += "," + Model.eMPdetails.City;
+            }
+            @if (Model.eMPdetails.State.Trim() != "")
+            {
+                x += "," + Model.eMPdetails.State;
+            }
+            @if (Model.eMPdetails.Zip1.Trim() != "")
+            {
+                x += "," + Model.eMPdetails.Zip1;
+            }
+            @if (Model.eMPdetails.Zip2.Trim() != "")
+            {
+                x += "," + Model.eMPdetails.Zip2;
+            }
+            @if (Model.eMPdetails.Zip3.Trim() != "")
+            {
+                x += "," + Model.eMPdetails.Zip3;
+            }
+
+
+            @x <button class="fa fa-edit" href="" onclick="EditAddress(@Model.eMPdetails.EMSSN)"></button>
+        </p>
+    </div>
+    <div class="box">
+        <h4>Lorem ipsum</h4>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in leo velit.</p>
+    </div>
+
 </div>
 
 <div class="searchFilter">
@@ -224,14 +221,46 @@
         </div>
     </div>
 </div>
-<div class="loader-main show">
+<div class="loader-main">
     <div class="loader-sub">
         <div class="loader2"></div>
     </div>
 </div>
+<div id="EditAddress" class="modal fade" role="dialog">
+    <div class="modal-dialog  modal-lg" role="document" style="margin-top: 144px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Address</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @*<form id="AddressUpdateSubmit">*@
+            @using (Ajax.BeginForm("UpdateAddress", "MemberDetails",
+                 new AjaxOptions
+                 {
+                     OnSuccess = "OnSuccess",
+                     OnFailure = "OnFailure",
+                     LoadingElementId = "progress"
+                 }))
+            {
+                <div class="modal-body">
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" onclick="AddressUpdateSubmit()">Save changes</button>
+                </div>
+                @*</form>*@
+            }
+        </div>
+    </div>
+</div>
 <!--/searchFilter-->
 <div id="claimDetailGrid">
-    @{Html.RenderPartial("_MemeberDetailsPartialView",Model.claimDetailModels);}
+    @{Html.RenderPartial("_MemeberDetailsPartialView", Model.claimDetailModels);}
 </div>
 <script type=text/javascript>
     $('.datepicker').datepicker({
@@ -240,7 +269,39 @@
         changeYear: true,
         yearRange: "-100:+100"
     });
-   
+
+    function OnSuccess(response) {
+        //location.reload();  
+    }
+    function OnFailure(response) {
+        //location.reload();  
+    }
+ 
+    function EditAddress(SSN) {
+                  $.ajax({
+                type: "GET",
+                url:'@Url.Action("GetAddreessParialViewHtml", "MemberDetails")',
+                data: {  SSN: SSN},
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+
+
+                    $('.modal-body').html(response.viewContent);
+
+                    $('#EditAddress').modal('show');
+
+                },
+                failure: function (response) {
+                    alert(response.d);
+                },
+                error: function (response) {
+                    alert(response.d);
+                }
+            });
+
+    }
+
     function GetSpouseCliamDetailTable(ssn, DependentSeq) {
         $('#claim').val("");
         $('#servicedate').val("");
@@ -317,5 +378,44 @@
             }
         });
 
+    }
+
+    async function IdCardRequest(SSN, Name, Gender) {
+        debugger;
+        const { value: text } =await Swal.fire({
+            input: 'textarea',
+            inputLabel: 'Message',
+            inputPlaceholder: 'Type your message here...',
+            inputAttributes: {
+                'aria-label': 'Type your message here'
+            },
+            showCancelButton: true
+        })
+
+        if (text) {
+
+            $.ajax({
+                type: "GET",
+                url:'@Url.Action("IdCardRequest", "MemberDetails")',
+                data: { SSN: SSN, Notes: text, Name: Name, Gender: Gender},
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    if (response == true) {
+                        $('.IdCardRequest').remove();
+                    }
+                    else {
+                        alert("false")
+                    }
+
+                },
+                failure: function (response) {
+                    alert(response.d);
+                },
+                error: function (response) {
+                    alert(response.d);
+                }
+            });
         }
+    }
 </script>

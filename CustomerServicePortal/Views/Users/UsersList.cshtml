@@ -1,6 +1,7 @@
 ﻿
 
 <style>
+
     .user-list tbody td > img {
         position: relative;
         max-width: 50px;
@@ -315,8 +316,6 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (response) {
-                //var trHTML = '';
-                //$(".user-list tbody").empty();
                 $(".user-list tbody").append(response.viewContent);
             },
             failure: function (response) {

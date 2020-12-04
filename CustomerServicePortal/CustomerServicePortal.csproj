@@ -57,6 +57,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IO.FileSystem.Primitives.4.3.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
@@ -139,9 +141,14 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Auth\AuthorizeAD.cs" />
+    <Compile Include="Auth\CMailCreator.cs" />
+    <Compile Include="Auth\LDAPHelper.cs" />
+    <Compile Include="Auth\Transaction.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ClaimsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\IdCardListController.cs" />
     <Compile Include="Controllers\MemberDetailsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="DAL\ConvertToList.cs" />
@@ -163,6 +170,7 @@
     <Compile Include="Models\ClaimDetailModel.cs" />
     <Compile Include="Models\DEDMET_OOPModel.cs" />
     <Compile Include="Models\EmailSendingModel.cs" />
+    <Compile Include="Models\IdCardListModel.cs" />
     <Compile Include="Models\LayoutModel.cs" />
     <Compile Include="Models\MemeberDetailsModel.cs" />
     <Compile Include="Models\UserRegModel.cs" />
@@ -222,6 +230,8 @@
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-ui.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -256,6 +266,8 @@
     <Content Include="Views\Users\UsersList.cshtml" />
     <Content Include="Views\Users\_UsersListPartilaView.cshtml" />
     <Content Include="Views\Users\EditUser.cshtml" />
+    <Content Include="Views\MemberDetails\_Address_Add_Edit_PartialView.cshtml" />
+    <Content Include="Views\IdCardList\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

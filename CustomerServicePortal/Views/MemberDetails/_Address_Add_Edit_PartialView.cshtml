@@ -1,0 +1,61 @@
+﻿@model CustomerServicePortal.Models.EMPdetails
+<div class="row">
+    <div class="col-md-6">
+        <input type="hidden" value="@Model.EMSSN" />
+        @Html.HiddenFor(x => x.EMSSN)
+        @Html.LabelFor(model => model.Addr1, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.TextBoxFor(model => model.Addr1, new { @class = "form-control", @placeholder = "Address1" })
+
+    </div>
+    <div class="col-md-6">
+
+        @Html.LabelFor(model => model.Addr2, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.TextBoxFor(model => model.Addr2, new { @class = "form-control", @placeholder = "Address2" })
+
+    </div>
+
+    <div class="col-md-6">
+
+        @Html.LabelFor(model => model.Addr3, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.TextBoxFor(model => model.Addr3, new { @class = "form-control", @placeholder = "Address3" })
+
+    </div>
+
+    <div class="col-md-6">
+
+        @Html.LabelFor(model => model.Addr4, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.TextBoxFor(model => model.Addr4, new { @class = "form-control", @placeholder = "Address4" })
+
+    </div>
+    <div class="col-md-6">
+
+        @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.TextBoxFor(model => model.City, new { @class = "form-control", @placeholder = "City" })
+
+    </div>
+    <div class="col-md-6">
+
+        @Html.LabelFor(model => model.State, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.TextBoxFor(model => model.State, new { @class = "form-control", @placeholder = "State" })
+
+    </div>
+    <div class="col-md-6">
+
+        @Html.LabelFor(model => model.Zip1, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.TextBoxFor(model => model.Zip1, new { @class = "form-control", @placeholder = "Zip1" })
+
+    </div>
+    <div class="col-md-6">
+
+        @Html.LabelFor(model => model.Zip2, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.TextBoxFor(model => model.Zip2, new { @class = "form-control", @placeholder = "Zip2" })
+
+    </div>
+    <div class="col-md-6">
+
+        @Html.LabelFor(model => model.Zip3, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.TextBoxFor(model => model.Zip3, new { @class = "form-control", @placeholder = "Zip3" })
+
+    </div>
+
+</div>

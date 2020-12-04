@@ -1,7 +1,9 @@
-﻿using CustomerServicePortal.DAL;
+﻿using CustomerServicePortal.Auth;
+using CustomerServicePortal.DAL;
 using CustomerServicePortal.Models;
 using System;
 using System.Web.Mvc;
+using System.Web.UI;
 
 //using IBM.Data.DB2.iSeries;
 
@@ -10,8 +12,7 @@ namespace CustomerServicePortal.Controllers
     [Authorize]
     public class HomeController : Controller
     {
-        [Obsolete]
-        //[OutputCache(Duration = 10, VaryByParam = "none", Location = OutputCacheLocation.Client, NoStore = true)]      
+     
         public ActionResult Index()
         {
             return View();

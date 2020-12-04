@@ -115,7 +115,8 @@ namespace CustomerServicePortal
         public static string GetMemberDetailsWIthSSN(string SSN)
         {
             return "SELECT  EMSSN as EMSSN,EMNAME AS Name,EMMEM# AS Id,EMSEX  AS Gender,EMDOBY AS DOBY,EMDOBM " +
-                   " AS DOBM,EMDOBD AS DOBD FROM EMPYP WHERE EMSSN =" + SSN;
+                   " AS DOBM,EMDOBD AS DOBD,EMADR1 AS Addr1,EMADR2 AS Addr2,EMADR3 AS Addr3,EMADR4 AS  Addr4"+
+                    ",EMCITY AS City,EMST AS State,EMZIP5 AS Zip1,EMZIP4 AS Zip2,EMZIP2 AS Zip3 FROM EMPYP WHERE EMSSN =" + SSN;
         }
 
         public static string GetDEDMET_OOP_Details(int Currentyear, string EMPSSN, int DEPSEQ)

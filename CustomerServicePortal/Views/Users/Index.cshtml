@@ -3,6 +3,7 @@
     ViewBag.Title = "Index";
 }
 <style>
+   
     .eqv-entities-panel-block {
         padding: 15px 0px 0px 20px;
         max-height: 410px;
@@ -239,7 +240,7 @@
 
 
     .form-box {
-        max-width: 400px;
+        max-width: 1024px;
         margin: 5% auto 5% auto;
         background: #ffffff;
         padding: 30px 30px;
@@ -277,7 +278,6 @@
         <div class="row m-0">
             <div class="form-box">
                 <form class="login100-form validate-form p-b-33 p-t-5" action="@Url.Action("AddUser","Users")" method="post">
-                    @*@Html.AntiForgeryToken()*@
                     <div class="form-content text-left">
                         <div class="row">
                             <div class="col-md-6">
@@ -338,17 +338,17 @@
                                     @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group d-none mul">
+                            <div class="col-md-6 d-none mul">
+                                <div class="form-group">
                                     <label>Fund</label>
-                                    @Html.ListBoxFor(m => m.fundMultiple, Model.FundList, new { @class = "form-control multiselect", @style = "padding: 6px;", @multiple = "multiple" })
+                                    @Html.ListBoxFor(m => m.fundMultiple, Model.FundList, new { @class = "form-control multiselect", @style = "padding: 6px; width: 100%;", @multiple = "multiple" })
 
 
                                     @Html.ValidationMessageFor(model => model.fundMultiple, "", new { @class = "text-danger" })
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group d-none sing">
+                            <div class="col-md-6 d-none sing">
+                                <div class="form-group">
                                     <label>Fund</label>
                                     @Html.DropDownListFor(m => m.fundSingle, Model.FundList, new { @class = "form-control single", @style = "padding: 6px;", })
 
@@ -369,7 +369,9 @@
 </div>
 
 <script>
-
+    $(function () {
+        RoleChange();
+    });
     function FillEmail() {
         $('#Email').val($('#UserName').val());
 
@@ -379,7 +381,7 @@
             $('.mul').removeClass('d-none');
             $('.sing').addClass('d-none');
         }
-        else {
+        else if ($('#Roles').val() == "Fund_User") {
             $('.mul').addClass('d-none');
             $('.sing').removeClass('d-none');
         }
