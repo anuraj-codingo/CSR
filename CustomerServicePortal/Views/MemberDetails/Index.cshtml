@@ -261,26 +261,11 @@
 </div>
 <script type=text/javascript>
     $('.datepicker').datepicker({
-        dateFormat: 'dd-mm-yy',
+        dateFormat: 'mm-dd-yy',
         changeMonth: true,
         changeYear: true,
         yearRange: "-100:+100"
     });
-
-    //$('.ui-state-default').live('click', function () {
-    //    debugger;
-    //    alert("1");
-    //});
-    //$(".ui-state-default").click(function () {
-    //    debugger;
-    //    alert("1");
-    //});
-    function OnSuccess(response) {
-        //location.reload();
-    }
-    function OnFailure(response) {
-        //location.reload();
-    }
 
     function EditAddress(SSN) {
         $('.loader-main').show();
@@ -322,21 +307,11 @@
 
                     $('#EditDependent').modal('show');
                     $('.datepicker').datepicker({
-                        dateFormat: 'dd-mm-yy',
+                        dateFormat: 'mm-dd-yy',
                         changeMonth: true,
                         changeYear: true,
                         yearRange: "-100:+100"
-                    });
-                    //$(".datepicker").datepicker({
-                    //    dateFormat: "MM/dd/yy",
-                    //    changeYear: true,
-                    //    shownOn: "button"
-                    //}).css("display", "inline-block")
-                    //    .next("button").button({
-                    //        icons: { primary: "ui-icon-calendar" },
-                    //        label: "Select a Date",
-                    //        text: false
-                    //    });
+                    });                   
                 },
                 failure: function (response) {
                     alert(response.d);
@@ -413,14 +388,11 @@
              dataType: "json",
              data: { SSN: SSN, DEPSEQ: $('#DEPSEQ').val(), claim: $('#claim').val(),Fromdate: Fromdate, Todate: Todate},
         }).done(function (data) {
-
             //get the file name for download
             if (data.fileName != "") {
                 $("#wait").css("display", "none");
-                //use window.location.href for redirect to download action for download the file
-                window.location.href = "@Url.RouteUrl(new { Controller = "MemberDetails", Action = "Download" })/?fileName=" + data.fileName;
-                //window.location.href = "ABC_DynamicQuery/Home/Download?fileName="+data.fileName;
-            }
+                   window.location.href = "@Url.RouteUrl(new { Controller = "MemberDetails", Action = "Download" })/?fileName=" + data.fileName;
+                   }
         });
 
     }
