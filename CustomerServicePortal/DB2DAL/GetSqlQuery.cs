@@ -9,32 +9,30 @@ namespace CustomerServicePortal
         {
             if (SearchMember == "")
             {
-                return "SELECT EMSSN as SSN,EMNAME as Member,EMMEM# as ID,EMCITY as City,EMST as State,EMDOBY as Year,EMDOBM as Month,EMDOBD as Day" +
-                                    " FROM EMPYP where EMDROP<> 'D' " +
-                                   "OFFSET (" + page + " -1) * " + size + " ROWS FETCH NEXT " + size + " ROWS ONLY";
+                return @"SELECT EMSSN as SSN,EMNAME as Member,EMMEM# as ID,EMCITY as City,EMST as State,EMDOBY as Year,EMDOBM as Month,EMDOBD as Day 
+                                     FROM EMPYP where EMDROP<> 'D' 
+                                   OFFSET (" + page + " -1) * " + size + " ROWS FETCH NEXT " + size + " ROWS ONLY";
             }
             else
             {
                 if ((SearchMember).All(char.IsNumber))
                 {
-                    return "SELECT EMSSN as SSN,EMNAME as Member,EMMEM# as ID,EMCITY as City,EMST as State,EMDOBY as Year,EMDOBM as Month,EMDOBD as Day" +
-                " FROM EMPYP where EMDROP<> 'D' and (EMSSN =" + SearchMember + " OR EMMEM# =" + SearchMember + ")" +
-               "OFFSET (" + page + " -1) * " + size + " ROWS FETCH NEXT " + size + " ROWS ONLY";
+                    return @"SELECT EMSSN as SSN,EMNAME as Member,EMMEM# as ID,EMCITY as City,EMST as State,EMDOBY as Year,EMDOBM as Month,EMDOBD as Day
+                 FROM EMPYP where EMDROP<> 'D' and (EMSSN =" + SearchMember + " OR EMMEM# =" + SearchMember + ")  OFFSET (" + page + " -1) * " + size + " ROWS FETCH NEXT " + size + " ROWS ONLY";
                 }
                 else
                 {
-                    return "SELECT EMSSN as SSN,EMNAME as Member,EMMEM# as ID,EMCITY as City,EMST as State,EMDOBY as Year,EMDOBM as Month,EMDOBD as Day" +
-                   " FROM EMPYP where EMDROP<> 'D' and (EMNAME LIKE '%" + SearchMember + "%' or UPPER(EMNAME) LIKE '%" + SearchMember + "%' or LOWER(EMNAME) LIKE '%" + SearchMember + "%')" +
-                   "OFFSET (" + page + " -1) * " + size + " ROWS FETCH NEXT " + size + " ROWS ONLY";
+                    return  @"SELECT EMSSN as SSN,EMNAME as Member,EMMEM# as ID,EMCITY as City,EMST as State,EMDOBY as Year,EMDOBM as Month,EMDOBD as Day
+                    FROM EMPYP where EMDROP<> 'D' and (EMNAME LIKE '%" + SearchMember + "%' or UPPER(EMNAME) LIKE '%" + SearchMember + "%' or LOWER(EMNAME) LIKE '%" + SearchMember + "%')   OFFSET (" + page + " -1) * " + size + " " +"ROWS FETCH NEXT " + size + " ROWS ONLY";
                 }
             }
         }
 
         public static string GetDependentDetails(string SSN)
         {
-            return "SELECT DPSSN AS DPSSN,DPSEQ AS SEQ, DPNAME AS NAME,d.DPRLTN AS RELATION,DPSTAT AS STATUS,DPDOBY AS DOBY,DPDOBM AS DOBM ,DPDOBD AS DOBD," +
-                    "d.DPCLAS CLASS, d.DPPLAN AS  PLAN FROM DEPNP d " +
-                        " WHERE DPSSN = '" + SSN + "'  AND DPDROP<> 'D'";
+            return @"SELECT DPSSN AS DPSSN,DPSEQ AS SEQ, DPNAME AS NAME,d.DPRLTN AS RELATION,DPSTAT AS STATUS,DPDOBY AS DOBY,DPDOBM AS DOBM ,DPDOBD AS DOBD,
+                    d.DPCLAS CLASS, d.DPPLAN AS  PLAN FROM DEPNP d 
+                        WHERE DPSSN = '" + SSN + "'  AND DPDROP<> 'D'";
         }
 
         public static string TotalMemeberCount(string SearchMember)

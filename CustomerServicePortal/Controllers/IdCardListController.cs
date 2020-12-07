@@ -28,7 +28,7 @@ namespace CustomerServicePortal.Controllers
                 {
                     IdCardListModel idCardListModel = new IdCardListModel();
                     idCardListModel.EMSSN = item["EMSSN"].ToString();
-                    idCardListModel.Name = item["Name"].ToString();
+                    idCardListModel.Name = item["Name"].ToString().Replace("*","");
                     idCardListModel.Gender = item["Gender"].ToString();
                     idCardListModels.Add(idCardListModel);
 

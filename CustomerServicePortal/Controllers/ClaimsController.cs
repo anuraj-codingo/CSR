@@ -77,7 +77,7 @@ namespace CustomerServicePortal.Controllers
                 {
                     MemeberDetailsModel memeberDetailsModel = new MemeberDetailsModel();
                     memeberDetailsModel.SSN = item["SSN"].ToString();
-                    memeberDetailsModel.Member = (item["Member"].ToString().Split('*')[1] + "*" + item["Member"].ToString().Split('*')[0]);
+                    memeberDetailsModel.Member = (item["Member"].ToString().Split('*')[1] + "*" + item["Member"].ToString().Split('*')[0]).Replace("*","");
                     memeberDetailsModel.Year = item["Year"].ToString();
                     memeberDetailsModel.Month = item["Month"].ToString();
                     memeberDetailsModel.Day = item["Day"].ToString();

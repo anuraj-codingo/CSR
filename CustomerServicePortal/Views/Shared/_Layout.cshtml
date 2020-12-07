@@ -106,7 +106,7 @@
                             <li><a href="@Url.Action("Index","Home")"><i class="fa fa-home"></i> Home</a></li>
                             @*<li class="disabled"><a href="#">Print</a></li>*@
                             <li><a class="" href="@Url.Action("UsersList","Users")"><i class="fa fa-user"></i> Users</a></li>
-                            <li><a class="" href="@Url.Action("Index","IdCardList")"><i class="fa fa-user"></i> Id Card Request</a></li>
+                            <li><a class="" href="@Url.Action("Index","IdCardList")"><i class="fa fa-user"></i>Id Card Requests</a></li>
                         </ul>
                     </div>
                 </div>
@@ -121,7 +121,7 @@
     <!--/wrapper-->
     @*@Scripts.Render("~/bundles/bootstrap")*@
 
-    @*@RenderSection("scripts", required: false)*@
+    @RenderSection("scripts", required: false)
 
     <script type="text/javascript">
         $(document).ready(function () {

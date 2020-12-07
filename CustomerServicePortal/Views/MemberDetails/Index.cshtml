@@ -18,15 +18,25 @@
         border-top: none !important;
     }
 </style>
+
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
 <div class="user">
     <div class="box info">
         <div class="col-12">
             <div class="detail">
                 <div class="profilePhoto">
                     <div class="photo">
+                        @if (Model.eMPdetails.Gender == "F")
+                        {
+                            <img src="~/Content/img/lisa-dominic.png" alt="" />
+                        }
+                        else
+                        {
+                            <img src="~/Content/img/Men.png" alt="" />
+                        }
 
-                        <img src="~/Content/img/lisa-dominic.png" alt="" />
+
                     </div>
                 </div>
                 <div class="intro">
@@ -36,9 +46,9 @@
                     <strong class="h6">DOB: <span>@Model.eMPdetails.DOBDay/@Model.eMPdetails.DOBMonth/@Model.eMPdetails.DOBYear</span></strong>
                     @if (Model.eMPdetails.ShowRequestId)
                     {
-                        <button type="button" class="btn btn-primary IdCardRequest" onclick="IdCardRequest(@Model.eMPdetails.EMSSN,'@Model.eMPdetails.Name','@Model.eMPdetails.Gender')">Request Id</button>
+                        <button type="button" class="btn btn-primary IdCardRequest" onclick="IdCardRequest(@Model.eMPdetails.EMSSN,'@Model.eMPdetails.Name','@Model.eMPdetails.Gender')">Request Id Card</button>
                     }
-
+                  
                     @*<p>Lorem ipsum dolor sit amet, adipiscing consectetur elit.</p>*@
                 </div>
             </div>
@@ -58,90 +68,91 @@
                 {
                     foreach (var item in Model.dependentDetailModels)
                     {
-            <tr onclick="GetSpouseCliamDetailTable(@item.SSN,@item.DependentSeq)">
-                <td>@item.Relation</td>
-                <td>@item.DependenetName</td>
-                <td>@item.Status</td>
-                <td>@item.Plan</td>
-                <td>@item.Class</td>
-                <td>@item.Month-@item.Day-@item.Year</td>
-                <td><i class="fa fa-pencil"></i></td>
-            </tr>
+                        <tr>
+                            <td>@item.Relation</td>
+                            <td><a onclick="GetSpouseCliamDetailTable(@item.SSN,@item.DependentSeq)" href="#"> @item.DependenetName</a> </td>
+                            <td>@item.Status</td>
+                            <td>@item.Plan</td>
+                            <td>@item.Class</td>
+                            <td>@item.Month-@item.Day-@item.Year</td>                         
+                            <td><i class="fa fa-pencil" onclick="EditDependent(@Model.eMPdetails.EMSSN,@item.DependentSeq)"></i></td>
+                        </tr>
                     }
 
                 }
                 else
                 {
-                    <tr><td colspan="6" class="no-depend">No Dependant</td></tr>
+                    <tr><td colspan="7" class="no-depend">No Dependant</td></tr>
                 }
             </table>
-            <button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Add Dependent</button>
+              <button type="button" class="btn btn-primary" onclick="EditDependent(@Model.eMPdetails.EMSSN,0)"><i class="fa fa-plus"></i> Add Dependent</button>
+   
         </div>
     </div>
-        <div class="box archive">
-            <div class="byYear">
+    <div class="box archive">
+        <div class="byYear">
 
-                @Html.Partial("_DEDMET_OOP_PartialView", Model.dEDMETModelCurentYear)
-                @Html.Partial("_DEDMET_OOP_PartialView", Model.dEDMETModelPreviousYear)
+            @Html.Partial("_DEDMET_OOP_PartialView", Model.dEDMETModelCurentYear)
+            @Html.Partial("_DEDMET_OOP_PartialView", Model.dEDMETModelPreviousYear)
 
 
 
-            </div>
         </div>
-        <div class="box">
-            <h4>Address</h4>
-            <p>
-                @{
-                    var x = "";
-                }
+    </div>
+    <div class="box">
+        <h4>Address</h4>
+        <p>
+            @{
+                var x = "";
+            }
 
-                @if (Model.eMPdetails.Addr1.Trim() != "")
-                {
-                    x += Model.eMPdetails.Addr1;
-                }
-                @if (Model.eMPdetails.Addr2.Trim() != "")
-                {
-                    x += "," + Model.eMPdetails.Addr2;
-                }
-                @if (Model.eMPdetails.Addr3.Trim() != "")
-                {
-                    x += "," + Model.eMPdetails.Addr3;
-                }
-                @if (Model.eMPdetails.Addr4.Trim() != "")
-                {
-                    x += "," + Model.eMPdetails.Addr4;
-                }
-                @if (Model.eMPdetails.City.Trim() != "")
-                {
-                    x += "," + Model.eMPdetails.City;
-                }
-                @if (Model.eMPdetails.State.Trim() != "")
-                {
-                    x += "," + Model.eMPdetails.State;
-                }
-                @if (Model.eMPdetails.Zip1.Trim() != "")
-                {
-                    x += "," + Model.eMPdetails.Zip1;
-                }
-                @if (Model.eMPdetails.Zip2.Trim() != "")
-                {
-                    x += "," + Model.eMPdetails.Zip2;
-                }
-                @if (Model.eMPdetails.Zip3.Trim() != "")
-                {
-                    x += "," + Model.eMPdetails.Zip3;
-                }
+            @if (Model.eMPdetails.Addr1.Trim() != "")
+            {
+                x += Model.eMPdetails.Addr1;
+            }
+            @if (Model.eMPdetails.Addr2.Trim() != "")
+            {
+                x += "," + Model.eMPdetails.Addr2;
+            }
+            @if (Model.eMPdetails.Addr3.Trim() != "")
+            {
+                x += "," + Model.eMPdetails.Addr3;
+            }
+            @if (Model.eMPdetails.Addr4.Trim() != "")
+            {
+                x += "," + Model.eMPdetails.Addr4;
+            }
+            @if (Model.eMPdetails.City.Trim() != "")
+            {
+                x += "," + Model.eMPdetails.City;
+            }
+            @if (Model.eMPdetails.State.Trim() != "")
+            {
+                x += "," + Model.eMPdetails.State;
+            }
+            @if (Model.eMPdetails.Zip1.Trim() != "")
+            {
+                x += "," + Model.eMPdetails.Zip1;
+            }
+            @if (Model.eMPdetails.Zip2.Trim() != "")
+            {
+                x += "," + Model.eMPdetails.Zip2;
+            }
+            @if (Model.eMPdetails.Zip3.Trim() != "")
+            {
+                x += "," + Model.eMPdetails.Zip3;
+            }
 
 
-                @x <button class="editBtn-block" href="" onclick="EditAddress(@Model.eMPdetails.EMSSN)"><i class="fa fa-pencil"></i></button>
-            </p>
-        </div>
-        <div class="box">
+            @x <button class="editBtn-block" href="" onclick="EditAddress(@Model.eMPdetails.EMSSN)"><i class="fa fa-pencil"></i></button>
+        </p>
+    </div>
+    @*<div class="box">
             <h4>Lorem ipsum</h4>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in leo velit.</p>
-        </div>
+        </div>*@
 
-    </div>
+</div>
 
 <div class="searchFilter">
     <div class="download" onclick="ExportTable(@Model.eMPdetails.EMSSN)">
@@ -207,7 +218,39 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary" onclick="AddressUpdateSubmit()">Save changes</button>
                 </div>
-                @*</form>*@
+
+            }
+        </div>
+    </div>
+</div>
+<div id="EditDependent" class="modal fade modalDependent" role="dialog">
+    <div class="modal-dialog  modal-lg" role="document" style="margin-top: 144px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Dependent</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @*<form id="AddressUpdateSubmit">*@
+            @using (Ajax.BeginForm("EditDependent", "MemberDetails",
+                 new AjaxOptions
+                 {
+                     OnSuccess = "OnSuccess",
+                     OnFailure = "OnFailure",
+                     LoadingElementId = "progress"
+                 }))
+            {
+                <div class="modal-body">
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+
             }
         </div>
     </div>
@@ -224,13 +267,21 @@
         yearRange: "-100:+100"
     });
 
+    //$('.ui-state-default').live('click', function () {
+    //    debugger;
+    //    alert("1");
+    //});
+    //$(".ui-state-default").click(function () {
+    //    debugger;
+    //    alert("1");
+    //});
     function OnSuccess(response) {
-        //location.reload();  
+        //location.reload();
     }
     function OnFailure(response) {
-        //location.reload();  
+        //location.reload();
     }
- 
+
     function EditAddress(SSN) {
         $('.loader-main').show();
                   $.ajax({
@@ -255,6 +306,45 @@
                 }
             });
 
+    }
+    function EditDependent(SSN, DependentSeq) {
+        $('.loader-main').show();
+                  $.ajax({
+                type: "GET",
+                url:'@Url.Action("EditDependentHtml", "MemberDetails")',
+                      data: { SSN: SSN, DependentSeq: DependentSeq},
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+
+                    $('.loader-main').hide();
+                    $('.modal-body').html(response.viewContent);
+
+                    $('#EditDependent').modal('show');
+                    $('.datepicker').datepicker({
+                        dateFormat: 'dd-mm-yy',
+                        changeMonth: true,
+                        changeYear: true,
+                        yearRange: "-100:+100"
+                    });
+                    //$(".datepicker").datepicker({
+                    //    dateFormat: "MM/dd/yy",
+                    //    changeYear: true,
+                    //    shownOn: "button"
+                    //}).css("display", "inline-block")
+                    //    .next("button").button({
+                    //        icons: { primary: "ui-icon-calendar" },
+                    //        label: "Select a Date",
+                    //        text: false
+                    //    });
+                },
+                failure: function (response) {
+                    alert(response.d);
+                },
+                error: function (response) {
+                    alert(response.d);
+                }
+            });
     }
 
     function GetSpouseCliamDetailTable(ssn, DependentSeq) {
@@ -336,10 +426,9 @@
     }
 
     async function IdCardRequest(SSN, Name, Gender) {
-        debugger;
         const { value: text } =await Swal.fire({
             input: 'textarea',
-            inputLabel: 'Message',
+            inputLabel: 'Notes',
             inputPlaceholder: 'Type your message here...',
             inputAttributes: {
                 'aria-label': 'Type your message here'

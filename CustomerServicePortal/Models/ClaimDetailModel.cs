@@ -25,6 +25,8 @@ namespace CustomerServicePortal.Models
         public string Day { get; set; }
         public string SSN { get; set; }
         public string DependentSeq { get; set; }
+        public bool BoolStatus { get; set; }
+        public DateTime? TerminationDate { get; set; }
     }
 
     public class EMPdetails

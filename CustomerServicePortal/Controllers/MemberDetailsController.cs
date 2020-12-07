@@ -52,8 +52,24 @@ namespace CustomerServicePortal.Controllers
         {
             return Json(new { viewContent = "" }, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult EditDependentHtml(string SSN,int DependentSeq)
+        {
+            DependentDetailModel dependentDetailModel = new DependentDetailModel();
+            string viewContent = "";
+            try
+            {
+                //eMPdetails = GetEMployDetailsModelWIthSSN(SSN);
+                viewContent = ConvertViewToString("_Dependent_Add_Edit_PartialView", dependentDetailModel);
+            }
+            catch (Exception ex)
+            {
 
+                throw;
+            }
 
+            return Json(new { viewContent = viewContent }, JsonRequestBehavior.AllowGet);
+        }
+        
         public  JsonResult GetAddreessParialViewHtml(string SSN)
         {
             EMPdetails eMPdetails = new EMPdetails();
@@ -222,7 +238,7 @@ namespace CustomerServicePortal.Controllers
                 DependentDetailModel dependentDetailModel = new DependentDetailModel();
                 dependentDetailModel.SSN = item["DPSSN"].ToString();
                 dependentDetailModel.DependentSeq = item["SEQ"].ToString();
-                dependentDetailModel.DependenetName = (item["NAME"].ToString().Split('*')[1] + "*" + item["NAME"].ToString().Split('*')[0]);
+                dependentDetailModel.DependenetName = (item["NAME"].ToString().Split('*')[1] + "*" + item["NAME"].ToString().Split('*')[0]).Replace("*", "");
                 dependentDetailModel.Relation = item["RELATION"].ToString();
                 dependentDetailModel.Status = item["STATUS"].ToString();
                 dependentDetailModel.Year = item["DOBY"].ToString();
@@ -245,21 +261,21 @@ namespace CustomerServicePortal.Controllers
             foreach (DataRow item in Employdetails.Rows)
             {
                 eMPdetails.Id = item["Id"].ToString();
-                eMPdetails.Name = (item["Name"].ToString().Split('*')[1] + "*" + item["Name"].ToString().Split('*')[0]);
+                eMPdetails.Name = (item["Name"].ToString().Split('*')[1] + "*" + item["Name"].ToString().Split('*')[0]).Replace("*", "");
                 eMPdetails.Gender = item["Gender"].ToString();
                 eMPdetails.DOBDay = item["DOBD"].ToString();
                 eMPdetails.DOBMonth = item["DOBM"].ToString();
                 eMPdetails.DOBYear = item["DOBY"].ToString();
                 eMPdetails.EMSSN = (decimal)item["EMSSN"];
-                eMPdetails.Addr1= item["Addr1"].ToString();
-                eMPdetails.Addr2 = item["Addr2"].ToString();
-                eMPdetails.Addr3 = item["Addr3"].ToString();
-                eMPdetails.Addr4 = item["Addr4"].ToString();
-                eMPdetails.City = item["City"].ToString();
-                eMPdetails.State = item["State"].ToString();
-                eMPdetails.Zip1 = item["Zip1"].ToString();
-                eMPdetails.Zip2 = item["Zip2"].ToString();
-                eMPdetails.Zip3 = item["Zip3"].ToString();
+                eMPdetails.Addr1= item["Addr1"].ToString().TrimEnd().TrimStart();
+                eMPdetails.Addr2 = item["Addr2"].ToString().TrimEnd().TrimStart();
+                eMPdetails.Addr3 = item["Addr3"].ToString().TrimEnd().TrimStart();
+                eMPdetails.Addr4 = item["Addr4"].ToString().TrimEnd().TrimStart();
+                eMPdetails.City = item["City"].ToString().TrimEnd().TrimStart();
+                eMPdetails.State = item["State"].ToString().TrimEnd().TrimStart();
+                eMPdetails.Zip1 = item["Zip1"].ToString().TrimEnd().TrimStart();
+                eMPdetails.Zip2 = item["Zip2"].ToString().TrimEnd().TrimStart();
+                eMPdetails.Zip3 = item["Zip3"].ToString().TrimEnd().TrimStart();
 
             }
             DBManager db = new DBManager("CustomerServicePortal");
@@ -287,7 +303,7 @@ namespace CustomerServicePortal.Controllers
                 ClaimDetailModel claimDetailModel = new ClaimDetailModel();
                 claimDetailModel.EOBNO = item["EOBNo"].ToString();
                 claimDetailModel.ClaimNo = item["ClaimNumber"].ToString();
-                claimDetailModel.For = (item["ForPerson"].ToString().Split('*')[1] + "*" + item["ForPerson"].ToString().Split('*')[0]);
+                claimDetailModel.For = (item["ForPerson"].ToString().Split('*')[1] + "*" + item["ForPerson"].ToString().Split('*')[0]).Replace("*", "");
                 claimDetailModel.Type = item["ClaimType"].ToString();
                 claimDetailModel.Total = ((decimal)item["ClaimAmount"]).ToString("C", CultureInfo.CurrentCulture);
                 claimDetailModel.PlanPaid = ((decimal)item["Paid"]).ToString("C", CultureInfo.CurrentCulture);

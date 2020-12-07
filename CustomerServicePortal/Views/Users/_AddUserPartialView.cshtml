@@ -312,10 +312,10 @@
                             <label>Authentication Type</label>
                             @Html.DropDownListFor(model => model.AuthenticationType,
              new List<SelectListItem> {
-                  new SelectListItem { Value = "Active_Directory " , Text = "Active Directory " },
+                  new SelectListItem { Value = "Active_Directory" , Text = "Active Directory " },
                   new SelectListItem { Value = "Username_and_Password" , Text = "Username and Password" }
                }, "Select Authentication",
-             new { @class = "form-control" })
+             new { @class = "form-control", @onchange = "AuthenticationTypes()" })
                             @Html.ValidationMessageFor(model => model.AuthenticationType, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -340,7 +340,7 @@
                             @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 d-none EmailShowHide">
                         <div class="form-group">
                             <label>Email</label>
                             @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @placeholder = "Email" })
@@ -380,14 +380,28 @@
 
 
 <script>
-    $(function () {
-        RoleChange();
+       $(function () {
+        AuthenticationTypes();
+           RoleChange();
+           if (@Model.ID> 0) {
+               document.getElementById("UserName").readOnly = true;
+           }
     });
     function FillEmail() {
         $('#Email').val($('#UserName').val());
 
     }
-
+        function AuthenticationTypes() {
+            if ($('#AuthenticationType').val() == "Active_Directory") {
+                $('.EmailShowHide').addClass('d-none');
+            }
+            else if ($('#AuthenticationType').val() == "Username_and_Password") {
+                $('.EmailShowHide').removeClass('d-none');
+            }
+            else {
+                $('.EmailShowHide').addClass('d-none');
+            }
+    }
     function RoleChange() {
         if ($('#Roles').val() == "ABC_User") {
             $('.mul').removeClass('d-none');
@@ -397,8 +411,13 @@
             $('.mul').addClass('d-none');
             $('.sing').removeClass('d-none');
         }
+        else {
+            $('.mul').addClass('d-none');
+            $('.sing').addClass('d-none');
+        }
 
     }
+  
     $(document).ready(function () {
         $(".multiselect").SumoSelect({ placeholder: 'Select From Multiple Choice', csvDispCount: 5, floatWidth: 3 });
 
