@@ -1093,4 +1093,33 @@ body {
 .modalAddress .form-control {
     font-size: 12px;
 }
+.SumoSelect > .CaptionCont {
+    max-width: 370px;
+}
+.modal-content label {
+    font-size: 11px;
+    color: #616161;
+    display: block;
+    text-align: left;
+}
+.modal-content .form-control,
+.modal-content select {
+    font-size: 12px;
+    color: #424242;
+    outline: none !important;
+    box-shadow: none !important;
+    height: 35px !important;
+}
+.SumoSelect > .CaptionCont > span {
+    font-size: 12px;
+    color: #424242;
+    outline: none !important;
+    box-shadow: none !important;
+    height: 35px !important;
+}
+.checkBox-input input.form-control {
+    height: 18px !important;
+    width: 18px;
+    margin: 15px 0px 0px 0px;
+}
     /*# sourceMappingURL=style.css.map */

@@ -6,14 +6,14 @@
         <div class="form-group">
             @*<input type="hidden" value="@Model.SSN" />*@
             @Html.HiddenFor(x => x.SSN)
-            <label class="control-label col-md-2">DependenetName</label>
+            <label class="control-label">DependenetName</label>
             @*    @Html.LabelFor(model => model.Addr1, htmlAttributes: new { @class = "control-label col-md-2" })*@
             @Html.TextBoxFor(model => model.DependenetName, new { @class = "form-control", @placeholder = "DependenetName" })
         </div>
     </div>
     <div class="col-md-6">
         <div class="form-group">
-            <label class="control-label col-md-2">Class</label>
+            <label class="control-label">Class</label>
             @*   @Html.LabelFor(model => model.Addr2, htmlAttributes: new { @class = "control-label col-md-2" })*@
             @Html.TextBoxFor(model => model.Class, new { @class = "form-control", @placeholder = "Class" })
         </div>
@@ -21,13 +21,13 @@
   
     <div class="col-md-6">
         <div class="form-group">
-            <label class="control-label col-md-2">TerminationDate</label>
+            <label class="control-label">TerminationDate</label>
               <input type="text" name="TerminationDate" class="datepicker form-control" value="@Model.TerminationDate"/>
            </div>
     </div>
     <div class="col-md-6">
-        <div class="form-group">
-            <label class="control-label col-md-2">Status</label>
+        <div class="form-group checkBox-input">
+            <label class="control-label">Status</label>
                 @Html.CheckBoxFor(model => model.BoolStatus, new { @class = "form-control", @placeholder = "Status" })
         </div>
     </div>
