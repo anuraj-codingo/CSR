@@ -32,7 +32,15 @@ namespace CustomerServicePortal
         {
             return @"SELECT DPSSN AS DPSSN,DPSEQ AS SEQ, DPNAME AS NAME,d.DPRLTN AS RELATION,DPSTAT AS STATUS,DPDOBY AS DOBY,DPDOBM AS DOBM ,DPDOBD AS DOBD,
                     d.DPCLAS CLASS, d.DPPLAN AS  PLAN FROM DEPNP d 
-                        WHERE DPSSN = '" + SSN + "'  AND DPDROP<> 'D'";
+                        WHERE DPSSN = '" + SSN + "'   AND DPDROP<> 'D'";
+        }
+
+        public  static string GetDependentDetailsWithSeq(string SSN,int DPSEQ)
+        {
+            return @"SELECT DPSSN AS DPSSN,DPSEQ AS SEQ, DPNAME AS NAME,d.DPRLTN AS RELATION,DPSTAT AS STATUS,DPDOBY AS DOBY,DPDOBM AS DOBM ,DPDOBD AS DOBD,
+                    d.DPCLAS CLASS, d.DPPLAN AS  PLAN FROM DEPNP d 
+                        WHERE DPSSN = '" + SSN + "' AND DPSEQ =" + DPSEQ + "  AND DPDROP<> 'D'";
+
         }
 
         public static string TotalMemeberCount(string SearchMember)

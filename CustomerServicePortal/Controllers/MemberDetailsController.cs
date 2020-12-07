@@ -58,7 +58,12 @@ namespace CustomerServicePortal.Controllers
             string viewContent = "";
             try
             {
-                //eMPdetails = GetEMployDetailsModelWIthSSN(SSN);
+                if (DependentSeq !=0)
+                {
+                    dependentDetailModel = GetDependentWithSEQtModel(SSN,DependentSeq);
+                }
+
+
                 viewContent = ConvertViewToString("_Dependent_Add_Edit_PartialView", dependentDetailModel);
             }
             catch (Exception ex)
@@ -228,6 +233,32 @@ namespace CustomerServicePortal.Controllers
             return dEDMET_OOP_Models;
         }
 
+        private static DependentDetailModel GetDependentWithSEQtModel(string SSN,int DEPSEQ)
+        {
+            DataTable dependenttable = new DataTable();
+            dependenttable = Db2Connnect.GetDataTable(GetSqlQuery.GetDependentDetailsWithSeq(SSN,DEPSEQ), CommandType.Text);
+            DependentDetailModel dependentDetailModel = new DependentDetailModel();
+            foreach (DataRow item in dependenttable.Rows)
+            {
+               
+                dependentDetailModel.SSN = item["DPSSN"].ToString();
+                dependentDetailModel.DependentSeq = item["SEQ"].ToString();
+                dependentDetailModel.DependenetName = (item["NAME"].ToString().Split('*')[1] + "*" + item["NAME"].ToString().Split('*')[0]).Replace("*", "");
+                dependentDetailModel.Relation = item["RELATION"].ToString();
+                dependentDetailModel.Status = item["STATUS"].ToString();
+                dependentDetailModel.Year = item["DOBY"].ToString();
+                dependentDetailModel.Month = item["DOBM"].ToString();
+                dependentDetailModel.Day = item["DOBD"].ToString();
+                dependentDetailModel.Class = item["CLASS"].ToString();
+                dependentDetailModel.Plan = item["PLAN"].ToString();
+                dependentDetailModel.BoolStatus = item["STATUS"].ToString() == "A" ? true : false;
+
+
+
+            }
+
+            return dependentDetailModel;
+        }
         private static List<DependentDetailModel> GetDependentListModel(string SSN)
         {
             DataTable dependenttable = new DataTable();
