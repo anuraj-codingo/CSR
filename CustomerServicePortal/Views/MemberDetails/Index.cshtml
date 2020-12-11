@@ -43,7 +43,7 @@
                     <a onclick="Reset(@Model.eMPdetails.EMSSN)" href="#"><h4>@Model.eMPdetails.Name</h4></a>
                     <strong class="h6">ID: <span>@Model.eMPdetails.Id</span></strong>
                     <strong class="h6">Gender: <span>@Model.eMPdetails.Gender</span></strong>
-                    <strong class="h6">DOB: <span>@Model.eMPdetails.DOBDay/@Model.eMPdetails.DOBMonth/@Model.eMPdetails.DOBYear</span></strong>
+                    <strong class="h6">DOB: <span>@Model.eMPdetails.DOBMonth/@Model.eMPdetails.DOBDay/@Model.eMPdetails.DOBYear</span></strong>
                     @if (Model.eMPdetails.ShowRequestId)
                     {
                         <button type="button" class="btn btn-primary IdCardRequest" onclick="IdCardRequest(@Model.eMPdetails.EMSSN,'@Model.eMPdetails.Name','@Model.eMPdetails.Gender')">Request Id Card</button>
@@ -74,7 +74,7 @@
                             <td>@item.Status</td>
                             <td>@item.Plan</td>
                             <td>@item.Class</td>
-                            <td>@item.Month-@item.Day-@item.Year</td>                         
+                            <td>@item.BirthMonth-@item.BirthDay-@item.BirthYear</td>                         
                             <td><i class="fa fa-pencil" onclick="EditDependent(@Model.eMPdetails.EMSSN,@item.DependentSeq)"></i></td>
                         </tr>
                     }
@@ -331,9 +331,10 @@
         GetCliamDetailTable(ssn);
     }
     function Reset(SSN) {
+        debugger;
         $('#claim').val("");
-        $('#servicedate').val("");
-        $('#to').val("");
+        $('#Fromservicedate').val("");
+        $('#Toservicedate').val("");
         $('#dep').val("");
         $('#DEPSEQ').val(0);
         GetCliamDetailTable(SSN);

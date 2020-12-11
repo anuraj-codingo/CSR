@@ -246,12 +246,25 @@ namespace CustomerServicePortal.Controllers
                 dependentDetailModel.DependenetName = (item["NAME"].ToString().Split('*')[1] + "*" + item["NAME"].ToString().Split('*')[0]).Replace("*", "");
                 dependentDetailModel.Relation = item["RELATION"].ToString();
                 dependentDetailModel.Status = item["STATUS"].ToString();
-                dependentDetailModel.Year = item["DOBY"].ToString();
-                dependentDetailModel.Month = item["DOBM"].ToString();
-                dependentDetailModel.Day = item["DOBD"].ToString();
+                dependentDetailModel.BirthYear = item["DOBY"].ToString();
+                dependentDetailModel.BirthMonth = item["DOBM"].ToString();
+                dependentDetailModel.BirthDay = item["DOBD"].ToString();
                 dependentDetailModel.Class = item["CLASS"].ToString();
                 dependentDetailModel.Plan = item["PLAN"].ToString();
                 dependentDetailModel.BoolStatus = item["STATUS"].ToString() == "A" ? true : false;
+
+                dependentDetailModel.EffectiveYear = item["EFDY"].ToString();
+                dependentDetailModel.EffectiveMonth = item["EFDM"].ToString();
+                dependentDetailModel.EffectiveDay = item["EFDD"].ToString();
+
+                if (item["TDTY"].ToString()!="0" && item["TDTM"].ToString() != "0" && item["TDTD"].ToString() != "0")
+                {
+                    dependentDetailModel.TerminationDate = new DateTime(Convert.ToInt32(item["TDTY"].ToString()), Convert.ToInt32(item["TDTM"].ToString()), Convert.ToInt32(item["TDTD"].ToString()));
+                }
+                if (item["EFDY"].ToString() != "0" && item["EFDM"].ToString() != "0" && item["EFDD"].ToString() != "0")
+                {
+                    dependentDetailModel.EffectiveDate = new DateTime(Convert.ToInt32(item["EFDY"].ToString()), Convert.ToInt32(item["EFDM"].ToString()), Convert.ToInt32(item["EFDD"].ToString()));
+                }
 
 
 
@@ -272,9 +285,9 @@ namespace CustomerServicePortal.Controllers
                 dependentDetailModel.DependenetName = (item["NAME"].ToString().Split('*')[1] + "*" + item["NAME"].ToString().Split('*')[0]).Replace("*", "");
                 dependentDetailModel.Relation = item["RELATION"].ToString();
                 dependentDetailModel.Status = item["STATUS"].ToString();
-                dependentDetailModel.Year = item["DOBY"].ToString();
-                dependentDetailModel.Month = item["DOBM"].ToString();
-                dependentDetailModel.Day = item["DOBD"].ToString();
+                dependentDetailModel.BirthYear = item["DOBY"].ToString();
+                dependentDetailModel.BirthMonth = item["DOBM"].ToString();
+                dependentDetailModel.BirthDay = item["DOBD"].ToString();
                 dependentDetailModel.Class = item["CLASS"].ToString();
                 dependentDetailModel.Plan = item["PLAN"].ToString();
 

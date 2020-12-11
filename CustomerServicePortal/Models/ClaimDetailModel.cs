@@ -20,13 +20,23 @@ namespace CustomerServicePortal.Models
         public string Status { get; set; }
         public string Plan { get; set; }
         public string Class { get; set; }
-        public string Year { get; set; }
-        public string Month { get; set; }
-        public string Day { get; set; }
+        public string BirthYear { get; set; }
+        public string BirthMonth { get; set; }
+        public string BirthDay { get; set; }
         public string SSN { get; set; }
         public string DependentSeq { get; set; }
         public bool BoolStatus { get; set; }
         public DateTime? TerminationDate { get; set; }
+        public DateTime? EffectiveDate { get; set; }
+
+
+        public string EffectiveYear { get; set; }
+        public string EffectiveMonth { get; set; }
+        public string EffectiveDay { get; set; }
+
+        public string TerminationYear { get; set; }
+        public string TerminationMonth { get; set; }
+        public string TerminationDay { get; set; }
     }
 
     public class EMPdetails

@@ -145,6 +145,7 @@
     <Compile Include="Auth\CMailCreator.cs" />
     <Compile Include="Auth\LDAPHelper.cs" />
     <Compile Include="Auth\Transaction.cs" />
+    <Compile Include="Controllers\ABCDashBoardController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ClaimsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -271,6 +272,7 @@
     <Content Include="Views\IdCardList\Index.cshtml" />
     <Content Include="Views\Users\_AddUserPartialView.cshtml" />
     <Content Include="Views\MemberDetails\_Dependent_Add_Edit_PartialView.cshtml" />
+    <Content Include="Views\ABCDashBoard\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace CustomerServicePortal.Controllers
 {
+    [Authorize]
     public class IdCardListController : Controller
     {
         private DBManager db = new DBManager("CustomerServicePortal");

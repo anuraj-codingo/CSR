@@ -30,7 +30,11 @@ namespace CustomerServicePortal
 
         public static string GetDependentDetails(string SSN)
         {
-            return @"SELECT DPSSN AS DPSSN,DPSEQ AS SEQ, DPNAME AS NAME,d.DPRLTN AS RELATION,DPSTAT AS STATUS,DPDOBY AS DOBY,DPDOBM AS DOBM ,DPDOBD AS DOBD,
+            return @"SELECT DPSSN AS DPSSN,DPSEQ AS SEQ, DPNAME AS NAME,CASE  WHEN DPRLTN = 1 THEN 'SPOUSE'
+ WHEN DPRLTN = 2 THEN 'SON'
+ WHEN DPRLTN = 3 THEN 'DAUGHTER'
+ WHEN DPRLTN = 4 THEN 'STEPCHILD'
+ WHEN DPRLTN = 9 THEN 'OTHER' END AS Relation,DPSTAT AS STATUS,DPDOBY AS DOBY,DPDOBM AS DOBM ,DPDOBD AS DOBD,
                     d.DPCLAS CLASS, d.DPPLAN AS  PLAN FROM DEPNP d 
                         WHERE DPSSN = '" + SSN + "'   AND DPDROP<> 'D'";
         }
@@ -38,8 +42,10 @@ namespace CustomerServicePortal
         public  static string GetDependentDetailsWithSeq(string SSN,int DPSEQ)
         {
             return @"SELECT DPSSN AS DPSSN,DPSEQ AS SEQ, DPNAME AS NAME,d.DPRLTN AS RELATION,DPSTAT AS STATUS,DPDOBY AS DOBY,DPDOBM AS DOBM ,DPDOBD AS DOBD,
-                    d.DPCLAS CLASS, d.DPPLAN AS  PLAN FROM DEPNP d 
-                        WHERE DPSSN = '" + SSN + "' AND DPSEQ =" + DPSEQ + "  AND DPDROP<> 'D'";
+                            DPEFDY AS EFDY,DPEFDM AS EFDM ,DPEFDD AS EFDD, 
+                            DPTDTY AS TDTY,DPTDTM AS TDTM ,DPTDTD AS TDTD, 
+                            d.DPCLAS CLASS, d.DPPLAN AS  PLAN FROM DEPNP d  
+                            WHERE DPSSN = '" + SSN + "' AND DPSEQ =" + DPSEQ + "  AND DPDROP<> 'D'";
 
         }
 
@@ -67,18 +73,20 @@ namespace CustomerServicePortal
             var FromDateQuery = "";
             if (Fromdate != null)
             {
-                FromDateQuery = " And CHFRDY>=" + Fromdate.Value.Year + " AND  CHFRDM>=" + Fromdate.Value.Month + " AND CHFRDD>=" + Fromdate.Value.Day;
-            }
+                FromDateQuery = @" And (CHFRDY>" + Fromdate.Value.Year + " or  (CHFRDY>=" + Fromdate.Value.Year + " AND CHFRDM>" + Fromdate.Value.Month + ") or (CHFRDY>=" + Fromdate.Value.Year + " AND CHFRDM>=" + Fromdate.Value.Month + " AND CHFRDD>=" + Fromdate.Value.Day + "))";
+               }
             var ToDateQuery = "";
             if (Todate != null)
             {
-                ToDateQuery = " And CHFRDY<=" + Todate.Value.Year + " AND  CHFRDM<=" + Todate.Value.Year + " AND CHFRDD<=" + Todate.Value.Year;
+                ToDateQuery = @"  And (CHFRDY<" + Todate.Value.Year + " OR  (CHFRDY<=" + Todate.Value.Year + " AND CHFRDM<" + Todate.Value.Month + ") OR (CHFRDY<=" + Todate.Value.Year + " AND CHFRDM<=" + Todate.Value.Month + " AND CHFRDD<=" + Todate.Value.Day + ")) ";
+            
             }
-            var SqlQUery = "SELECT C.CHEOB# AS EOBNo,CHCLM# as ClaimNumber,P.PRPNAM AS PROVIDER, C.CHSEQ#,	CASE WHEN C.CHDEP# = 0 THEN E.EMNAME ELSE d.DPNAME END AS ForPerson," +
-                     " C.CHCLTP AS ClaimType,C.CHCLM$ AS ClaimAmount,C.CHPAY$  AS Paid,CHCOPA + CHDED$ + CHCO$  MemberPaid,CHPRDY as ClaimYear,CHPRDM ClaimMonth, CHPRDD ClaimDate" +
-                       " FROM CLMHP C INNER JOIN EMPYP e ON e.EMSSN = C.CHSSN LEFT JOIN DEPNP d  ON d.DPSSN = C.CHSSN  AND C.CHSEQ# = d.DPSEQ" +
-                        " INNER JOIN AMBENDF.PROVP P ON P.PRNUM = C.CHPROV  AND P.PRSEQ# = C.CHSEQ#" +
-                          " WHERE CHSSN = '" + SSN + "'  AND C.CHDEP# =" + 0 + " AND CHCLM# like '%" + ClaimNumber + "%'  ORDER BY CHPRDY DESC ,CHPRDM DESC,CHPRDD DESC  ";
+            var OrderBY = @" ORDER BY CHPRDY DESC ,CHPRDM DESC,CHPRDD DESC  ";
+            var SqlQUery = @"SELECT C.CHEOB# AS EOBNo,CHCLM# as ClaimNumber,P.PRPNAM AS PROVIDER, C.CHSEQ#,	CASE WHEN C.CHDEP# = 0 THEN E.EMNAME ELSE d.DPNAME END AS ForPerson,
+                      C.CHCLTP AS ClaimType,C.CHCLM$ AS ClaimAmount,C.CHPAY$  AS Paid,CHCOPA + CHDED$ + CHCO$  MemberPaid,CHPRDY as ClaimYear,CHPRDM ClaimMonth, CHPRDD ClaimDate
+                        FROM CLMHP C INNER JOIN EMPYP e ON e.EMSSN = C.CHSSN LEFT JOIN DEPNP d  ON d.DPSSN = C.CHSSN  AND C.CHSEQ# = d.DPSEQ
+                         INNER JOIN AMBENDF.PROVP P ON P.PRNUM = C.CHPROV  AND P.PRSEQ# = C.CHSEQ#
+                           WHERE CHSSN = '" + SSN + "'  AND C.CHDEP# =" + 0 + " AND CHCLM# like '%" + ClaimNumber + "%' ";
             if (FromDateQuery != "")
             {
                 SqlQUery += FromDateQuery;
@@ -87,6 +95,7 @@ namespace CustomerServicePortal
             {
                 SqlQUery += ToDateQuery;
             }
+            SqlQUery += OrderBY;
             return SqlQUery;
         }
 

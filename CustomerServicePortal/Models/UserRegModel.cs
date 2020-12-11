@@ -20,7 +20,6 @@ namespace CustomerServicePortal.Models
         public string LastName { get; set; }
 
         [Required]
-       [EmailAddress]
         [System.Web.Mvc.Remote("UsernameExists", "Users", AdditionalFields = "ID", HttpMethod = "POST", ErrorMessage = "User name already registered.")]
         public string UserName { get; set; }
 

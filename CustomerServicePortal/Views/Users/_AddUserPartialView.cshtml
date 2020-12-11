@@ -335,7 +335,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>User name</label>
-                            @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", @placeholder = "User Name", @onkeyup = "FillEmail()" })
+                            @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", @placeholder = "User Name" })
 
                             @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
                         </div>
