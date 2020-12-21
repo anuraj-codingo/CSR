@@ -1,4 +1,5 @@
-﻿using CustomerServicePortal.Models;
+﻿using CustomerServicePortal.Common;
+using CustomerServicePortal.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -76,7 +77,7 @@ namespace CustomerServicePortal.Controllers
                 foreach (DataRow item in dt.Rows)
                 {
                     MemeberDetailsModel memeberDetailsModel = new MemeberDetailsModel();
-                    memeberDetailsModel.SSN = item["SSN"].ToString();
+                    memeberDetailsModel.SSN =item["SSN"].ToString();
                     memeberDetailsModel.Member = (item["Member"].ToString().Split('*')[1] + "*" + item["Member"].ToString().Split('*')[0]).Replace("*","");
                     memeberDetailsModel.Year = item["Year"].ToString();
                     memeberDetailsModel.Month = item["Month"].ToString();

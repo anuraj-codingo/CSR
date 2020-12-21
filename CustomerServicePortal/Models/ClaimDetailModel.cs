@@ -47,7 +47,7 @@ namespace CustomerServicePortal.Models
         public string DOBYear { get; set; }
         public string DOBMonth { get; set; }
         public string DOBDay { get; set; }
-        public decimal EMSSN { get; set; }
+        public string EMSSN { get; set; }
         public string Addr1 { get; set; }
         public string Addr2 { get; set; }
         public string Addr3 { get; set; }
@@ -58,6 +58,20 @@ namespace CustomerServicePortal.Models
         public string Zip2 { get; set; }
         public string Zip3 { get; set; }
         public bool ShowRequestId { get; set; }
+    }
+    public class ClaimDeatilExpandModel
+    {
+        public string ClaimNo { get; set; }
+        public string LineNo { get; set; }
+        public string Status { get; set; }
+        public string BenefitCode { get; set; }
+        public string CPT { get; set; }
+        public string TotalCharge { get; set; }
+        public string Dedcutible { get; set; }
+        public string Paid { get; set; }
+        public string Coinsurance { get; set; }
+        public string OOP { get; set; }
+        public string ProviderDiscount { get; set; }
     }
 
     public class ClaimDetailModel

@@ -1,24 +1,32 @@
 ﻿@model CustomerServicePortal.Models.LayoutModel
+
 <div class="header" id="header">
     <div class="container">
         <div class="logo">
             <img src="~/Content/img/@(Model.Headerlogo)" alt="" />
             <h1>@Model.HeaderTitle</h1>
         </div>
+        
         <div class="userProfile">
             <div><a href="#"><i class="fa fa-caret-down" aria-hidden="true"></i> Hi Ryan Jones</a></div>
             <div class="userimage">
                 <img src="~/Content/img/user.png" alt="" />
             </div>
             <div class="user-popup-main">
+
                 <div class="user-popup">
                     <div class="user-small">
                         <img class="img-fluid" src="~/Content/img/user.png" alt="">
                     </div>
-                 
+
                     <h6>@User.Identity.Name</h6>
                     <div class="option-block">
                         <ul>
+                            <li class="pwdModal">
+                                <a class="dropdown-item" data-toggle="modal" data-target="#exampleModal">
+                                    Change Password
+                                </a>
+                            </li>
                             <li>
                                 <a class="dropdown-item" href="@Url.Action("Logout","Account")">
                                     Logout
@@ -31,3 +39,5 @@
         </div>
     </div>
 </div>
+
+

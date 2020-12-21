@@ -9,6 +9,7 @@ using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Web.Mvc;
+using CustomerServicePortal.Common;
 
 namespace CustomerServicePortal.Controllers
 {
@@ -48,10 +49,10 @@ namespace CustomerServicePortal.Controllers
             }
             return View(claimDetailDashBoardModel);
         }
-        public  JsonResult UpdateAddress(EMPdetails emp)
-        {
-            return Json(new { viewContent = "" }, JsonRequestBehavior.AllowGet);
-        }
+        //public  JsonResult UpdateAddress(EMPdetails emp)
+        //{
+        //    return Json(new { viewContent = "" }, JsonRequestBehavior.AllowGet);
+        //}
         public ActionResult EditDependentHtml(string SSN,int DependentSeq)
         {
             DependentDetailModel dependentDetailModel = new DependentDetailModel();
@@ -92,6 +93,81 @@ namespace CustomerServicePortal.Controllers
          
             return Json(new { viewContent = viewContent }, JsonRequestBehavior.AllowGet);
         }
+        public JsonResult GetClaimDetailExpandModelHTml(string SSN,string Claimnumber)
+        {
+            List<ClaimDeatilExpandModel> claimDeatilExpandModels = new List<ClaimDeatilExpandModel>();
+
+            try
+            {
+                GetClaimDetailsExpandList(SSN, Claimnumber, claimDeatilExpandModels);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+          
+           
+
+            string viewContent = ConvertViewToString("_ClaimDetailExpandPartialView", claimDeatilExpandModels);
+            return Json(new { viewContent = viewContent }, JsonRequestBehavior.AllowGet);
+        }
+
+        private static void GetClaimDetailsExpandList(string SSN, string Claimnumber, List<ClaimDeatilExpandModel> claimDeatilExpandModels)
+        {
+            DataTable dt = new DataTable();
+
+            dt = Db2Connnect.GetDataTable(GetSqlQuery.GetClaimDetailsWIthClaimNumber(SSN, Claimnumber), CommandType.Text);
+            foreach (DataRow item in dt.Rows)
+            {
+                ClaimDeatilExpandModel claimDeatilExpandModel = new ClaimDeatilExpandModel();
+                claimDeatilExpandModel.BenefitCode = item["BenefitCode"].ToString();
+                claimDeatilExpandModel.ClaimNo = item["ClaimNo"].ToString();
+                claimDeatilExpandModel.Coinsurance = ((decimal)item["Coinsurance"]).ToString("C", CultureInfo.CurrentCulture); 
+                claimDeatilExpandModel.CPT = item["CPT#"].ToString();
+                claimDeatilExpandModel.Dedcutible = ((decimal)item["Dedcutible"]).ToString("C", CultureInfo.CurrentCulture);
+                claimDeatilExpandModel.LineNo = ((decimal)item["LineNo"]).ToString();
+                claimDeatilExpandModel.OOP = ((decimal)item["OOP"]).ToString("C", CultureInfo.CurrentCulture); ;
+                claimDeatilExpandModel.Paid = ((decimal)item["Paid"]).ToString("C", CultureInfo.CurrentCulture); ;
+                claimDeatilExpandModel.ProviderDiscount = ((decimal)item["ProviderDiscount"]).ToString("C", CultureInfo.CurrentCulture); 
+                claimDeatilExpandModel.Status = item["Status"].ToString();
+                claimDeatilExpandModel.TotalCharge = ((decimal)item["TotalCharge"]).ToString("C", CultureInfo.CurrentCulture);
+                claimDeatilExpandModels.Add(claimDeatilExpandModel);
+            }
+        }
+        public JsonResult GetEOBDetailsHtml(string SSN,string Claimnumber)
+        {
+          
+            string s = "";
+            try
+            {
+                LayoutModel layoutModel = new LayoutModel();
+                layoutModel = (LayoutModel)Session["LayoutDetails"];
+                if (layoutModel.Client !=null)
+                {
+                    System.Net.WebClient client = new System.Net.WebClient();
+                    var theURL = string.Format("http://10.68.5.64/ReportServer_SSRS/Pages/ReportViewer.aspx?%2fDental+Portal%2fProviderEOB&rs:Format=HTML4.0&Claimnum={0}&Client={1}&rc:toolbar=false", Claimnumber, layoutModel.Client);
+                    client.UseDefaultCredentials = false;
+
+                    var credCache = new System.Net.CredentialCache();
+                    credCache.Add(new Uri("http://10.68.5.64"),
+                                     "NTLM",
+                                     new System.Net.NetworkCredential("osvsethi", "aBcP@s@2019@OneSmarter", "abc"));
+
+                    client.Credentials = credCache;
+                    s = client.DownloadString(theURL);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            //string viewContent = ConvertViewToString("_MemeberDetailsPartialView", claimDetailModels);
+            return Json(new { viewContent = s }, JsonRequestBehavior.AllowGet);
+        }
+
         public JsonResult GetCliamDetailTable(string SSN, string DependentSeq, string ClaimNumber, DateTime? Fromdate, DateTime? Todate)
         {
             List<ClaimDetailModel> claimDetailModels = new List<ClaimDetailModel>();
@@ -115,7 +191,7 @@ namespace CustomerServicePortal.Controllers
                 string Commandtext = "Fill_IDCardRequestDetails";
                 var parameters = new List<IDbDataParameter>();
                 parameters.Add(db.CreateParameter("@SSN", SSN, DbType.String));
-                parameters.Add(db.CreateParameter("@Notes", Notes, DbType.String));
+                parameters.Add(db.CreateParameter("@RequestNotes", Notes, DbType.String));
                 parameters.Add(db.CreateParameter("@Name", Name, DbType.String));
                 parameters.Add(db.CreateParameter("@Gender", Gender, DbType.String));
                 parameters.Add(db.CreateParameter("@Requester", User.Identity.Name, DbType.String));
@@ -241,9 +317,9 @@ namespace CustomerServicePortal.Controllers
             foreach (DataRow item in dependenttable.Rows)
             {
                
-                dependentDetailModel.SSN = item["DPSSN"].ToString();
+                dependentDetailModel.SSN =item["DPSSN"].ToString();
                 dependentDetailModel.DependentSeq = item["SEQ"].ToString();
-                dependentDetailModel.DependenetName = (item["NAME"].ToString().Split('*')[1] + "*" + item["NAME"].ToString().Split('*')[0]).Replace("*", "");
+                dependentDetailModel.DependenetName = (item["NAME"].ToString().Split('*')[1] + "*" + item["NAME"].ToString().Split('*')[0]).Replace("*", "").Replace(" ", "()").Replace(")(", "").Replace("()", " ");
                 dependentDetailModel.Relation = item["RELATION"].ToString();
                 dependentDetailModel.Status = item["STATUS"].ToString();
                 dependentDetailModel.BirthYear = item["DOBY"].ToString();
@@ -299,6 +375,8 @@ namespace CustomerServicePortal.Controllers
 
         private static EMPdetails GetEMployDetailsModelWIthSSN(string SSN)
         {
+
+           
             DataTable Employdetails = new DataTable();
             Employdetails = Db2Connnect.GetDataTable(GetSqlQuery.GetMemberDetailsWIthSSN(SSN), CommandType.Text);
             EMPdetails eMPdetails = new EMPdetails();
@@ -310,7 +388,7 @@ namespace CustomerServicePortal.Controllers
                 eMPdetails.DOBDay = item["DOBD"].ToString();
                 eMPdetails.DOBMonth = item["DOBM"].ToString();
                 eMPdetails.DOBYear = item["DOBY"].ToString();
-                eMPdetails.EMSSN = (decimal)item["EMSSN"];
+                eMPdetails.EMSSN = item["EMSSN"].ToString();
                 eMPdetails.Addr1= item["Addr1"].ToString().TrimEnd().TrimStart();
                 eMPdetails.Addr2 = item["Addr2"].ToString().TrimEnd().TrimStart();
                 eMPdetails.Addr3 = item["Addr3"].ToString().TrimEnd().TrimStart();
@@ -346,6 +424,7 @@ namespace CustomerServicePortal.Controllers
             {
                 ClaimDetailModel claimDetailModel = new ClaimDetailModel();
                 claimDetailModel.EOBNO = item["EOBNo"].ToString();
+                claimDetailModel.SSN = SSN;
                 claimDetailModel.ClaimNo = item["ClaimNumber"].ToString();
                 claimDetailModel.For = (item["ForPerson"].ToString().Split('*')[1] + "*" + item["ForPerson"].ToString().Split('*')[0]).Replace("*", "");
                 claimDetailModel.Type = item["ClaimType"].ToString();

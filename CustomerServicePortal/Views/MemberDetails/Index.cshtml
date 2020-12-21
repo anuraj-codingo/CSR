@@ -20,7 +20,8 @@
 </style>
 
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
-
+@*<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>*@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
 <div class="user">
     <div class="box info">
         <div class="col-12">
@@ -43,12 +44,13 @@
                     <a onclick="Reset(@Model.eMPdetails.EMSSN)" href="#"><h4>@Model.eMPdetails.Name</h4></a>
                     <strong class="h6">ID: <span>@Model.eMPdetails.Id</span></strong>
                     <strong class="h6">Gender: <span>@Model.eMPdetails.Gender</span></strong>
-                    <strong class="h6">DOB: <span>@Model.eMPdetails.DOBMonth/@Model.eMPdetails.DOBDay/@Model.eMPdetails.DOBYear</span></strong>
+                    <strong class="h6">DOB: <span>@(new DateTime(Convert.ToInt32(@Model.eMPdetails.DOBYear), Convert.ToInt32(@Model.eMPdetails.DOBMonth), Convert.ToInt32(@Model.eMPdetails.DOBDay)).ToString("MM/dd/yyyy"))</span></strong>
                     @if (Model.eMPdetails.ShowRequestId)
                     {
-                        <button type="button" class="btn btn-primary IdCardRequest" onclick="IdCardRequest(@Model.eMPdetails.EMSSN,'@Model.eMPdetails.Name','@Model.eMPdetails.Gender')">Request Id Card</button>
+                        <button type="button" class="btn btn-primary IdCardRequest mb-2" onclick="IdCardRequest(@Model.eMPdetails.EMSSN,'@Model.eMPdetails.Name','@Model.eMPdetails.Gender')">Request ID Card</button>
                     }
-                  
+                    
+                <button type="button" class="btn btn-primary">Print Temporary ID Card</button>
                     @*<p>Lorem ipsum dolor sit amet, adipiscing consectetur elit.</p>*@
                 </div>
             </div>
@@ -74,7 +76,7 @@
                             <td>@item.Status</td>
                             <td>@item.Plan</td>
                             <td>@item.Class</td>
-                            <td>@item.BirthMonth-@item.BirthDay-@item.BirthYear</td>                         
+                            <td>@(new DateTime(Convert.ToInt32(item.BirthYear), Convert.ToInt32(item.BirthMonth), Convert.ToInt32(item.BirthDay)).ToString("MM/dd/yyyy"))</td>
                             <td><i class="fa fa-pencil" onclick="EditDependent(@Model.eMPdetails.EMSSN,@item.DependentSeq)"></i></td>
                         </tr>
                     }
@@ -85,15 +87,20 @@
                     <tr><td colspan="7" class="no-depend">No Dependant</td></tr>
                 }
             </table>
-              <button type="button" class="btn btn-primary" onclick="EditDependent(@Model.eMPdetails.EMSSN,0)"><i class="fa fa-plus"></i> Add Dependent</button>
-   
+            <button type="button" class="btn btn-primary" onclick="EditDependent(@Model.eMPdetails.EMSSN,0)"><i class="fa fa-plus"></i> Add Dependent</button>
+
         </div>
     </div>
     <div class="box archive">
         <div class="byYear">
-
-            @Html.Partial("_DEDMET_OOP_PartialView", Model.dEDMETModelCurentYear)
-            @Html.Partial("_DEDMET_OOP_PartialView", Model.dEDMETModelPreviousYear)
+            @if (Model.dEDMETModelCurentYear.Count > 0)
+            {
+                @Html.Partial("_DEDMET_OOP_PartialView", Model.dEDMETModelCurentYear)
+            }
+            @if (Model.dEDMETModelPreviousYear.Count > 0)
+            {
+                @Html.Partial("_DEDMET_OOP_PartialView", Model.dEDMETModelPreviousYear)
+            }
 
 
 
@@ -106,39 +113,39 @@
                 var x = "";
             }
 
-            @if (Model.eMPdetails.Addr1.Trim() != "")
+            @if (Model.eMPdetails.Addr1.Trim() != "" && Model.eMPdetails.Addr1 != null)
             {
                 x += Model.eMPdetails.Addr1;
             }
-            @if (Model.eMPdetails.Addr2.Trim() != "")
+            @if (Model.eMPdetails.Addr2.Trim() != "" && Model.eMPdetails.Addr2 != null)
             {
                 x += "," + Model.eMPdetails.Addr2;
             }
-            @if (Model.eMPdetails.Addr3.Trim() != "")
+            @if (Model.eMPdetails.Addr3.Trim() != "" && Model.eMPdetails.Addr3 != null)
             {
                 x += "," + Model.eMPdetails.Addr3;
             }
-            @if (Model.eMPdetails.Addr4.Trim() != "")
+            @if (Model.eMPdetails.Addr4.Trim() != "" && Model.eMPdetails.Addr4 != null)
             {
                 x += "," + Model.eMPdetails.Addr4;
             }
-            @if (Model.eMPdetails.City.Trim() != "")
+            @if (Model.eMPdetails.City.Trim() != "" && Model.eMPdetails.City != null)
             {
                 x += "," + Model.eMPdetails.City;
             }
-            @if (Model.eMPdetails.State.Trim() != "")
+            @if (Model.eMPdetails.State.Trim() != "" && Model.eMPdetails.State != null)
             {
                 x += "," + Model.eMPdetails.State;
             }
-            @if (Model.eMPdetails.Zip1.Trim() != "")
+            @if (Model.eMPdetails.Zip1.Trim() != "" && Model.eMPdetails.Zip1 != null)
             {
                 x += "," + Model.eMPdetails.Zip1;
             }
-            @if (Model.eMPdetails.Zip2.Trim() != "")
+            @if (Model.eMPdetails.Zip2.Trim() != "" && Model.eMPdetails.Zip2 != null)
             {
                 x += "," + Model.eMPdetails.Zip2;
             }
-            @if (Model.eMPdetails.Zip3.Trim() != "")
+            @if (Model.eMPdetails.Zip3.Trim() != "" && Model.eMPdetails.Zip3 != null)
             {
                 x += "," + Model.eMPdetails.Zip3;
             }
@@ -147,10 +154,7 @@
             @x <button class="editBtn-block" href="" onclick="EditAddress(@Model.eMPdetails.EMSSN)"><i class="fa fa-pencil"></i></button>
         </p>
     </div>
-    @*<div class="box">
-            <h4>Lorem ipsum</h4>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in leo velit.</p>
-        </div>*@
+
 
 </div>
 
@@ -209,7 +213,7 @@
                      LoadingElementId = "progress"
                  }))
             {
-                <div class="modal-body">
+                <div class="modal-body EditAddresshtml">
 
 
 
@@ -241,7 +245,7 @@
                      LoadingElementId = "progress"
                  }))
             {
-                <div class="modal-body">
+                <div class="modal-body EditDependenthtml">
 
 
 
@@ -252,6 +256,51 @@
                 </div>
 
             }
+        </div>
+    </div>
+</div>
+
+<div id="ClaimExpanModel" class="modal fade modalAddress" role="dialog">
+    <div class="modal-dialog mx-w-1200" role="document" style="margin-top: 144px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Claim Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body ClaimExpanModelBody">
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                @*<button type="submit" class="btn btn-primary" onclick="AddressUpdateSubmit()">Save changes</button>*@
+            </div>
+
+
+        </div>
+    </div>
+</div>
+<div id="EOBExpanModel" class="modal fade modalAddress" role="dialog">
+    <div class="modal-dialog mx-w-1200" role="document" style="margin-top: 144px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row justify-content-end">
+                    <button class="none-btn"><i class="fa fa-print" onclick="PrintEOB()"></i></button>
+                </div>
+                <div class="EOBExpanModelBody">
+
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -266,7 +315,34 @@
         changeYear: true,
         yearRange: "-100:+100"
     });
+    function PrintEOB() {
 
+        var divContents = $(".EOBExpanModelBody").html();
+        var printWindow = window.open('', '', 'height=400,width=800');
+        //printWindow.document.write('<html><head><title>DIV Contents</title>');
+        //printWindow.document.write('</head><body >');
+        printWindow.document.write(divContents);
+        //printWindow.document.write('</body></html>');
+        printWindow.document.close();
+        printWindow.print();
+        //var doc = new jsPDF({
+        //    orientation: 'portrait'
+        //});
+        //doc.setFontSize(16);
+        //var elementHTML = $('#oReportDiv').html();
+        //var specialElementHandlers = {
+        //    '#elementH': function (element, renderer) {
+        //        return true;
+        //    }
+        //};
+        //doc.fromHTML(elementHTML, 100, 100, {
+        //    'width': 500,
+        //    'elementHandlers': specialElementHandlers
+        //});
+
+        //// Save the PDF
+        //doc.save('sample-document.pdf');
+    }
     function EditAddress(SSN) {
         $('.loader-main').show();
                   $.ajax({
@@ -275,22 +351,70 @@
                 data: {  SSN: SSN},
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
-                success: function (response) {
+                success: function (response6) {
 
                     $('.loader-main').hide();
-                    $('.modal-body').html(response.viewContent);
+                    $('.EditAddresshtml').html(response6.viewContent);
 
                     $('#EditAddress').modal('show');
 
                 },
-                failure: function (response) {
-                    alert(response.d);
+                failure: function (response6) {
+                    alert(response6.d);
                 },
-                error: function (response) {
-                    alert(response.d);
+                error: function (response6) {
+                    alert(response6.d);
                 }
             });
 
+    }
+      function EOBExpanModelpopup(SSN, Claimnumber) {
+        $('.loader-main').show();
+                  $.ajax({
+                type: "GET",
+                url:'@Url.Action("GetEOBDetailsHtml", "MemberDetails")',
+                      data: { SSN: SSN, Claimnumber: Claimnumber},
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response5) {
+                    debugger;
+                    $('.loader-main').hide();
+                    $('.EOBExpanModelBody').html(response5.viewContent);
+
+                    $('#EOBExpanModel').modal('show');
+
+                },
+                failure: function (response5) {
+                    alert(response5.d);
+                },
+                error: function (response5) {
+                    alert(response5.d);
+                }
+            });
+    }
+        function ClaimExpanModelpopup(SSN, Claimnumber) {
+        $('.loader-main').show();
+                  $.ajax({
+                type: "GET",
+                url:'@Url.Action("GetClaimDetailExpandModelHTml", "MemberDetails")',
+                      data: { SSN: SSN, Claimnumber: Claimnumber},
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response4) {
+
+                    $('.loader-main').hide();
+                    $('.ClaimExpanModelBody').html(response4.viewContent);
+
+                    $('#ClaimExpanModel').modal('show');
+
+                },
+                failure: function (response4) {
+                    alert(response4.d);
+                },
+                error: function (response4) {
+                    alert(response4.d);
+                }
+            });
     }
     function EditDependent(SSN, DependentSeq) {
         $('.loader-main').show();
@@ -300,10 +424,10 @@
                       data: { SSN: SSN, DependentSeq: DependentSeq},
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
-                success: function (response) {
+                success: function (response3) {
 
                     $('.loader-main').hide();
-                    $('.modal-body').html(response.viewContent);
+                    $('.EditDependenthtml').html(response3.viewContent);
 
                     $('#EditDependent').modal('show');
                     $('.datepicker').datepicker({
@@ -311,13 +435,13 @@
                         changeMonth: true,
                         changeYear: true,
                         yearRange: "-100:+100"
-                    });                   
+                    });
                 },
-                failure: function (response) {
-                    alert(response.d);
+                failure: function (response3) {
+                    alert(response3.d);
                 },
-                error: function (response) {
-                    alert(response.d);
+                error: function (response3) {
+                    alert(response3.d);
                 }
             });
     }
@@ -357,17 +481,17 @@
                 data: { page: 1, SSN: SSN, DependentSeq: $('#DEPSEQ').val(), ClaimNumber: $('#claim').val(), Fromdate: Fromdate, Todate: Todate},
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
-                success: function (response) {
+                success: function (response2) {
                     $('.loader-main').hide();
 
-                    $('#claimDetailGrid').html(response.viewContent);
+                    $('#claimDetailGrid').html(response2.viewContent);
 
                 },
-                failure: function (response) {
-                    alert(response.d);
+                failure: function (response2) {
+                    alert(response2.d);
                 },
-                error: function (response) {
-                    alert(response.d);
+                error: function (response2) {
+                    alert(response2.d);
                 }
             });
     };
@@ -417,8 +541,8 @@
                 data: { SSN: SSN, Notes: text, Name: Name, Gender: Gender},
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
-                success: function (response) {
-                    if (response == true) {
+                success: function (response1) {
+                    if (response1 == true) {
                         $('.IdCardRequest').remove();
                     }
                     else {
@@ -426,11 +550,11 @@
                     }
 
                 },
-                failure: function (response) {
-                    alert(response.d);
+                failure: function (response1) {
+                    alert(response1.d);
                 },
-                error: function (response) {
-                    alert(response.d);
+                error: function (response1) {
+                    alert(response1.d);
                 }
             });
         }

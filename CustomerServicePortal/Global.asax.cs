@@ -20,47 +20,21 @@ namespace CustomerServicePortal
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
 
-        //protected void Application_BeginRequest(object sender, EventArgs e)
-        //{
-        //    try
-        //    {
-        //        bool cookieFound = false;
-
-        //        HttpCookie authCookie = null;
-
-        //        for (int i = 0; i < Request.Cookies.Count; i++)
-        //        {
-        //            HttpCookie cookie = Request.Cookies[i];
-        //            if (cookie.Name == ".MVCAUTH")
-        //            {
-        //                cookieFound = true;
-        //                authCookie = cookie;
-        //                break;
-        //            }
-        //        }
-
-        //        if (cookieFound)
-        //        {
-        //            // Extract the roles from the cookie, and assign to our current principal, which is attached to the HttpContext.
-        //            FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(authCookie.Value);
-        //            HttpContext.Current.User = new GenericPrincipal(new FormsIdentity(ticket), ticket.UserData.Split(';'));
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw;
-        //    }
-        //}
-
-
-        //protected void Application_AuthenticateRequest()
-        //{
-        //    var returnUrl = Request.QueryString["ReturnUrl"];
-        //    if (!Request.IsAuthenticated && !String.IsNullOrWhiteSpace(returnUrl))
-        //    {
-        //        var returnUrlCookie = new HttpCookie(".MVCRETURNURL", returnUrl) { HttpOnly = true };
-        //        Response.Cookies.Add(returnUrlCookie);
-        //    }
-        //}
+        protected void Application_PostAuthenticateRequest(Object sender, EventArgs e)
+        {
+            var authCookie = HttpContext.Current.Request.Cookies[FormsAuthentication.FormsCookieName];
+            if (authCookie != null)
+            {
+                if (!string.IsNullOrEmpty(authCookie.Value))
+                {
+                    FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+                    if (authTicket != null && !authTicket.Expired)
+                    {
+                        var roles = authTicket.UserData.Split(',');
+                        HttpContext.Current.User = new System.Security.Principal.GenericPrincipal(new FormsIdentity(authTicket), roles);
+                    }
+                }
+            }
+        }
     }
 }

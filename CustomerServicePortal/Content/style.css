@@ -398,9 +398,9 @@ body {
     text-align: center;
     position: relative;
     height: 80vh;
- 
-    background: url('img/bg-01.jpg') no-repeat right top;
-    background-size: 100%;
+    background-repeat: no-repeat !important;
+    background-position: right top !important;
+    background-size: cover !important;
 }
   .banner .navigation {
     background: rgba(255, 255, 255, 0.8); }
@@ -1122,4 +1122,39 @@ body {
     width: 18px;
     margin: 15px 0px 0px 0px;
 }
-    /*# sourceMappingURL=style.css.map */
+.mx-w-1200
+{
+    max-width: 1200px !important;
+}
+.alert
+{
+    position: fixed !important;
+    right: 15px;
+    top: 15px;
+    z-index: 99;
+    display: none;
+}
+.EOBExpanModelBody {
+    max-width: 808px;
+    margin: 0 auto;
+    overflow: auto;
+    padding: 10px 10px 10px 10px;
+}
+.none-btn
+{
+    background: none;
+    border: none;
+    box-shadow: none;
+    outline: none;
+    padding-right: 5%;
+}
+.none-btn i{
+    font-size: 22px;
+    opacity: 0.6;
+    cursor: pointer;
+}
+    .none-btn i:hover {
+        opacity: 1;
+    }
+        /*# sourceMappingURL=style.css.map */
+

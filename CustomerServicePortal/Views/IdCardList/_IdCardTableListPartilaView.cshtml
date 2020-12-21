@@ -1,0 +1,94 @@
+﻿@model IEnumerable<CustomerServicePortal.Models.IdCardListModel>
+<table class="table user-list w-100 table-striped">
+    <thead>
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Gender)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EMSSN)
+            </th>
+            <th>
+                STREET1
+            </th>
+            <th>
+                STREET2
+            </th>
+            <th>
+                CITY
+            </th>
+            <th>
+                STATE
+            </th>
+            <th>ZIP</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    @foreach (var item in Model)
+    {
+        var CompleteBadge = "";
+        var Completebutton = "";
+        if (item.Completestatus)
+        {
+            Completebutton = "d-none";
+
+        }
+        else
+        {
+            CompleteBadge = "d-none";
+        }
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MemberId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Gender)
+            </td>
+            <td>
+                @(CustomerServicePortal.Common.StaticClass.SSN_DisplayForamatting(item.EMSSN))
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Addr1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Addr2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.State)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Zip1)
+            </td>
+
+            <td>
+
+
+                @if (item.Completestatus)
+                {
+
+                }
+                <span class="badge badge-success CompleteBadge  @CompleteBadge">Completed</span>
+                <button type="button" class="btn btn-primary btn-sm Completebutton @Completebutton" onclick="CompleteStatusNotes(@item.Id,this)">Complete</button>
+            </td>
+            @*<td>
+                    @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+                </td>*@
+        </tr>
+    }
+
+</table>

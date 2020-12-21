@@ -11,8 +11,7 @@ namespace CustomerServicePortal.Models
         public string ID { get; set; }
 
         [Display(Name = "SSN")]
-        [StringLength(50)]
-        public String SSN { get; set; }
+        public string SSN { get; set; }
 
         [Display(Name = "Member")]
         [StringLength(10)]

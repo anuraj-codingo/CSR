@@ -56,13 +56,12 @@
             height: 100%;
             background: rgb(255 255 255 / 50%);
         }
-
     </style>
     <meta charset="utf-8" />
     <link rel="shortcut icon" href="assets/images/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
 
-  @*  <title>@(CustomerServicePortal.DAL.GetLayoutSessionClass.GetLayoutModel() as CustomerServicePortal.Models.LayoutModel).HeaderTitle)</title>*@
+    @*  <title>@(CustomerServicePortal.DAL.GetLayoutSessionClass.GetLayoutModel() as CustomerServicePortal.Models.LayoutModel).HeaderTitle)</title>*@
     <meta name="description" content="" />
     <meta name="keywords" content="" />
     @*@Styles.Render("~/Content/css")
@@ -73,11 +72,9 @@
     <link href="~/Content/style.css" rel="stylesheet" />
     <link href="~/Content/css/font-awesome.min.css" rel="stylesheet" />
     <link href="~/Content/css/jquery-ui.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" >
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 
 
-
-    @*<link href="~/Content/bootstrap.css" rel="stylesheet" />*@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://getbootstrap.com/docs/4.1/assets/js/vendor/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
@@ -103,11 +100,19 @@
                 <div class="container">
                     <div class="nav">
                         <ul>
-                            <li><a href="@Url.Action("Index","Home")"><i class="fa fa-home"></i> Home</a></li>
+                            @if((Session["LayoutDetails"] as CustomerServicePortal.Models.LayoutModel).ShowMenuBar)
+                            {
+                                <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i> Home</a></li>
+                            }
+
                             @*<li class="disabled"><a href="#">Print</a></li>*@
-                            <li><a class="" href="@Url.Action("UsersList","Users")"><i class="fa fa-user"></i> Users</a></li>
-                            <li><a class="" href="@Url.Action("Index","IdCardList")"><i class="fa fa-user"></i>Id Card Requests</a></li>
-                        </ul>
+                                                <li><a class="" href="@Url.Action("UsersList", "Users")"><i class="fa fa-user"></i> Users</a></li>
+                                                <li><a class="" href="@Url.Action("Index", "IdCardList")"><i class="fa fa-user mr-1"></i>ID Card Requests</a></li>
+                                                @if (User.IsInRole("ABC_User") || User.IsInRole("Admin"))
+                                                {
+                                                    <li><a class="m-r-1" href="@Url.Action("Index", "ABCDashBoard")"><i class="fa fa-user mr-1"></i>Clients</a></li>
+                                                }
+                                            </ul>
                     </div>
                 </div>
             </div>
@@ -118,12 +123,27 @@
         @Html.Action("LoadFooterHtml", "Home")
         <!--footer-->
     </div>
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                @{
+                    Html.RenderPartial("_ChangePasswordPartial", new CustomerServicePortal.Models.ChangepassWord());
+                }
+
+            </div>
+        </div>
+    </div>
+    <div class="alert alert-success" role="alert" id="ChangepasswordAlert">
+        Password Changed
+    </div>
     <!--/wrapper-->
     @*@Scripts.Render("~/bundles/bootstrap")*@
+    @*<link href="~/Content/bootstrap.css" rel="stylesheet" />*@
 
     @RenderSection("scripts", required: false)
 
     <script type="text/javascript">
+
         $(document).ready(function () {
             // SET PAGE BODY HEIGHT
             var windowHeight = $(window).height();
@@ -139,6 +159,11 @@
             });
             $('.user-popup-main').click(function (e) {
                 e.stopPropagation();
+            });
+            $('.pwdModal').click(function (e) {
+                $('#exampleModal').modal('toggle');
+                $(".user-popup-main").removeClass("focused");
+                //e.stopPropagation();
             });
             $(document).click(function () {
                 $(".user-popup-main").removeClass("focused");

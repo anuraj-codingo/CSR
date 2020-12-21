@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CustomerServicePortal.Common;
+using System;
 using System.Linq;
 
 namespace CustomerServicePortal
@@ -30,6 +31,7 @@ namespace CustomerServicePortal
 
         public static string GetDependentDetails(string SSN)
         {
+            
             return @"SELECT DPSSN AS DPSSN,DPSEQ AS SEQ, DPNAME AS NAME,CASE  WHEN DPRLTN = 1 THEN 'SPOUSE'
  WHEN DPRLTN = 2 THEN 'SON'
  WHEN DPRLTN = 3 THEN 'DAUGHTER'
@@ -41,6 +43,7 @@ namespace CustomerServicePortal
 
         public  static string GetDependentDetailsWithSeq(string SSN,int DPSEQ)
         {
+            
             return @"SELECT DPSSN AS DPSSN,DPSEQ AS SEQ, DPNAME AS NAME,d.DPRLTN AS RELATION,DPSTAT AS STATUS,DPDOBY AS DOBY,DPDOBM AS DOBM ,DPDOBD AS DOBD,
                             DPEFDY AS EFDY,DPEFDM AS EFDM ,DPEFDD AS EFDD, 
                             DPTDTY AS TDTY,DPTDTM AS TDTM ,DPTDTD AS TDTD, 
@@ -70,6 +73,7 @@ namespace CustomerServicePortal
 
         public static string GeTMemberClaims(string SSN, string ClaimNumber, DateTime? Fromdate, DateTime? Todate)
         {
+            
             var FromDateQuery = "";
             if (Fromdate != null)
             {
@@ -101,6 +105,7 @@ namespace CustomerServicePortal
 
         public static string GeTDependentClaims(string SSN, string Seq, string ClaimNumber, DateTime? Fromdate, DateTime? Todate)
         {
+            
             var FromDateQuery = "";
             if (Fromdate != null)
             {
@@ -129,6 +134,7 @@ namespace CustomerServicePortal
 
         public static string GetMemberDetailsWIthSSN(string SSN)
         {
+            
             return "SELECT  EMSSN as EMSSN,EMNAME AS Name,EMMEM# AS Id,EMSEX  AS Gender,EMDOBY AS DOBY,EMDOBM " +
                    " AS DOBM,EMDOBD AS DOBD,EMADR1 AS Addr1,EMADR2 AS Addr2,EMADR3 AS Addr3,EMADR4 AS  Addr4"+
                     ",EMCITY AS City,EMST AS State,EMZIP5 AS Zip1,EMZIP4 AS Zip2,EMZIP2 AS Zip3 FROM EMPYP WHERE EMSSN =" + SSN;
@@ -136,6 +142,7 @@ namespace CustomerServicePortal
 
         public static string GetDEDMET_OOP_Details(int Currentyear, string EMPSSN, int DEPSEQ)
         {
+    
             string strquery = "";
 
             /* deductible PPO INDIVIDUAL*/
@@ -436,5 +443,23 @@ namespace CustomerServicePortal
              ) AS OOPIndOOPNetwork";
             return strquery;
         }
+
+        public static string GetABC_UserFundList(long UserId)
+        {
+            return @"select ca.CLIENT,FUNDDS,lo.Headerlogo from [dbo].[User_Funds] Uf
+                       inner join [BICC_REPORTING].[dbo].[CLIENTS_ABC] CA on uf.Fund=CA.Client
+					   inner join [LayoutDetails] lo on lo.CLIENT=uf.Fund
+                       where UserId="+UserId;
+        }
+
+        public static string GetClaimDetailsWIthClaimNumber(string SSN, string ClaimNumber)
+        {
+            
+            return   @"SELECT CDCLM# AS ClaimNo,CDLIN# AS LineNo,CDDTST AS Status,CDBNCD as BenefitCode,CDCPT# AS CPT#,CDCHG$ AS TotalCharge,
+                      CDDED$ Dedcutible,CDPAY$ Paid,CDCOIN Coinsurance
+                  ,CDOOP$ OOP,CDPDSC ProviderDiscount FROM AMODF.CLMDP WHERE CDSSN = "+ SSN + " AND CDCLM# = "+ ClaimNumber ;
+        
+            }
+
     }
 }

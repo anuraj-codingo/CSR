@@ -3,7 +3,6 @@ using CustomerServicePortal.DAL;
 using CustomerServicePortal.Models;
 using System;
 using System.Web.Mvc;
-using System.Web.UI;
 
 //using IBM.Data.DB2.iSeries;
 
@@ -13,8 +12,29 @@ namespace CustomerServicePortal.Controllers
     public class HomeController : Controller
     {
      
-        public ActionResult Index()
+        public ActionResult Index(string Client)
         {
+            if (Client !=null)
+            {
+                Session["LayoutDetails"]=new LayoutModel();
+                Session["Client"] = Client;
+            }
+
+            if (Session["Client"]!=null)
+            {
+                LayoutModel layoutModel = new LayoutModel();
+                layoutModel = GetLayoutSessionClass.GetLayoutModel((string)Session["Client"]);
+                Session["LayoutDetails"] = layoutModel;
+
+            }
+            else
+            {
+                Session["Client"] = "ABC";
+                LayoutModel layoutModel = new LayoutModel();
+                layoutModel = GetLayoutSessionClass.GetLayoutModel((string)Session["Client"]);
+                Session["LayoutDetails"] = layoutModel;
+            }
+
             return View();
         }
 
@@ -29,12 +49,7 @@ namespace CustomerServicePortal.Controllers
         {
             try
             {
-                if (Session["LayoutDetails"] == null)
-                {
-                    LayoutModel layoutModel = new LayoutModel();
-                    layoutModel = GetLayoutSessionClass.GetLayoutModel();
-                    Session["LayoutDetails"] = layoutModel;
-                }
+                LoadlayoutModel();
             }
             catch (Exception)
             {
@@ -43,22 +58,32 @@ namespace CustomerServicePortal.Controllers
             return PartialView("_LayoutFooterPartialView", (LayoutModel)Session["LayoutDetails"]);
         }
 
+       
+
         public ActionResult LoadHeaderHtml()
         {
             try
             {
-                if (Session["LayoutDetails"] == null)
-                {
-                    LayoutModel layoutModel = new LayoutModel();
-                    layoutModel = GetLayoutSessionClass.GetLayoutModel();
-                    Session["LayoutDetails"] = layoutModel;
-                }
+                LoadlayoutModel();
             }
             catch (Exception ex)
             {
                 throw;
             }
             return PartialView("_layoutHeaderPartialView", (LayoutModel)Session["LayoutDetails"]);
+        }
+
+        private void LoadlayoutModel()
+        {
+          
+                LayoutModel layoutModel = new LayoutModel();
+          
+                    layoutModel = GetLayoutSessionClass.GetLayoutModel((string)Session["Client"]);
+                    Session["LayoutDetails"] = layoutModel;
+          
+
+
+            
         }
     }
 }

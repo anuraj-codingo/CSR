@@ -21,17 +21,25 @@
                             </thead>
                             @foreach (var item in Model)
                             {
-                                <tr class="tr">
-                                    <td><span>@item.EOBNO</span></td>
-                                    <td><a href="#">@item.ClaimNo</a></td>
-                                    <td>@item.ClaimMonth/@item.ClaimDate/@item.ClaimYear</td>
-                                    <td>@item.For</td>
-                                    <td>@item.Type</td>
-                                    <td style="text-align:left">@item.Provider</td>
-                                    <td>@item.Total</td>
-                                    <td>@item.PlanPaid</td>
-                                    <td>@item.MemerResp</td>
-                                </tr>
+                        <tr class="tr">
+                            <td><a href="#" onclick="EOBExpanModelpopup('@item.SSN','@item.ClaimNo')">@item.EOBNO</a></td>
+                            <td><a href="#" onclick="ClaimExpanModelpopup('@item.SSN','@item.ClaimNo')">@item.ClaimNo</a></td>
+                            @if (item.ClaimYear !="0" && item.ClaimMonth !="0" && item.ClaimDate != "0" && item.ClaimYear != " " && item.ClaimMonth != " " && item.ClaimDate != " ")
+                            {
+                                <td>@(new DateTime(Convert.ToInt32(item.ClaimYear), Convert.ToInt32(item.ClaimMonth), Convert.ToInt32(item.ClaimDate)).ToString("MM/dd/yyyy"))</td>
+
+                            }
+                            else
+                            {
+                                <td>N/A</td>
+                            }
+                            <td>@item.For</td>
+                            <td>@item.Type</td>
+                            <td style="text-align:left">@item.Provider</td>
+                            <td>@item.Total</td>
+                            <td>@item.PlanPaid</td>
+                            <td>@item.MemerResp</td>
+                        </tr>
                             }
                         </table>
                     </div>

@@ -24,47 +24,45 @@ namespace CustomerServicePortal.Controllers
         {
             try
             {
-     
 
-
-                //if (ModelState.IsValid)
-                //{
-                    //if (Membership.ValidateUser(loginModel.UserName, loginModel.UserPassword))
-                    //{
-                    //    FormsAuthentication.SetAuthCookie(loginModel.UserName, true);
-
-                    //    return RedirectToAction("Index", "Home");
-                    //                     }
-                    //}
-                    //else
-                    //{
-                    //    ModelState.AddModelError("", "The user name or password provided is incorrect");
-                    //}
-
-
-
-                    //if (!ModelState.IsValid)
-                    //{
-                    //    return View(loginModel);
-                    //}
-                    if (loginModel.UserName != "" && loginModel.UserPassword != "")
+              
+                if (loginModel.UserName != "" && loginModel.UserPassword != "")
                 {
                     DataTable dt = new DataTable();
                     string commandText = " select * from  [dbo].[UserLogin] where [UserName]='" + loginModel.UserName + "' and [PassWord]='" + loginModel.UserPassword + "'";
                     dt = db.GetDataTable(commandText, CommandType.Text);
 
-                    LoginModel userModel = new LoginModel();
+                    UserModel userModel = new UserModel();
                     if (dt.Rows.Count > 0)
                     {
-                        FormsAuthentication.SetAuthCookie(loginModel.UserName, false);
 
-                        var authTicket = new FormsAuthenticationTicket(1, loginModel.UserName, DateTime.Now, DateTime.Now.AddMinutes(20), false, loginModel.UserName);
+                        userModel.FirstName = dt.Rows[0]["FirstName"].ToString();
+                        userModel.LastName = dt.Rows[0]["LastName"].ToString();
+                        userModel.Role = dt.Rows[0]["Role"].ToString();
+                        userModel.UserName = dt.Rows[0]["UserName"].ToString();
+                        userModel.UserId = (long)dt.Rows[0]["Id"];
+
+                        FormsAuthentication.SetAuthCookie(userModel.UserName, false);
+
+                        var authTicket = new FormsAuthenticationTicket(1, userModel.UserName, DateTime.Now, DateTime.Now.AddMinutes(20), false, userModel.Role);
                         string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
                         var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
                         HttpContext.Response.Cookies.Add(authCookie);
 
-                        Session["loginModel"] = loginModel;
-                        return RedirectToAction("Index", "Home");
+                        Session["UserModel"] = userModel;
+                        if (userModel.Role== "ABC_User")
+                        {
+                            return RedirectToAction("Index", "ABCDashBoard");
+                        }
+                        else if(userModel.Role == "Fund_User")
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
+                        else if (userModel.Role == "Admin")
+                        {
+                            return RedirectToAction("Index", "ABCDashBoard");
+                        }
+                       
                     }
                     else
                     {
@@ -72,12 +70,7 @@ namespace CustomerServicePortal.Controllers
                         ModelState.AddModelError("", "Invalid login attempt.");
                         return View(loginModel);
                     }
-                    //while (rdr.Read())
-                    //{
-                    //    userModel.UserName = (rdr["UserName"]).ToString();
-                    //    //userModel.UserPassword = (rdr["PassWord"]).ToString();
-                    //    userModel.SSN = (rdr["SSN"]).ToString();
-                    //}
+              
                 }
                 else
                 {
@@ -92,7 +85,27 @@ namespace CustomerServicePortal.Controllers
             }
             return View();
         }
+        [HttpGet]
+        public JsonResult ChangePassWord(ChangepassWord changepass)
+        {
+            try
+            {
+                if (Session["UserModel"] !=null)
+                {
+                    UserModel userModel = new UserModel();
+                    userModel = (UserModel)Session["UserModel"];
+                    string CommanText = "  update [UserLogin] set PassWord='" + changepass.NewPassWord + "'   where Id=" + userModel.UserId;
+                    var obj = db.GetScalarValue(CommanText, CommandType.Text);
+                }
 
+            }
+            catch (Exception)
+            {
+
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult Logout()
         {
             Session.Clear();

@@ -31,12 +31,13 @@
 
 
                     </td>
-                    <td>@item.SSN</td>
+                    <td> @(CustomerServicePortal.Common.StaticClass.SSN_DisplayForamatting(item.SSN))</td>
                     <td>@item.Member</td>
                     <td>@item.ID</td>
                     <td>@item.City</td>
                     <td>@item.State</td>
-                    <td>@item.Month-@item.Day-@item.Year</td>
+                    @*<td>@item.Month-@item.Day-@item.Year</td>*@
+                 <td>@(new DateTime(Convert.ToInt32(item.Year), Convert.ToInt32(item.Month), Convert.ToInt32(item.Day)).ToString("MM/dd/yyyy")) </td>
                 
                 </tr>
             }

@@ -1,53 +1,54 @@
-﻿
+﻿@model List<CustomerServicePortal.Models.ABC_DashBoardModel> 
+
+<style>
+    .cardBody-custom {
+        min-height: 80px;
+    }
+    .pro-img img {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        min-width: 50px;
+        margin: 0px 10px 0px 0px;
+    }
+</style>
 <section>
+
     <div class="container">
-        <div class="row mt-5">
-            <div class="col-md-4 mb-2">
-                <a href="">
-                    <div class="card">
-                        <div class="card-body">
-                            <h6 class="card-title text-uppercase text-center m-0">Card title</h6>
+
+        <div class="row">
+            <div class="report w-100 mb-0">
+                <div class="col-12 p-0 d-flex justify-content-center">
+                    <div class="filter">
+                        <label for="">Enter Name, ID or SSN</label>
+                        <input type="text" id="SearchMember2">
+                        <input type="submit" value="Search" onclick="SearchMember2()">
+                    </div>
+                </div>
+            </div>
+           
+            @foreach (var item in Model)
+            {
+                <div class="col-md-4 mb-2">
+                    <a href="@Url.Action("Index", "Home", new { Client = item.Client })">
+                        <div class="card">
+                            <div class="card-body cardBody-custom">
+                                <div class="card-pro">
+                                    <div class="cardPro-content d-flex align-items-center">
+                                        <div class="pro-img">
+                                            <img src="~/Content/img/@(item.logo)" alt="">
+                                        </div>
+                                        <h6 class="card-title text-uppercase text-center m-0">@item.Fund</h6>
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-4 mb-2">
-                <a href="">
-                    <div class="card">
-                        <div class="card-body">
-                            <h6 class="card-title text-uppercase text-center m-0">Card title</h6>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-4 mb-2">
-                <div class="card">
-                    <div class="card-body">
-                        <h6 class="card-title text-uppercase text-center m-0">Card title</h6>
-                    </div>
+                    </a>
                 </div>
-            </div>
-            <div class="col-md-4 mb-2">
-                <div class="card">
-                    <div class="card-body">
-                        <h6 class="card-title text-uppercase text-center m-0">Card title</h6>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-2">
-                <div class="card">
-                    <div class="card-body">
-                        <h6 class="card-title text-uppercase text-center m-0">Card title</h6>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-2">
-                <div class="card">
-                    <div class="card-body">
-                        <h6 class="card-title text-uppercase text-center m-0">Card title</h6>
-                    </div>
-                </div>
-            </div>
+            }
+
+
         </div>
     </div>
 </section>
