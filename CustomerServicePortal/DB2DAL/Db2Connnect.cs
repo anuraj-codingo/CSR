@@ -1,7 +1,9 @@
-﻿using IBM.Data.DB2.iSeries;
+﻿using CustomerServicePortal.Models;
+using IBM.Data.DB2.iSeries;
 using System;
 using System.Configuration;
 using System.Data;
+using System.Web;
 
 namespace CustomerServicePortal
 {
@@ -9,30 +11,39 @@ namespace CustomerServicePortal
     {
         public static DataTable GetDataTable(string commandText, CommandType commandType, iDB2Parameter[] parameters = null)
         {
+            var dataset = new DataSet();
             try
             {
-                using (iDB2Connection connection = new iDB2Connection(ConfigurationManager.ConnectionStrings["DB2"].ConnectionString))
+                LayoutModel layoutModel = new LayoutModel();
+                layoutModel = (LayoutModel)HttpContext.Current.Session["LayoutDetails"];
+                if (layoutModel.ClientDatabase !=null)
                 {
-                    connection.Open();
-
-                    using (iDB2Command command = new iDB2Command(commandText, commandType, connection))
+                    string Conn = "DataSource = as400.abc.abchldg.com; userid = aspamo; password = a$pamo99; Default Collection =" + layoutModel.ClientDatabase + ";";
+                    using (iDB2Connection connection = new iDB2Connection(Conn))
                     {
-                        command.CommandTimeout = 1000;
-                        if (parameters != null)
-                        {
-                            foreach (var parameter in parameters)
-                            {
-                                command.Parameters.Add(parameter);
-                            }
-                        }
+                        connection.Open();
 
-                        var dataset = new DataSet();
-                        iDB2DataAdapter dataAdaper = new iDB2DataAdapter(command);
-                        dataAdaper.Fill(dataset);
-                        connection.Close();
-                        return dataset.Tables[0];
+                        using (iDB2Command command = new iDB2Command(commandText, commandType, connection))
+                        {
+                            command.CommandTimeout = 1000;
+                            if (parameters != null)
+                            {
+                                foreach (var parameter in parameters)
+                                {
+                                    command.Parameters.Add(parameter);
+                                }
+                            }
+
+                          
+                            iDB2DataAdapter dataAdaper = new iDB2DataAdapter(command);
+                            dataAdaper.Fill(dataset);
+                            connection.Close();
+                            return dataset.Tables[0];
+                        }
                     }
+
                 }
+                return dataset.Tables[0];
             }
             catch (Exception ex)
             {

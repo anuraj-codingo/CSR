@@ -110,8 +110,8 @@
     <div class="col-12 p-0">
         <div class="filter">
             <label for="">Enter Name, ID or SSN</label>
-            <input type="text" id="SearchMember2" value="@ViewBag.SearchMember">
-            <input type="submit" value="Search" onclick="SearchMember2()">
+            <input type="text" id="SearchMember" value="@ViewBag.SearchMember">
+            <input type="submit" value="Search" onclick="SearchMember()">
         </div>
     </div>
     <div class="col-12 main-box clearfix">
@@ -158,7 +158,7 @@
             $.ajax({
                 type: "GET",
                 url:'@Url.Action("GetMember", "Claims")',
-                data: { page: page, SearchMember: $('#SearchMember2').val() },
+                data: { page: page, SearchMember: $('#SearchMember').val() },
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
                 success: function (response) {
@@ -182,7 +182,7 @@
                 }
             });
         };
-                function SearchMember2() {
+                function SearchMember() {
                     GetMemebrTable(1);
         }
         </script>

@@ -7,11 +7,12 @@
                 <span><strong>C</strong></span>
                 @using (Html.BeginForm("MemebersList", "Claims", FormMethod.Post))
                 {
-                    <div class="rows">
-                        <label for="">Enter Name, ID or SSN</label>
-                        <input type="text" id="SearchMember" name="SearchMember">
-                        <input type="submit" value="Search" onclick="SearchMember()">
-                    </div>
+            <div class="rows">
+                <label for="">Enter Name, ID or SSN</label>
+                <input type="hidden" name="GlobalSearch" value="false">
+                <input type="text" id="SearchMember" name="SearchMember">
+                <input type="submit" value="Search" onclick="SearchMember()">
+            </div>
                 }
             </div>
             <div class="info">

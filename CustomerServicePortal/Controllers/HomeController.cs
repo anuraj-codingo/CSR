@@ -17,21 +17,23 @@ namespace CustomerServicePortal.Controllers
             if (Client !=null)
             {
                 Session["LayoutDetails"]=new LayoutModel();
+                ((LayoutModel)Session["LayoutDetails"]).Client = Client;
                 Session["Client"] = Client;
             }
 
-            if (Session["Client"]!=null)
+            if (((LayoutModel)Session["LayoutDetails"]).Client != null || ((LayoutModel)Session["LayoutDetails"]).Client !="")
             {
                 LayoutModel layoutModel = new LayoutModel();
-                layoutModel = GetLayoutSessionClass.GetLayoutModel((string)Session["Client"]);
+                layoutModel = GetLayoutSessionClass.GetLayoutModel(((LayoutModel)Session["LayoutDetails"]).Client);
                 Session["LayoutDetails"] = layoutModel;
 
             }
             else
             {
+                ((LayoutModel)Session["LayoutDetails"]).Client = "ABC"; 
                 Session["Client"] = "ABC";
                 LayoutModel layoutModel = new LayoutModel();
-                layoutModel = GetLayoutSessionClass.GetLayoutModel((string)Session["Client"]);
+                layoutModel = GetLayoutSessionClass.GetLayoutModel(((LayoutModel)Session["LayoutDetails"]).Client);
                 Session["LayoutDetails"] = layoutModel;
             }
 
@@ -75,15 +77,27 @@ namespace CustomerServicePortal.Controllers
 
         private void LoadlayoutModel()
         {
-          
+            try
+            {
                 LayoutModel layoutModel = new LayoutModel();
-          
-                    layoutModel = GetLayoutSessionClass.GetLayoutModel((string)Session["Client"]);
-                    Session["LayoutDetails"] = layoutModel;
-          
+
+                layoutModel = GetLayoutSessionClass.GetLayoutModel(((LayoutModel)Session["LayoutDetails"]).Client);
+                Session["LayoutDetails"] = layoutModel;
+
+            }
+            catch (Exception)
+            {
+
+                LayoutModel layoutModel = new LayoutModel();
+
+                layoutModel = GetLayoutSessionClass.GetLayoutModel(null);
+                Session["LayoutDetails"] = layoutModel;
+
+            }
 
 
-            
+
+
         }
     }
 }

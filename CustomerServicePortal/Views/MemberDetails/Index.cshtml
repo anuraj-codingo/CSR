@@ -17,6 +17,11 @@
     .table th, .table td {
         border-top: none !important;
     }
+    body .modal-dialog { /* Width */
+        max-width: 80%;
+        width: auto !important;
+        display: inline-block;
+    }
 </style>
 
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
@@ -44,13 +49,21 @@
                     <a onclick="Reset(@Model.eMPdetails.EMSSN)" href="#"><h4>@Model.eMPdetails.Name</h4></a>
                     <strong class="h6">ID: <span>@Model.eMPdetails.Id</span></strong>
                     <strong class="h6">Gender: <span>@Model.eMPdetails.Gender</span></strong>
-                    <strong class="h6">DOB: <span>@(new DateTime(Convert.ToInt32(@Model.eMPdetails.DOBYear), Convert.ToInt32(@Model.eMPdetails.DOBMonth), Convert.ToInt32(@Model.eMPdetails.DOBDay)).ToString("MM/dd/yyyy"))</span></strong>
+                    @if (Model.eMPdetails.DOBYear != null && Model.eMPdetails.DOBMonth != null && Model.eMPdetails.DOBDay != null && Model.eMPdetails.DOBYear != "" && Model.eMPdetails.DOBMonth != "" && Model.eMPdetails.DOBDay != "" && Model.eMPdetails.DOBYear != "0" && Model.eMPdetails.DOBMonth != "0" && Model.eMPdetails.DOBDay != "0")
+                    {
+                        <strong class="h6">DOB: <span>@(new DateTime(Convert.ToInt32(@Model.eMPdetails.DOBYear), Convert.ToInt32(@Model.eMPdetails.DOBMonth), Convert.ToInt32(@Model.eMPdetails.DOBDay)).ToString("MM/dd/yyyy"))</span></strong>
+
+                    }
+                    else
+                    {
+                        <strong class="h6">DOB: <span>N/A</span></strong>
+                    }
                     @if (Model.eMPdetails.ShowRequestId)
                     {
                         <button type="button" class="btn btn-primary IdCardRequest mb-2" onclick="IdCardRequest(@Model.eMPdetails.EMSSN,'@Model.eMPdetails.Name','@Model.eMPdetails.Gender')">Request ID Card</button>
                     }
-                    
-                <button type="button" class="btn btn-primary">Print Temporary ID Card</button>
+
+                    <button type="button" class="btn btn-primary">Print Temporary ID Card</button>
                     @*<p>Lorem ipsum dolor sit amet, adipiscing consectetur elit.</p>*@
                 </div>
             </div>
@@ -195,95 +208,29 @@
         <div class="loader2"></div>
     </div>
 </div>
-<div id="EditAddress" class="modal fade modalAddress" role="dialog">
-    <div class="modal-dialog  modal-lg" role="document" style="margin-top: 144px;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Address</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            @*<form id="AddressUpdateSubmit">*@
-            @using (Ajax.BeginForm("UpdateAddress", "MemberDetails",
-                 new AjaxOptions
-                 {
-                     OnSuccess = "OnSuccess",
-                     OnFailure = "OnFailure",
-                     LoadingElementId = "progress"
-                 }))
-            {
-                <div class="modal-body EditAddresshtml">
+<div id="CommonModel" class="modal fade modalAddress" role="dialog">
+    <div class="modal-dialog" role="document" style="margin-top: 144px;">
+        <div class="modal-content CommonModelPopUp">
 
-
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" onclick="AddressUpdateSubmit()">Save changes</button>
-                </div>
-
-            }
         </div>
     </div>
 </div>
-<div id="EditDependent" class="modal fade modalDependent" role="dialog">
+@*<div id="EditDependent" class="modal fade modalDependent" role="dialog">
     <div class="modal-dialog  modal-lg" role="document" style="margin-top: 144px;">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Dependent</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            @*<form id="AddressUpdateSubmit">*@
-            @using (Ajax.BeginForm("EditDependent", "MemberDetails",
-                 new AjaxOptions
-                 {
-                     OnSuccess = "OnSuccess",
-                     OnFailure = "OnFailure",
-                     LoadingElementId = "progress"
-                 }))
-            {
-                <div class="modal-body EditDependenthtml">
 
-
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save</button>
-                </div>
-
-            }
         </div>
     </div>
-</div>
+</div>*@
 
-<div id="ClaimExpanModel" class="modal fade modalAddress" role="dialog">
+@*<div id="ClaimExpanModel" class="modal fade modalAddress" role="dialog">
     <div class="modal-dialog mx-w-1200" role="document" style="margin-top: 144px;">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Claim Details</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-
-            <div class="modal-body ClaimExpanModelBody">
-
-
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                @*<button type="submit" class="btn btn-primary" onclick="AddressUpdateSubmit()">Save changes</button>*@
-            </div>
-
+          
 
         </div>
     </div>
-</div>
+</div>*@
 <div id="EOBExpanModel" class="modal fade modalAddress" role="dialog">
     <div class="modal-dialog mx-w-1200" role="document" style="margin-top: 144px;">
         <div class="modal-content">
@@ -309,12 +256,23 @@
     @{Html.RenderPartial("_MemeberDetailsPartialView", Model.claimDetailModels);}
 </div>
 <script type=text/javascript>
+  
     $('.datepicker').datepicker({
         dateFormat: 'mm-dd-yy',
         changeMonth: true,
         changeYear: true,
         yearRange: "-100:+100"
     });
+    function IDCardRequestOnSuccess(response) {
+        if (response == true) {
+            $('#CommonModel').modal('hide');
+            $('.IdCardRequest').remove();
+        }
+        else {
+            alert("false")
+        }
+
+    }
     function PrintEOB() {
 
         var divContents = $(".EOBExpanModelBody").html();
@@ -325,23 +283,7 @@
         //printWindow.document.write('</body></html>');
         printWindow.document.close();
         printWindow.print();
-        //var doc = new jsPDF({
-        //    orientation: 'portrait'
-        //});
-        //doc.setFontSize(16);
-        //var elementHTML = $('#oReportDiv').html();
-        //var specialElementHandlers = {
-        //    '#elementH': function (element, renderer) {
-        //        return true;
-        //    }
-        //};
-        //doc.fromHTML(elementHTML, 100, 100, {
-        //    'width': 500,
-        //    'elementHandlers': specialElementHandlers
-        //});
 
-        //// Save the PDF
-        //doc.save('sample-document.pdf');
     }
     function EditAddress(SSN) {
         $('.loader-main').show();
@@ -354,9 +296,9 @@
                 success: function (response6) {
 
                     $('.loader-main').hide();
-                    $('.EditAddresshtml').html(response6.viewContent);
+                    $('.CommonModelPopUp').html(response6.viewContent);
 
-                    $('#EditAddress').modal('show');
+                    $('#CommonModel').modal('show');
 
                 },
                 failure: function (response6) {
@@ -403,9 +345,9 @@
                 success: function (response4) {
 
                     $('.loader-main').hide();
-                    $('.ClaimExpanModelBody').html(response4.viewContent);
+                    $('.CommonModelPopUp').html(response4.viewContent);
 
-                    $('#ClaimExpanModel').modal('show');
+                    $('#CommonModel').modal('show');
 
                 },
                 failure: function (response4) {
@@ -427,9 +369,9 @@
                 success: function (response3) {
 
                     $('.loader-main').hide();
-                    $('.EditDependenthtml').html(response3.viewContent);
+                    $('.CommonModelPopUp').html(response3.viewContent);
 
-                    $('#EditDependent').modal('show');
+                    $('#CommonModel').modal('show');
                     $('.datepicker').datepicker({
                         dateFormat: 'mm-dd-yy',
                         changeMonth: true,
@@ -522,41 +464,39 @@
 
     }
 
-    async function IdCardRequest(SSN, Name, Gender) {
-        const { value: text } =await Swal.fire({
-            input: 'textarea',
-            inputLabel: 'Notes',
-            inputPlaceholder: 'Type your message here...',
-            inputAttributes: {
-                'aria-label': 'Type your message here'
-            },
-            showCancelButton: true
-        })
+    function IdCardRequest(SSN, Name, Gender) {
 
-        if (text) {
 
-            $.ajax({
+        $('.loader-main').show();
+                  $.ajax({
                 type: "GET",
-                url:'@Url.Action("IdCardRequest", "MemberDetails")',
-                data: { SSN: SSN, Notes: text, Name: Name, Gender: Gender},
-                contentType: "application/json;charset=utf-8",
+                url:'@Url.Action("RequestIDCardHtml", "MemberDetails")',
+                data: {  SSN: SSN},
+                      contentType: "application/json;charset=utf-8",
+             data: { SSN: SSN, Name: Name, Gender: Gender },
+
                 dataType: "json",
-                success: function (response1) {
-                    if (response1 == true) {
-                        $('.IdCardRequest').remove();
-                    }
-                    else {
-                        alert("false")
-                    }
+                success: function (response6) {
+
+                    $('.loader-main').hide();
+                    $('.CommonModelPopUp').html(response6.viewContent);
+
+                    $('#CommonModel').modal('show');
 
                 },
-                failure: function (response1) {
-                    alert(response1.d);
+                failure: function (response6) {
+                    alert(response6.d);
                 },
-                error: function (response1) {
-                    alert(response1.d);
+                error: function (response6) {
+                    alert(response6.d);
                 }
             });
-        }
+
+    
+
+
+
+
+     
     }
 </script>

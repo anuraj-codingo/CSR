@@ -56,7 +56,9 @@ namespace CustomerServicePortal.Controllers
                         }
                         else if(userModel.Role == "Fund_User")
                         {
-                            return RedirectToAction("Index", "Home");
+                            string Commandtext = "select fund as Client from [dbo].[User_Funds] where UserId="+userModel.UserId;
+                            object client = db.GetScalarValue(Commandtext, CommandType.Text);
+                            return RedirectToAction("Index", "Home",new { Client=client.ToString() });
                         }
                         else if (userModel.Role == "Admin")
                         {

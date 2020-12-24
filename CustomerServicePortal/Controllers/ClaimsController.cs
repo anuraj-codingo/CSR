@@ -1,4 +1,5 @@
 ﻿using CustomerServicePortal.Common;
+using CustomerServicePortal.DAL;
 using CustomerServicePortal.Models;
 using System;
 using System.Collections.Generic;
@@ -19,16 +20,31 @@ namespace CustomerServicePortal.Controllers
         }
 
         [HttpPost]
-        public ActionResult MemebersList(string SearchMember)
+        public ActionResult MemebersList(string SearchMember,bool GlobalSearch)
         {
             List<MemeberDetailsModel> memeberDetailsModels = new List<MemeberDetailsModel>();
             try
             {
-                GetmemeberListModel(SearchMember, memeberDetailsModels, 1);
-                ViewBag.TotalmemeberCount = (int)Db2Connnect.GetDataTable(GetSqlQuery.TotalMemeberCount(SearchMember), CommandType.Text).Rows[0]["Total"];
+                TempData["GlobalSearch"] = GlobalSearch;
+                if (GlobalSearch)
+                {
+                   
+                    DataTable dt = new DataTable();
+                    DBManager db = new DBManager("CustomerServicePortal");
+                    UserModel userModel = (UserModel)Session["UserModel"];
+                    dt = db.GetDataTable(GetSqlQuery.GetEMployDetails_GlobalSearch(SearchMember,userModel.UserId, 1, 10), CommandType.Text);
+                    GlobalAndLocalSearch_Datatable_TOList(memeberDetailsModels, dt);
+                    ViewBag.TotalmemeberCount = db.GetScalarValue(GetSqlQuery.GlobalSearchTotalCount(SearchMember, userModel.UserId), CommandType.Text);
+                }
+                else
+                {
+                    GetmemeberListModel(SearchMember, memeberDetailsModels, 1);
+                    ViewBag.TotalmemeberCount = (int)Db2Connnect.GetDataTable(GetSqlQuery.TotalMemeberCount(SearchMember), CommandType.Text).Rows[0]["Total"];
+
+                }
                 ViewBag.SearchMember = SearchMember;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 throw;
             }
@@ -37,15 +53,30 @@ namespace CustomerServicePortal.Controllers
 
         public JsonResult GetMember(int page, string SearchMember)
         {
+            bool GlobalSearch = (bool)TempData.Peek("GlobalSearch");
             List<MemeberDetailsModel> memeberDetailsModels = new List<MemeberDetailsModel>();
             string viewContent = "";
             int TotalCount = 0;
             try
             {
-                GetmemeberListModel(SearchMember, memeberDetailsModels, page);
+                if (GlobalSearch)
+                {
+                    DataTable dt = new DataTable();
+                    DBManager db = new DBManager("CustomerServicePortal");
+                    UserModel userModel = (UserModel)Session["UserModel"];
+                    dt = db.GetDataTable(GetSqlQuery.GetEMployDetails_GlobalSearch(SearchMember, userModel.UserId,page, 10), CommandType.Text);
+                    GlobalAndLocalSearch_Datatable_TOList(memeberDetailsModels, dt);
+                    viewContent = ConvertViewToString("_MemberListPartialView", memeberDetailsModels);
+                    TotalCount = (int)db.GetScalarValue(GetSqlQuery.GlobalSearchTotalCount(SearchMember, userModel.UserId), CommandType.Text);
 
-                viewContent = ConvertViewToString("_MemberListPartialView", memeberDetailsModels);
-                TotalCount = (int)Db2Connnect.GetDataTable(GetSqlQuery.TotalMemeberCount(SearchMember), CommandType.Text).Rows[0]["Total"];
+                }
+                else
+                {
+                    GetmemeberListModel(SearchMember, memeberDetailsModels, page);
+                    viewContent = ConvertViewToString("_MemberListPartialView", memeberDetailsModels);
+                    TotalCount = (int)Db2Connnect.GetDataTable(GetSqlQuery.TotalMemeberCount(SearchMember), CommandType.Text).Rows[0]["Total"];
+
+                }
             }
             catch (Exception ex)
             {
@@ -72,13 +103,26 @@ namespace CustomerServicePortal.Controllers
 
             dt = Db2Connnect.GetDataTable(GetSqlQuery.GetEMployDetails(SearchMember, page, 10), CommandType.Text);
 
+            GlobalAndLocalSearch_Datatable_TOList(memeberDetailsModels, dt);
+        }
+
+        private static void GlobalAndLocalSearch_Datatable_TOList(List<MemeberDetailsModel> memeberDetailsModels, DataTable dt)
+        {
             if (dt.Rows.Count > 0)
             {
                 foreach (DataRow item in dt.Rows)
                 {
                     MemeberDetailsModel memeberDetailsModel = new MemeberDetailsModel();
-                    memeberDetailsModel.SSN =item["SSN"].ToString();
-                    memeberDetailsModel.Member = (item["Member"].ToString().Split('*')[1] + "*" + item["Member"].ToString().Split('*')[0]).Replace("*","");
+                    memeberDetailsModel.SSN = item["SSN"].ToString();
+                    if (item["Member"].ToString().Contains("*"))
+                    {
+                        memeberDetailsModel.Member = (item["Member"].ToString().Split('*')[1] + "*" + item["Member"].ToString().Split('*')[0]).Replace("*", "");
+
+                    }
+                    else
+                    {
+                        memeberDetailsModel.Member = item["Member"].ToString();
+                    }
                     memeberDetailsModel.Year = item["Year"].ToString();
                     memeberDetailsModel.Month = item["Month"].ToString();
                     memeberDetailsModel.Day = item["Day"].ToString();

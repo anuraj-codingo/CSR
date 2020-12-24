@@ -19,14 +19,19 @@
         <div class="row">
             <div class="report w-100 mb-0">
                 <div class="col-12 p-0 d-flex justify-content-center">
+                    @using (Html.BeginForm("MemebersList", "Claims", FormMethod.Post))
+                    {
                     <div class="filter">
                         <label for="">Enter Name, ID or SSN</label>
-                        <input type="text" id="SearchMember2">
-                        <input type="submit" value="Search" onclick="SearchMember2()">
+                        <input type="hidden"  name="GlobalSearch" value="true">
+                        <input type="text" id="SearchMember" name="SearchMember">
+                        <input type="submit" value="Search">
                     </div>
-                </div>
+                    }
+                    </div>
+                    
             </div>
-           
+
             @foreach (var item in Model)
             {
                 <div class="col-md-4 mb-2">

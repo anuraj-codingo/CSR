@@ -29,6 +29,15 @@ namespace CustomerServicePortal.Models
         public DateTime? TerminationDate { get; set; }
         public DateTime? EffectiveDate { get; set; }
 
+        public string ADDRESS1 { get; set; }
+        public string ADDRESS2 { get; set; }
+        public string ADDRESS3 { get; set; }
+        public string CITY { get; set; }
+        public string STATE { get; set; }
+        public string ZIP5 { get; set; }
+        public string ZIP4 { get; set; }
+
+
 
         public string EffectiveYear { get; set; }
         public string EffectiveMonth { get; set; }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CustomerServicePortal.DAL;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -34,6 +35,15 @@ namespace CustomerServicePortal.Common
                 SSN = SSN / 10;
             }
             return SSN;
+
+        }
+        public static string GetClientFromSSN(string SSN)
+        {
+            string Commandtext = "select * from [BICC_REPORTING].dbo.EMPYP where EMPSSN='" + SSN+"'";
+            DBManager db = new DBManager("CustomerServicePortal");
+         object Client=   db.GetScalarValue(Commandtext, CommandType.Text);
+            return Client.ToString();
+
 
         }
         public static async Task SendmailAsync(DataTable dt)

@@ -1,0 +1,70 @@
+﻿@model CustomerServicePortal.Models.IDCardRequest
+<style>
+    #IDCardQuantity{
+        width:100%;
+    }
+</style>
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLongTitle">ID Card Request</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+@*<form id="AddressUpdateSubmit">*@
+@using (Ajax.BeginForm("IdCardRequest", "MemberDetails",
+     new AjaxOptions
+     {
+         OnSuccess = "IDCardRequestOnSuccess",
+         OnFailure = "OnFailure",
+         LoadingElementId = "progress"
+     }))
+{
+    <div class="modal-body EditAddresshtml">
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    @Html.HiddenFor(x => x.EMSSN)
+                    @Html.HiddenFor(x => x.Name)
+                    @Html.HiddenFor(x => x.Gender)
+                    <label class="control-label col-md-2">Notes</label>
+                    @Html.TextAreaFor(model => model.RquestNotes, new { @class = "form-control", @placeholder = "Notes" })
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label col-md-2">Type</label>
+                    @Html.DropDownListFor(model => model.IDCardType,
+             new List<SelectListItem> {
+                  new SelectListItem { Value = "Disabled" , Text = "Disabled" },
+                  new SelectListItem { Value = "Normal" , Text = "Normal" }
+               }, "Select Type",
+             new { @class = "form-control" })
+                                            </div>
+            
+                        </div>
+            
+
+                        <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label col-md-2">Quantity</label>
+
+                    @Html.DropDownListFor(m => m.IDCardQuantity, Enumerable.Range(0, 6).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }))
+                    @*@Html.TextBoxFor(model => model.IDCardQuantity, new { @class = "form-control", @placeholder = "Address 1" })*@
+                </div>
+            </div>
+
+
+
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary" onclick="AddressUpdateSubmit()">Save changes</button>
+    </div>
+
+}
+
+
+

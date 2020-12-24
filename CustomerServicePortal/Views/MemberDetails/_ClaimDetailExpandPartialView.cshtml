@@ -1,86 +1,104 @@
 ﻿@model IEnumerable<CustomerServicePortal.Models.ClaimDeatilExpandModel>
-<div class="tableWrap">
-    <div class="table-responsive">
-        <table class="table w-100 table-striped">
-            <thead>
-                <tr>
-                    @*<th>
-                            @Html.DisplayNameFor(model => model.ClaimNo)
-                        </th>*@
-                    <th>
-                        Line#
-                    </th>
-                    <th>
-                        Status
-                    </th>
-                    <th>
-                        Benefit Code
-                    </th>
-                    <th>
-                        CPT#
-                    </th>
-                    <th>
-                        Total Charge
-                    </th>
-                    <th>
-                        Deductible                    
-                    </th>
-                    <th>
-                        Paid
-                    </th>
-                    <th>
-                        Coinsurance
-                    </th>
-                    <th>
-                        OOP
-                    </th>
-                    <th>
-                        Provider Discount
-                    </th>
-                    @*<th></th>*@
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        @*<td>
-                                @Html.DisplayFor(modelItem => item.ClaimNo)
-                            </td>*@
-                        <td>
-                            @Html.DisplayFor(modelItem => item.LineNo)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Status)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.BenefitCode)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.CPT)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.TotalCharge)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Dedcutible)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Paid)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Coinsurance)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.OOP)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ProviderDiscount)
-                        </td>
-                      
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLongTitle">Claim Details</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
 </div>
+
+<div class="modal-body ClaimExpanModelBody">
+
+    <div class="tableWrap">
+        <div class="table-responsive">
+            <table class="table w-100 table-striped">
+                <thead>
+                    <tr>
+                        @*<th>
+                                @Html.DisplayNameFor(model => model.ClaimNo)
+                            </th>*@
+                        <th>
+                            Line#
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th>
+                            Benefit Code
+                        </th>
+                        <th>
+                            CPT#
+                        </th>
+                        <th>
+                            Total Charge
+                        </th>
+                        <th>
+                            Deductible
+                        </th>
+                        <th>
+                            Paid
+                        </th>
+                        <th>
+                            Coinsurance
+                        </th>
+                        <th>
+                            OOP
+                        </th>
+                        <th>
+                            Provider Discount
+                        </th>
+                        @*<th></th>*@
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            @*<td>
+                                    @Html.DisplayFor(modelItem => item.ClaimNo)
+                                </td>*@
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LineNo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.BenefitCode)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CPT)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TotalCharge)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Dedcutible)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Paid)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Coinsurance)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.OOP)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ProviderDiscount)
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+</div>
+
+
+

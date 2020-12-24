@@ -28,5 +28,16 @@ namespace CustomerServicePortal.Models
         //public string Zip2 { get; set; }
         //public string Zip3 { get; set; }
         //public bool ShowRequestId { get; set; }
+        public string IDCardType { get; set; }
+        public int IDCardQuantity { get; set; }
+    }
+    public class IDCardRequest
+    {
+        public string EMSSN { get; set; }
+        public string RquestNotes { get; set; }
+        public string IDCardType { get; set; }
+        public string Name { get; set; }
+        public string Gender { get; set; }
+        public int IDCardQuantity { get; set; }
     }
 }

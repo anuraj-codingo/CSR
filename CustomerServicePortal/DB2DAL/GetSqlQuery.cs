@@ -24,7 +24,55 @@ namespace CustomerServicePortal
                 else
                 {
                     return  @"SELECT EMSSN as SSN,EMNAME as Member,EMMEM# as ID,EMCITY as City,EMST as State,EMDOBY as Year,EMDOBM as Month,EMDOBD as Day
-                    FROM EMPYP where EMDROP<> 'D' and (EMNAME LIKE '%" + SearchMember + "%' or UPPER(EMNAME) LIKE '%" + SearchMember + "%' or LOWER(EMNAME) LIKE '%" + SearchMember + "%')   OFFSET (" + page + " -1) * " + size + " " +"ROWS FETCH NEXT " + size + " ROWS ONLY";
+                    FROM EMPYP where EMDROP<> 'D' and (EMNAME LIKE '%" + SearchMember + "%' or LOWER(EMNAME) LIKE LOWER('%" + SearchMember + "%'))   OFFSET (" + page + " -1) * " + size + " " +"ROWS FETCH NEXT " + size + " ROWS ONLY";
+                }
+            }
+        }
+        public static string GetEMployDetails_GlobalSearch(string SearchMember,long UserId, int page, int size)
+        {
+            if (SearchMember == "")
+            {
+                return @"SELECT EMPSSN as SSN,fullname as Member,ALTID as ID,CITY as City,[State] as State,datepart(year, MBRDOB) as Year,datepart(month, MBRDOB) as Month,datepart(day, MBRDOB) as Day
+                                            FROM [BICC_REPORTING].dbo.EMPYP EMP
+											inner join [dbo].[User_Funds] UF on EMP.client=UF.Fund  WHERE UF.UserId="+UserId+" and  EMPYP_DROP <> 'D'  order by " +
+                                            "EMPSSN   OFFSET " + size+" * ("+page+" - 1) ROWS  FETCH NEXT "+size+" ROWS ONLY";
+            }
+            else
+            {
+                if ((SearchMember).All(char.IsNumber))
+                {
+                    return @"SELECT EMPSSN as SSN,fullname as Member,ALTID as ID,CITY as City,[State] as State,datepart(year, MBRDOB) as Year,datepart(month, MBRDOB) as Month,datepart(day, MBRDOB) as Day
+                                            FROM [BICC_REPORTING].dbo.EMPYP EMP
+											inner join [dbo].[User_Funds] UF on EMP.client=UF.Fund  WHERE UF.UserId=" + UserId + " and  EMPYP_DROP <> 'D' and (EMPSSN =" + SearchMember + " OR ALTID =" + SearchMember + ") order by EMPSSN  OFFSET " + size + " * (" + page + " - 1) ROWS  FETCH NEXT " + size + " ROWS ONLY";
+                }
+                else
+                {
+                    return @"SELECT EMPSSN as SSN,fullname as Member,ALTID as ID,CITY as City,[State] as State,datepart(year, MBRDOB) as Year,datepart(month, MBRDOB) as Month,datepart(day, MBRDOB) as Day
+                                            FROM [BICC_REPORTING].dbo.EMPYP EMP
+											inner join [dbo].[User_Funds] UF on EMP.client=UF.Fund  WHERE UF.UserId=" + UserId + " and  EMPYP_DROP <> 'D' and (lower(Fullname) LIKE lower('%" + SearchMember + "%')) order by EMPSSN   OFFSET " + size + " * (" + page + " - 1) ROWS  FETCH NEXT " + size + " ROWS ONLY";
+                }
+            }
+        }
+        public static string GlobalSearchTotalCount(string SearchMember, long UserId)
+        {
+            if (SearchMember == "")
+            {
+                return @"SELECT count(*) As TotalCount  FROM [BICC_REPORTING].dbo.EMPYP EMP
+											inner join [dbo].[User_Funds] UF on EMP.client=UF.Fund  WHERE UF.UserId=" + UserId + " and  EMPYP_DROP <> 'D'";
+            }
+            else
+            {
+                if ((SearchMember).All(char.IsNumber))
+                {
+                    return @"SELECT count(*) As TotalCount
+                                            FROM [BICC_REPORTING].dbo.EMPYP EMP
+											inner join [dbo].[User_Funds] UF on EMP.client=UF.Fund  WHERE UF.UserId=" + UserId + " and  EMPYP_DROP <> 'D' and (EMPSSN =" + SearchMember + " OR ALTID =" + SearchMember + ")";
+                }
+                else
+                {
+                    return @"SELECT count(*) As TotalCount
+                                            FROM [BICC_REPORTING].dbo.EMPYP EMP
+											inner join [dbo].[User_Funds] UF on EMP.client=UF.Fund  WHERE UF.UserId=" + UserId + " and  EMPYP_DROP <> 'D' and (lower(Fullname) LIKE lower('%" + SearchMember + "%'))";
                 }
             }
         }
@@ -44,10 +92,12 @@ namespace CustomerServicePortal
         public  static string GetDependentDetailsWithSeq(string SSN,int DPSEQ)
         {
             
-            return @"SELECT DPSSN AS DPSSN,DPSEQ AS SEQ, DPNAME AS NAME,d.DPRLTN AS RELATION,DPSTAT AS STATUS,DPDOBY AS DOBY,DPDOBM AS DOBM ,DPDOBD AS DOBD,
+            return @"SELECT WBADR1 AS ADDRESS1,WBADR2 AS ADDRESS2,WBADR3 AS ADDRESS3,WBCITY AS CITY,WBST AS STATE,WBZIP5 AS ZIP5,WBZIP4 AS ZIP4,DPSSN AS DPSSN,DPSEQ AS SEQ, DPNAME AS NAME,d.DPRLTN AS RELATION,DPSTAT AS STATUS,DPDOBY AS DOBY,DPDOBM AS DOBM ,DPDOBD AS DOBD,
                             DPEFDY AS EFDY,DPEFDM AS EFDM ,DPEFDD AS EFDD, 
                             DPTDTY AS TDTY,DPTDTM AS TDTM ,DPTDTD AS TDTD, 
-                            d.DPCLAS CLASS, d.DPPLAN AS  PLAN FROM DEPNP d  
+                            d.DPCLAS CLASS, d.DPPLAN AS  PLAN FROM DEPNP d LEFT JOIN
+                            WBENP BENP ON BENP.WBSSN  = d.DPSSN AND 
+                            BENP.WBSEQ# = d.DPSEQ  
                             WHERE DPSSN = '" + SSN + "' AND DPSEQ =" + DPSEQ + "  AND DPDROP<> 'D'";
 
         }

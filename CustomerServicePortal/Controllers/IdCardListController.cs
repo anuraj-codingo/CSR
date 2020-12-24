@@ -52,6 +52,8 @@ namespace CustomerServicePortal.Controllers
                 idCardListModel.Name = item["Name"].ToString().Replace("*", "");
                 idCardListModel.Gender = item["Gender"].ToString();
                 idCardListModel.Completestatus = (bool)item["Complete"];
+                idCardListModel.IDCardType = item["IDCardType"].ToString();
+                idCardListModel.IDCardQuantity = (int)item["Quantity"];
                 DataTable dt1 = new DataTable();
                 dt1 = Db2Connnect.GetDataTable(GetSqlQuery.GetMemberDetailsWIthSSN(idCardListModel.EMSSN), CommandType.Text);
                 if (dt1.Rows.Count > 0)

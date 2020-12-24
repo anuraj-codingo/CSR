@@ -280,6 +280,7 @@
     <Content Include="Views\MemberDetails\_ClaimDetailExpandPartialView.cshtml" />
     <Content Include="Views\Shared\_ChangePasswordPartial.cshtml" />
     <Content Include="Views\IdCardList\_IdCardTableListPartilaView.cshtml" />
+    <Content Include="Views\MemberDetails\_RequestIdCardPartialView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

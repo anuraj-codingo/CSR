@@ -25,6 +25,8 @@ namespace CustomerServicePortal.Controllers
 
             try
             {
+                GetLayoutSessionClass.GetLayoutModel(Common.StaticClass.GetClientFromSSN(SSN));
+
                 List<DEDMET_OOP_Model> dEDMET_OOP_CurrentYear_Models = GetDEDMETOOP(SSN,DateTime.Now.Year);
                 claimDetailDashBoardModel.dEDMETModelCurentYear = dEDMET_OOP_CurrentYear_Models;
 
@@ -41,6 +43,8 @@ namespace CustomerServicePortal.Controllers
                 EMPdetails eMPdetails = GetEMployDetailsModelWIthSSN(SSN);
                 claimDetailDashBoardModel.eMPdetails = eMPdetails;
 
+              
+
 
             }
             catch (Exception ex)
@@ -49,10 +53,10 @@ namespace CustomerServicePortal.Controllers
             }
             return View(claimDetailDashBoardModel);
         }
-        //public  JsonResult UpdateAddress(EMPdetails emp)
-        //{
-        //    return Json(new { viewContent = "" }, JsonRequestBehavior.AllowGet);
-        //}
+        public JsonResult UpdateAddress(EMPdetails emp)
+        {
+            return Json(new { viewContent = "" }, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult EditDependentHtml(string SSN,int DependentSeq)
         {
             DependentDetailModel dependentDetailModel = new DependentDetailModel();
@@ -75,7 +79,27 @@ namespace CustomerServicePortal.Controllers
 
             return Json(new { viewContent = viewContent }, JsonRequestBehavior.AllowGet);
         }
-        
+
+        public ActionResult RequestIDCardHtml(string SSN,string Name,string Gender)
+        {
+            IDCardRequest iDCardRequest = new IDCardRequest();
+            string viewContent = "";
+            try
+            {
+                iDCardRequest.EMSSN = SSN;
+                iDCardRequest.Gender = Gender;
+                iDCardRequest.Name = Name;
+                viewContent = ConvertViewToString("_RequestIdCardPartialView", iDCardRequest);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
+            return Json(new { viewContent = viewContent }, JsonRequestBehavior.AllowGet);
+        }
+
         public  JsonResult GetAddreessParialViewHtml(string SSN)
         {
             EMPdetails eMPdetails = new EMPdetails();
@@ -183,17 +207,19 @@ namespace CustomerServicePortal.Controllers
             string viewContent = ConvertViewToString("_MemeberDetailsPartialView", claimDetailModels);
             return Json(new { viewContent = viewContent }, JsonRequestBehavior.AllowGet);
         }
-        public JsonResult IdCardRequest(string SSN,string Notes,string Name,string Gender)
+        public JsonResult IdCardRequest(IDCardRequest iDCardRequest)
         {
             try
             {
                 DBManager db = new DBManager("CustomerServicePortal");
                 string Commandtext = "Fill_IDCardRequestDetails";
                 var parameters = new List<IDbDataParameter>();
-                parameters.Add(db.CreateParameter("@SSN", SSN, DbType.String));
-                parameters.Add(db.CreateParameter("@RequestNotes", Notes, DbType.String));
-                parameters.Add(db.CreateParameter("@Name", Name, DbType.String));
-                parameters.Add(db.CreateParameter("@Gender", Gender, DbType.String));
+                parameters.Add(db.CreateParameter("@SSN", iDCardRequest.EMSSN, DbType.String));
+                parameters.Add(db.CreateParameter("@RequestNotes", iDCardRequest.RquestNotes, DbType.String));
+                parameters.Add(db.CreateParameter("@Name", iDCardRequest.Name, DbType.String));
+                parameters.Add(db.CreateParameter("@Gender", iDCardRequest.Gender, DbType.String));
+                parameters.Add(db.CreateParameter("@IDCardType", iDCardRequest.IDCardType, DbType.String));
+                parameters.Add(db.CreateParameter("@IDCardQuantity", iDCardRequest.IDCardQuantity, DbType.String));
                 parameters.Add(db.CreateParameter("@Requester", User.Identity.Name, DbType.String));
                 db.Insert(Commandtext,CommandType.StoredProcedure, parameters.ToArray());
 
@@ -332,6 +358,14 @@ namespace CustomerServicePortal.Controllers
                 dependentDetailModel.EffectiveYear = item["EFDY"].ToString();
                 dependentDetailModel.EffectiveMonth = item["EFDM"].ToString();
                 dependentDetailModel.EffectiveDay = item["EFDD"].ToString();
+
+                dependentDetailModel.ADDRESS1 = item["ADDRESS1"].ToString();
+                dependentDetailModel.ADDRESS2 = item["ADDRESS2"].ToString();
+                dependentDetailModel.ADDRESS3 = item["ADDRESS3"].ToString();
+                dependentDetailModel.STATE = item["STATE"].ToString();
+                dependentDetailModel.CITY = item["CITY"].ToString();
+                dependentDetailModel.ZIP4 = item["ZIP4"].ToString();
+                dependentDetailModel.ZIP5 = item["ZIP5"].ToString();
 
                 if (item["TDTY"].ToString()!="0" && item["TDTM"].ToString() != "0" && item["TDTD"].ToString() != "0")
                 {

@@ -17,28 +17,35 @@
             @foreach (var item in Model)
             {
             <tr>
-              
-                    
-                    @*href = "@Url.Action("Index", "MemberDetails", new { SSN = item.SSN })"*@
-                  
-                    <td>
 
-                        @using (Html.BeginForm("Index", "MemberDetails", FormMethod.Post))
-                        {
-                            <input type="hidden" name="SSN" value="@item.SSN" />
-                            <button class="button btn-select" style="cursor:pointer" type="submit">Select</button>
+
+                @*href = "@Url.Action("Index", "MemberDetails", new { SSN = item.SSN })"*@
+
+                <td>
+
+                    @using (Html.BeginForm("Index", "MemberDetails", FormMethod.Post))
+                    {
+                        <input type="hidden" name="SSN" value="@item.SSN" />
+                        <button class="button btn-select" style="cursor:pointer" type="submit">Select</button>
+                    }
+
+
+                </td>
+                <td> @(CustomerServicePortal.Common.StaticClass.SSN_DisplayForamatting(item.SSN))</td>
+                <td>@item.Member</td>
+                <td>@item.ID</td>
+                <td>@item.City</td>
+                <td>@item.State</td>
+                @if (item.Year != null && item.Month != null && item.Day != null && item.Year != "" && item.Month != "" && item.Day != "")
+                {
+                    <td>@(new DateTime(Convert.ToInt32(item.Year), Convert.ToInt32(item.Month), Convert.ToInt32(item.Day)).ToString("MM/dd/yyyy")) </td>
+
+                }
+                else
+                {
+                    <td>N/A</td>
                         }
 
-
-                    </td>
-                    <td> @(CustomerServicePortal.Common.StaticClass.SSN_DisplayForamatting(item.SSN))</td>
-                    <td>@item.Member</td>
-                    <td>@item.ID</td>
-                    <td>@item.City</td>
-                    <td>@item.State</td>
-                    @*<td>@item.Month-@item.Day-@item.Year</td>*@
-                 <td>@(new DateTime(Convert.ToInt32(item.Year), Convert.ToInt32(item.Month), Convert.ToInt32(item.Day)).ToString("MM/dd/yyyy")) </td>
-                
                 </tr>
             }
         </tbody>

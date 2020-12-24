@@ -8,5 +8,6 @@
         public string FooterText { get; set; }
         public string BackgroundImg { get; set; }
         public bool ShowMenuBar { get; set; }
+        public string ClientDatabase { get; set; }
     }
 }

@@ -1,71 +1,99 @@
 ﻿@model CustomerServicePortal.Models.EMPdetails
-<div class="row">
-    <div class="col-md-6">
-        <div class="form-group">
-            <input type="hidden" value="@Model.EMSSN" />
-            @Html.HiddenFor(x => x.EMSSN)
-            <label class = "control-label col-md-2">Address 1</label>
-        @*    @Html.LabelFor(model => model.Addr1, htmlAttributes: new { @class = "control-label col-md-2" })*@
-            @Html.TextBoxFor(model => model.Addr1, new { @class = "form-control", @placeholder = "Address 1" })
+
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLongTitle">Address</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+@*<form id="AddressUpdateSubmit">*@
+@using (Ajax.BeginForm("UpdateAddress", "MemberDetails",
+     new AjaxOptions
+     {
+         OnSuccess = "OnSuccess",
+         OnFailure = "OnFailure",
+         LoadingElementId = "progress"
+     }))
+{
+<div class="modal-body EditAddresshtml">
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <input type="hidden" value="@Model.EMSSN" />
+                @Html.HiddenFor(x => x.EMSSN)
+                <label class="control-label col-md-2">Address 1</label>
+                @*    @Html.LabelFor(model => model.Addr1, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                @Html.TextBoxFor(model => model.Addr1, new { @class = "form-control", @placeholder = "Address 1" })
+            </div>
         </div>
-    </div>
-    <div class="col-md-6">
-        <div class="form-group">
-            <label class="control-label col-md-2">Address 2</label>
-            @*   @Html.LabelFor(model => model.Addr2, htmlAttributes: new { @class = "control-label col-md-2" })*@
-            @Html.TextBoxFor(model => model.Addr2, new { @class = "form-control", @placeholder = "Address 2" })
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label col-md-2">Address 2</label>
+                @*   @Html.LabelFor(model => model.Addr2, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                @Html.TextBoxFor(model => model.Addr2, new { @class = "form-control", @placeholder = "Address 2" })
+            </div>
         </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label col-md-2">Address 3</label>
+                @*   @Html.LabelFor(model => model.Addr3, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                @Html.TextBoxFor(model => model.Addr3, new { @class = "form-control", @placeholder = "Address 3" })
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label col-md-2">Address 4</label>
+                @* @Html.LabelFor(model => model.Addr4, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                @Html.TextBoxFor(model => model.Addr4, new { @class = "form-control", @placeholder = "Address 4" })
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label col-md-2">City</label>
+                @*    @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                @Html.TextBoxFor(model => model.City, new { @class = "form-control", @placeholder = "City" })
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label col-md-2">State</label>
+                @* @Html.LabelFor(model => model.State, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                @Html.TextBoxFor(model => model.State, new { @class = "form-control", @placeholder = "State" })
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label col-md-2">Zip 1</label>
+                @*  @Html.LabelFor(model => model.Zip1, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                @Html.TextBoxFor(model => model.Zip1, new { @class = "form-control", @placeholder = "Zip1" })
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label col-md-2">Zip 2</label>
+                @*    @Html.LabelFor(model => model.Zip2, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                @Html.TextBoxFor(model => model.Zip2, new { @class = "form-control", @placeholder = "Zip2" })
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label col-md-2">Zip 3</label>
+                @*   @Html.LabelFor(model => model.Zip3, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                @Html.TextBoxFor(model => model.Zip3, new { @class = "form-control", @placeholder = "Zip3" })
+            </div>
+        </div>
+
     </div>
 
-<div class="col-md-6">
-    <div class="form-group">
-        <label class="control-label col-md-2">Address 3</label>
-     @*   @Html.LabelFor(model => model.Addr3, htmlAttributes: new { @class = "control-label col-md-2" })*@
-        @Html.TextBoxFor(model => model.Addr3, new { @class = "form-control", @placeholder = "Address 3" })
-    </div>
 </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary" onclick="AddressUpdateSubmit()">Save changes</button>
+    </div>
 
-<div class="col-md-6">
-    <div class="form-group">
-        <label class="control-label col-md-2">Address 4</label>
-       @* @Html.LabelFor(model => model.Addr4, htmlAttributes: new { @class = "control-label col-md-2" })*@
-        @Html.TextBoxFor(model => model.Addr4, new { @class = "form-control", @placeholder = "Address 4" })
-    </div>
-</div>
-<div class="col-md-6">
-    <div class="form-group">
-        <label class="control-label col-md-2">City</label>
-    @*    @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label col-md-2" })*@
-        @Html.TextBoxFor(model => model.City, new { @class = "form-control", @placeholder = "City" })
-    </div>
-</div>
-<div class="col-md-6">
-    <div class="form-group">
-        <label class="control-label col-md-2">State</label>
-       @* @Html.LabelFor(model => model.State, htmlAttributes: new { @class = "control-label col-md-2" })*@
-        @Html.TextBoxFor(model => model.State, new { @class = "form-control", @placeholder = "State" })
-    </div>
-</div>
-<div class="col-md-6">
-    <div class="form-group">
-        <label class="control-label col-md-2">Zip 1</label>
-      @*  @Html.LabelFor(model => model.Zip1, htmlAttributes: new { @class = "control-label col-md-2" })*@
-        @Html.TextBoxFor(model => model.Zip1, new { @class = "form-control", @placeholder = "Zip1" })
-    </div>
-</div>
-<div class="col-md-6">
-    <div class="form-group">
-        <label class="control-label col-md-2">Zip 2</label>
-    @*    @Html.LabelFor(model => model.Zip2, htmlAttributes: new { @class = "control-label col-md-2" })*@
-        @Html.TextBoxFor(model => model.Zip2, new { @class = "form-control", @placeholder = "Zip2" })
-    </div>
-</div>
-<div class="col-md-6">
-    <div class="form-group">
-        <label class="control-label col-md-2">Zip 3</label>
-     @*   @Html.LabelFor(model => model.Zip3, htmlAttributes: new { @class = "control-label col-md-2" })*@
-        @Html.TextBoxFor(model => model.Zip3, new { @class = "form-control", @placeholder = "Zip3" })
-    </div>
-</div>
+}
 
-</div>
+

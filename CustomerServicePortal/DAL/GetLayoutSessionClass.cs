@@ -1,4 +1,5 @@
 ﻿using CustomerServicePortal.Models;
+using System.Collections.Generic;
 using System.Data;
 using System.Web;
 
@@ -12,12 +13,15 @@ namespace CustomerServicePortal.DAL
             LayoutModel layoutModel = new LayoutModel();
             try
             {
-                if (((LayoutModel)HttpContext.Current.Session["LayoutDetails"]).HeaderTitle == null)
+                if (((LayoutModel)HttpContext.Current.Session["LayoutDetails"]).HeaderTitle == null || Client !="")
                 {
                     DBManager db = new DBManager("CustomerServicePortal");
-                    string CommandText = "Select * from LayoutDetails Where CLIENT='" + Client + "'";
+                    string CommandText = "GetLayoutdetails";
+                    var parameters = new List<IDbDataParameter>();
+                    parameters.Add(db.CreateParameter("@Client",Client, DbType.String));
+
                     DataTable dt = new DataTable();
-                    dt = db.GetDataTable(CommandText, CommandType.Text);
+                    dt = db.GetDataTable(CommandText, CommandType.StoredProcedure,parameters.ToArray());
                     if (dt.Rows.Count>0)
                     {
                         foreach (DataRow item in dt.Rows)
@@ -27,6 +31,7 @@ namespace CustomerServicePortal.DAL
                             layoutModel.FooterText = item["FooterText"].ToString();
                             layoutModel.BackgroundImg = item["BackgroundImg"].ToString();
                             layoutModel.Client = item["CLIENT"].ToString();
+                            layoutModel.ClientDatabase = item["FUNDDF"].ToString();
                             layoutModel.ShowMenuBar = true;
 
                         }
@@ -57,7 +62,7 @@ namespace CustomerServicePortal.DAL
                 }
 
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
 
               
