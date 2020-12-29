@@ -8,78 +8,153 @@ namespace CustomerServicePortal
     {
         public static string GetEMployDetails(string SearchMember, int page, int size)
         {
-            if (SearchMember == "")
-            {
-                return @"SELECT EMSSN as SSN,EMNAME as Member,EMMEM# as ID,EMCITY as City,EMST as State,EMDOBY as Year,EMDOBM as Month,EMDOBD as Day 
-                                     FROM EMPYP where EMDROP<> 'D' 
-                                   OFFSET (" + page + " -1) * " + size + " ROWS FETCH NEXT " + size + " ROWS ONLY";
-            }
-            else
+
+            string Sqlquery = "";
+            Sqlquery = @"SELECT EMSSN as SSN,EMNAME as Member,EMMEM# as ID,EMCITY as City,EMST as State,EMDOBY as Year,EMDOBM as Month,EMDOBD as Day
+                    FROM EMPYP where EMDROP<> 'D'";
+          
+            if(SearchMember != "")
             {
                 if ((SearchMember).All(char.IsNumber))
                 {
-                    return @"SELECT EMSSN as SSN,EMNAME as Member,EMMEM# as ID,EMCITY as City,EMST as State,EMDOBY as Year,EMDOBM as Month,EMDOBD as Day
-                 FROM EMPYP where EMDROP<> 'D' and (EMSSN =" + SearchMember + " OR EMMEM# =" + SearchMember + ")  OFFSET (" + page + " -1) * " + size + " ROWS FETCH NEXT " + size + " ROWS ONLY";
+                    Sqlquery += @" and (EMSSN =" + SearchMember + " OR EMMEM# LIKE '%" + SearchMember + "%')";
                 }
+
+
                 else
                 {
-                    return  @"SELECT EMSSN as SSN,EMNAME as Member,EMMEM# as ID,EMCITY as City,EMST as State,EMDOBY as Year,EMDOBM as Month,EMDOBD as Day
-                    FROM EMPYP where EMDROP<> 'D' and (EMNAME LIKE '%" + SearchMember + "%' or LOWER(EMNAME) LIKE LOWER('%" + SearchMember + "%'))   OFFSET (" + page + " -1) * " + size + " " +"ROWS FETCH NEXT " + size + " ROWS ONLY";
+                    string[] splitstring = SearchMember.Split(',', ' ');
+                   
+                    foreach (var item in splitstring)
+                    {
+                        if (item!="")
+                        {
+                            Sqlquery += @"and (LOWER(EMNAME) LIKE LOWER('%" + item + "%'))";
+                        }
+                    }
+                     
+                  
                 }
             }
+            Sqlquery += @"ORDER BY EMNAME,EMSSN,EMMEM# OFFSET (" + page + " -1) * " + size + " ROWS FETCH NEXT " + size + " ROWS ONLY";
+            return Sqlquery;
         }
-        public static string GetEMployDetails_GlobalSearch(string SearchMember,long UserId, int page, int size)
+
+        public static string TotalMemeberCount(string SearchMember)
         {
-            if (SearchMember == "")
-            {
-                return @"SELECT EMPSSN as SSN,fullname as Member,ALTID as ID,CITY as City,[State] as State,datepart(year, MBRDOB) as Year,datepart(month, MBRDOB) as Month,datepart(day, MBRDOB) as Day
-                                            FROM [BICC_REPORTING].dbo.EMPYP EMP
-											inner join [dbo].[User_Funds] UF on EMP.client=UF.Fund  WHERE UF.UserId="+UserId+" and  EMPYP_DROP <> 'D'  order by " +
-                                            "EMPSSN   OFFSET " + size+" * ("+page+" - 1) ROWS  FETCH NEXT "+size+" ROWS ONLY";
-            }
-            else
+
+            string Sqlquery = "";
+            Sqlquery = @"SELECT Count(*) AS Total
+                                     FROM EMPYP where EMDROP<> 'D'";
+     
+            if(SearchMember !="")
             {
                 if ((SearchMember).All(char.IsNumber))
                 {
-                    return @"SELECT EMPSSN as SSN,fullname as Member,ALTID as ID,CITY as City,[State] as State,datepart(year, MBRDOB) as Year,datepart(month, MBRDOB) as Month,datepart(day, MBRDOB) as Day
+                    Sqlquery += @" and (EMSSN =" + SearchMember + " OR EMMEM# LIKE '%" + SearchMember + "%')";
+                }
+
+
+                else
+                {
+                    string[] splitstring = SearchMember.Split(',', ' ');
+
+                    foreach (var item in splitstring)
+                    {
+                        if (item != "")
+                        {
+                            Sqlquery += @"and (LOWER(EMNAME) LIKE LOWER('%" + item + "%'))";
+                        }
+                    }
+               
+                }
+            }
+            return Sqlquery;
+     
+        }
+        public static string GetEMployDetails_GlobalSearch(string SearchMember, long UserId, int page, int size)
+        {
+            string Sqlquery = "";
+            Sqlquery = @"SELECT FUNDDS as Client,EMPSSN as SSN,fullname as Member,ALTID as ID,CITY as City,[State] as State,datepart(year, MBRDOB) as Year,datepart(month, MBRDOB) as Month,datepart(day, MBRDOB) as Day
                                             FROM [BICC_REPORTING].dbo.EMPYP EMP
-											inner join [dbo].[User_Funds] UF on EMP.client=UF.Fund  WHERE UF.UserId=" + UserId + " and  EMPYP_DROP <> 'D' and (EMPSSN =" + SearchMember + " OR ALTID =" + SearchMember + ") order by EMPSSN  OFFSET " + size + " * (" + page + " - 1) ROWS  FETCH NEXT " + size + " ROWS ONLY";
+											inner join [dbo].[User_Funds] UF on EMP.client=UF.Fund  
+                                            inner join [BICC_REPORTING].dbo.CLIENTS_ABC CA on CA.CLIENT=UF.Fund 
+                                            WHERE UF.UserId=" + UserId + " and  EMPYP_DROP <> 'D'";
+
+ 
+            if(SearchMember != "")
+            {
+                if ((SearchMember).All(char.IsNumber))
+                {
+
+                    Sqlquery += @"and (EMPSSN ='" + SearchMember + "' OR ALTID ='" + SearchMember + "')";
+                   
                 }
                 else
                 {
-                    return @"SELECT EMPSSN as SSN,fullname as Member,ALTID as ID,CITY as City,[State] as State,datepart(year, MBRDOB) as Year,datepart(month, MBRDOB) as Month,datepart(day, MBRDOB) as Day
-                                            FROM [BICC_REPORTING].dbo.EMPYP EMP
-											inner join [dbo].[User_Funds] UF on EMP.client=UF.Fund  WHERE UF.UserId=" + UserId + " and  EMPYP_DROP <> 'D' and (lower(Fullname) LIKE lower('%" + SearchMember + "%')) order by EMPSSN   OFFSET " + size + " * (" + page + " - 1) ROWS  FETCH NEXT " + size + " ROWS ONLY";
+                    string[] splitstring = SearchMember.Split(',', ' ');
+          
+                    foreach (var item in splitstring)
+                    {
+                        if (item != "")
+                        {
+                            Sqlquery += @"and (LOWER(Fullname) LIKE LOWER('%" + item + "%'))";
+                        }
+                    }
+                                
+
                 }
             }
+            Sqlquery += @"order by  fullname,EMPSSN,FUNDDS OFFSET " + size + " * (" + page + " - 1) ROWS  FETCH NEXT " + size + " ROWS ONLY";
+
+            return Sqlquery;
         }
         public static string GlobalSearchTotalCount(string SearchMember, long UserId)
         {
+          
+                     string Sqlquery = "";
+            Sqlquery = @"SELECT count(*) As TotalCount
+                                            FROM [BICC_REPORTING].dbo.EMPYP EMP
+											inner join [dbo].[User_Funds] UF on EMP.client=UF.Fund  
+                                             inner join [BICC_REPORTING].dbo.CLIENTS_ABC CA on CA.CLIENT=UF.Fund 
+                                            WHERE UF.UserId=" + UserId + " and  EMPYP_DROP <> 'D'";
+
             if (SearchMember == "")
             {
-                return @"SELECT count(*) As TotalCount  FROM [BICC_REPORTING].dbo.EMPYP EMP
-											inner join [dbo].[User_Funds] UF on EMP.client=UF.Fund  WHERE UF.UserId=" + UserId + " and  EMPYP_DROP <> 'D'";
+              
+                return Sqlquery;
             }
             else
             {
                 if ((SearchMember).All(char.IsNumber))
                 {
-                    return @"SELECT count(*) As TotalCount
-                                            FROM [BICC_REPORTING].dbo.EMPYP EMP
-											inner join [dbo].[User_Funds] UF on EMP.client=UF.Fund  WHERE UF.UserId=" + UserId + " and  EMPYP_DROP <> 'D' and (EMPSSN =" + SearchMember + " OR ALTID =" + SearchMember + ")";
+
+                    Sqlquery += @"and (EMPSSN ='" + SearchMember + "' OR ALTID ='" + SearchMember + "')";
+                    return Sqlquery;
                 }
                 else
                 {
-                    return @"SELECT count(*) As TotalCount
-                                            FROM [BICC_REPORTING].dbo.EMPYP EMP
-											inner join [dbo].[User_Funds] UF on EMP.client=UF.Fund  WHERE UF.UserId=" + UserId + " and  EMPYP_DROP <> 'D' and (lower(Fullname) LIKE lower('%" + SearchMember + "%'))";
+                    string[] splitstring = SearchMember.Split(',', ' ');
+
+                    foreach (var item in splitstring)
+                    {
+                        if (item != "")
+                        {
+                            Sqlquery += @"and (LOWER(Fullname) LIKE LOWER('%" + item + "%'))";
+                        }
+                    }
+                 
+                    return Sqlquery;
+
                 }
             }
+
+
         }
 
         public static string GetDependentDetails(string SSN)
         {
-            
+
             return @"SELECT DPSSN AS DPSSN,DPSEQ AS SEQ, DPNAME AS NAME,CASE  WHEN DPRLTN = 1 THEN 'SPOUSE'
  WHEN DPRLTN = 2 THEN 'SON'
  WHEN DPRLTN = 3 THEN 'DAUGHTER'
@@ -89,9 +164,9 @@ namespace CustomerServicePortal
                         WHERE DPSSN = '" + SSN + "'   AND DPDROP<> 'D'";
         }
 
-        public  static string GetDependentDetailsWithSeq(string SSN,int DPSEQ)
+        public static string GetDependentDetailsWithSeq(string SSN, int DPSEQ)
         {
-            
+
             return @"SELECT WBADR1 AS ADDRESS1,WBADR2 AS ADDRESS2,WBADR3 AS ADDRESS3,WBCITY AS CITY,WBST AS STATE,WBZIP5 AS ZIP5,WBZIP4 AS ZIP4,DPSSN AS DPSSN,DPSEQ AS SEQ, DPNAME AS NAME,d.DPRLTN AS RELATION,DPSTAT AS STATUS,DPDOBY AS DOBY,DPDOBM AS DOBM ,DPDOBD AS DOBD,
                             DPEFDY AS EFDY,DPEFDM AS EFDM ,DPEFDD AS EFDD, 
                             DPTDTY AS TDTY,DPTDTM AS TDTM ,DPTDTD AS TDTD, 
@@ -102,40 +177,23 @@ namespace CustomerServicePortal
 
         }
 
-        public static string TotalMemeberCount(string SearchMember)
-        {
-            if (SearchMember == "")
-            {
-                return "select Count(*) as Total from EMPYP where EMDROP<> 'D'";
-            }
-            else
-            {
-                if ((SearchMember).All(char.IsNumber))
-                {
-                    return "select Count(*) as Total from EMPYP where EMDROP<> 'D' and (EMSSN =" + SearchMember + " OR EMMEM# =" + SearchMember + ")";
-                }
-                else
-                {
-                    return "select Count(*) as Total from EMPYP where EMDROP<> 'D' and (EMNAME LIKE '%" + SearchMember + "%' or UPPER(EMNAME) LIKE '%" + SearchMember + "%' or LOWER(EMNAME) LIKE '%" + SearchMember + "%')";
-                }
-            }
-        }
+       
 
         public static string GeTMemberClaims(string SSN, string ClaimNumber, DateTime? Fromdate, DateTime? Todate)
         {
-            
+
             var FromDateQuery = "";
             if (Fromdate != null)
             {
                 FromDateQuery = @" And (CHFRDY>" + Fromdate.Value.Year + " or  (CHFRDY>=" + Fromdate.Value.Year + " AND CHFRDM>" + Fromdate.Value.Month + ") or (CHFRDY>=" + Fromdate.Value.Year + " AND CHFRDM>=" + Fromdate.Value.Month + " AND CHFRDD>=" + Fromdate.Value.Day + "))";
-               }
+            }
             var ToDateQuery = "";
             if (Todate != null)
             {
                 ToDateQuery = @"  And (CHFRDY<" + Todate.Value.Year + " OR  (CHFRDY<=" + Todate.Value.Year + " AND CHFRDM<" + Todate.Value.Month + ") OR (CHFRDY<=" + Todate.Value.Year + " AND CHFRDM<=" + Todate.Value.Month + " AND CHFRDD<=" + Todate.Value.Day + ")) ";
-            
+
             }
-            var OrderBY = @" ORDER BY CHPRDY DESC ,CHPRDM DESC,CHPRDD DESC  ";
+            var OrderBY = @" ORDER BY CHPRDY DESC ,CHPRDM DESC,CHPRDD DESC,CHCLM# DESC  ";
             var SqlQUery = @"SELECT C.CHEOB# AS EOBNo,CHCLM# as ClaimNumber,P.PRPNAM AS PROVIDER, C.CHSEQ#,	CASE WHEN C.CHDEP# = 0 THEN E.EMNAME ELSE d.DPNAME END AS ForPerson,
                       C.CHCLTP AS ClaimType,C.CHCLM$ AS ClaimAmount,C.CHPAY$  AS Paid,CHCOPA + CHDED$ + CHCO$  MemberPaid,CHPRDY as ClaimYear,CHPRDM ClaimMonth, CHPRDD ClaimDate
                         FROM CLMHP C INNER JOIN EMPYP e ON e.EMSSN = C.CHSSN LEFT JOIN DEPNP d  ON d.DPSSN = C.CHSSN  AND C.CHSEQ# = d.DPSEQ
@@ -155,7 +213,7 @@ namespace CustomerServicePortal
 
         public static string GeTDependentClaims(string SSN, string Seq, string ClaimNumber, DateTime? Fromdate, DateTime? Todate)
         {
-            
+
             var FromDateQuery = "";
             if (Fromdate != null)
             {
@@ -184,15 +242,15 @@ namespace CustomerServicePortal
 
         public static string GetMemberDetailsWIthSSN(string SSN)
         {
-            
+
             return "SELECT  EMSSN as EMSSN,EMNAME AS Name,EMMEM# AS Id,EMSEX  AS Gender,EMDOBY AS DOBY,EMDOBM " +
-                   " AS DOBM,EMDOBD AS DOBD,EMADR1 AS Addr1,EMADR2 AS Addr2,EMADR3 AS Addr3,EMADR4 AS  Addr4"+
+                   " AS DOBM,EMDOBD AS DOBD,EMADR1 AS Addr1,EMADR2 AS Addr2,EMADR3 AS Addr3,EMADR4 AS  Addr4" +
                     ",EMCITY AS City,EMST AS State,EMZIP5 AS Zip1,EMZIP4 AS Zip2,EMZIP2 AS Zip3 FROM EMPYP WHERE EMSSN =" + SSN;
         }
 
         public static string GetDEDMET_OOP_Details(int Currentyear, string EMPSSN, int DEPSEQ)
         {
-    
+
             string strquery = "";
 
             /* deductible PPO INDIVIDUAL*/
@@ -229,11 +287,11 @@ namespace CustomerServicePortal
              FETCH FIRST 1 ROWS ONLY
              ) AS DedIndNetwork
              ";
-             
-                         strquery += "\n";
-                         strquery += " union all ";
-                         /* DEDD NON PPO INDIVIDUAL*/
-                         strquery += @"
+
+            strquery += "\n";
+            strquery += " union all ";
+            /* DEDD NON PPO INDIVIDUAL*/
+            strquery += @"
              SELECT * FROM (
              SELECT concat(concat('Deductible ','Non-PPO'),'- Individual') as Desc,IFNULL(SUM(chded$),0) AS Applied,deinda AS Maximum , deinda - IFNULL(SUM(chded$),0) AS Remaining,DEEFDY
              FROM
@@ -266,12 +324,12 @@ namespace CustomerServicePortal
              FETCH FIRST 1 ROWS ONLY
              ) AS DedIndOON
              ";
-             
-                         strquery += "\n";
-                         strquery += " union all ";
-                         /* DEDD PPO Family*/
-             
-                         strquery += @"
+
+            strquery += "\n";
+            strquery += " union all ";
+            /* DEDD PPO Family*/
+
+            strquery += @"
              SELECT * FROM (
              SELECT concat(concat('Deductible ','-PPO'),'- Family') as Desc,IFNULL(SUM(chded$),0) AS Applied,defama AS Maximum , defama - IFNULL(SUM(chded$),0) AS Remaining,DEEFDY
              FROM
@@ -303,12 +361,12 @@ namespace CustomerServicePortal
              ORDER BY DEEFDY DESC
              FETCH FIRST 1 ROWS ONLY
              ) AS DedIndNetwork";
-             
-                         strquery += "\n";
-                         strquery += " union all ";
-                         /* DEDD NON PPO Family*/
-             
-                         strquery += @"
+
+            strquery += "\n";
+            strquery += " union all ";
+            /* DEDD NON PPO Family*/
+
+            strquery += @"
              
              SELECT * FROM (
              SELECT concat(concat('Deductible ','Non-PPO'),'- Family') as Desc,IFNULL(SUM(chded$),0) AS Applied,defama AS Maximum , defama - IFNULL(SUM(chded$),0) AS Remaining,DEEFDY
@@ -341,12 +399,12 @@ namespace CustomerServicePortal
              ORDER BY DEEFDY DESC
              FETCH FIRST 1 ROWS ONLY
              ) AS DedIndOON";
-             
-                         strquery += "\n";
-                         strquery += " union all ";
-                         /* OOP PPO Individual*/
-             
-                         strquery += @" SELECT * FROM (
+
+            strquery += "\n";
+            strquery += " union all ";
+            /* OOP PPO Individual*/
+
+            strquery += @" SELECT * FROM (
              SELECT concat(concat('OOP ','-PPO'),'- Individual') as Desc,IFNULL(SUM(chco$),0)+IFNULL(SUM(chded$),0) AS Applied,opopit AS Maximum , opopit - (IFNULL(SUM(chco$),0)+IFNULL(SUM(chded$),0)) AS Remaining,OPEFDY
              FROM
              (
@@ -377,12 +435,12 @@ namespace CustomerServicePortal
              ORDER BY OPEFDY DESC
              FETCH FIRST 1 ROWS ONLY
              ) AS OOPIndInNetwork";
-             
-                         strquery += "\n";
-                         strquery += " union all ";
-                         /* OOP non PPO Individual*/
-             
-                         strquery += @"
+
+            strquery += "\n";
+            strquery += " union all ";
+            /* OOP non PPO Individual*/
+
+            strquery += @"
              SELECT * FROM (
              SELECT concat(concat('OOP ','Non-PPO'),'- Individual') as Desc,IFNULL(SUM(chco$),0)+IFNULL(SUM(chded$),0) AS Applied,opopit AS Maximum , opopit - (IFNULL(SUM(chco$),0)+IFNULL(SUM(chded$),0)) AS Remaining,OPEFDY
              FROM
@@ -416,12 +474,12 @@ namespace CustomerServicePortal
              
              ) AS OOPIndOOPNetwork
              ";
-             
-                         strquery += "\n";
-                         strquery += " union all ";
-                         /* OOP PPO Family*/
-             
-                         strquery += @" SELECT * FROM (
+
+            strquery += "\n";
+            strquery += " union all ";
+            /* OOP PPO Family*/
+
+            strquery += @" SELECT * FROM (
              SELECT concat(concat('OOP ','-PPO'),'- Family') as Desc,IFNULL(SUM(chco$),0)+IFNULL(SUM(chded$),0) AS Applied,opopft AS Maximum , opopft - (IFNULL(SUM(chco$),0)+IFNULL(SUM(chded$),0)) AS Remaining,OPEFDY
              FROM
              (
@@ -453,12 +511,12 @@ namespace CustomerServicePortal
              FETCH FIRST 1 ROWS ONLY
              ) AS OOPIndInNetwork
              ";
-             
-                         strquery += "\n";
-                         strquery += " union all ";
-                         /* OOP non PPO Family*/
-             
-                         strquery += @"
+
+            strquery += "\n";
+            strquery += " union all ";
+            /* OOP non PPO Family*/
+
+            strquery += @"
              SELECT * FROM (
              SELECT concat(concat('OOP ','Non-PPO'),'- Family') as Desc,IFNULL(SUM(chco$),0)+IFNULL(SUM(chded$),0) AS Applied,opopft AS Maximum , opopft - (IFNULL(SUM(chco$),0)+IFNULL(SUM(chded$),0)) AS Remaining,OPEFDY
              FROM
@@ -499,17 +557,78 @@ namespace CustomerServicePortal
             return @"select ca.CLIENT,FUNDDS,lo.Headerlogo from [dbo].[User_Funds] Uf
                        inner join [BICC_REPORTING].[dbo].[CLIENTS_ABC] CA on uf.Fund=CA.Client
 					   inner join [LayoutDetails] lo on lo.CLIENT=uf.Fund
-                       where UserId="+UserId;
+                       where UserId=" + UserId;
         }
 
         public static string GetClaimDetailsWIthClaimNumber(string SSN, string ClaimNumber)
         {
-            
-            return   @"SELECT CDCLM# AS ClaimNo,CDLIN# AS LineNo,CDDTST AS Status,CDBNCD as BenefitCode,CDCPT# AS CPT#,CDCHG$ AS TotalCharge,
+
+            return @"SELECT CDCLM# AS ClaimNo,CDLIN# AS LineNo,CDDTST AS Status,CDBNCD as BenefitCode,CDCPT# AS CPT#,CDCHG$ AS TotalCharge,
                       CDDED$ Dedcutible,CDPAY$ Paid,CDCOIN Coinsurance
-                  ,CDOOP$ OOP,CDPDSC ProviderDiscount FROM AMODF.CLMDP WHERE CDSSN = "+ SSN + " AND CDCLM# = "+ ClaimNumber ;
-        
-            }
+                  ,CDOOP$ OOP,CDPDSC ProviderDiscount FROM AMODF.CLMDP WHERE CDSSN = " + SSN + " AND CDCLM# = " + ClaimNumber;
+
+        }
+
+        public static string GetDeductibleMax(string Code,string EffectivePeriod)
+        {
+            string sQuery = @"SELECT DEINDA AS IND_DED_MAX,DEFAMA AS FAM_DED_MAX 
+                              FROM DEDSP DS
+                              WHERE (DS.DEDCDE = '"+Code+@"') 
+                              AND 
+                              (CAST(DEEFDY || '-' || DEEFDM || '-' || DEEFDD AS DATE) = (SELECT MAX(CAST(D2.DEEFDY || '-' || D2.DEEFDM || '-' || D2.DEEFDD AS DATE)) AS MAX_DATE 
+	                          FROM DEDSP AS D2 
+	                          WHERE (D2.DEDCDE = '"+Code+@"') 
+	                          AND 
+		                      (D2.DEEFDY <= "+EffectivePeriod+")) )";
+
+            return sQuery;
+        }
+
+
+        public static string GetDeductibleMet(string Code, string EffectiveYear,string FamilyCode,int SSN)
+        {
+            string sQuery = @"SELECT ADDED$ AS DED_MET FROM DEDAP WHERE (ADPSSN = "+SSN.ToString()+@") 
+                            AND(ADDEPN = 0)
+
+                            AND ( ADEFDY = "+ EffectiveYear + @")
+
+                            AND (ADFAMC = '"+FamilyCode+@"')
+
+                            AND(ADACCD = '" + Code+"')";
+
+            return sQuery;
+        }
+
+
+        public static string GetOOPMax(string Code, string EffectivePeriod)
+        {
+            string sQuery = @"SELECT OS.OPOPIT AS IND_OOP_MAX,OPOPFT AS FAM_OOP_MAX 
+                              FROM OOPSP OS
+                                WHERE (OS.OPOCDE = '"+Code+@"') 
+                                AND 
+                                (CAST(OPEFDY || '-' || OPEFDM || '-' || OPEFDD AS DATE) = (SELECT MAX(CAST(D2.OPEFDY || '-' || D2.OPEFDM || '-' || D2.OPEFDD AS DATE)) AS MAX_DATE 
+                                FROM OOPSP  AS D2 
+                                WHERE (D2.OPOCDE = '"+Code+@"') 
+	                                AND 
+                                   (D2.OPEFDY  <= '"+EffectivePeriod+"')) )";
+
+            return sQuery;
+        }
+
+
+        public static string GetOOPMet(string Code, string EffectiveYear, string FamilyCode, int SSN)
+        {
+            string sQuery = @"SELECT AODED$ AS OOP_MET FROM OOPAP o WHERE (AOPSSN = " + SSN.ToString() + @") 
+                            AND(AODEPN = 0)
+
+                            AND ( AOEFDY = " + EffectiveYear + @")
+
+                            AND (AOFAMC = '" + FamilyCode + @"')
+
+                            AND(AOACCD = '" + Code + "')";
+
+            return sQuery;
+        }
 
     }
 }

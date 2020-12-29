@@ -210,6 +210,15 @@
     <Content Include="Content\img\icon-03.png" />
     <Content Include="Content\img\lisa-dominic.png" />
     <Content Include="Content\img\logo.png" />
+    <Content Include="Content\img\logo\abc_logo.jpg" />
+    <Content Include="Content\img\logo\amo_logo.jpg" />
+    <Content Include="Content\img\logo\gmp_logo.jpg" />
+    <Content Include="Content\img\logo\ibew_logo.jpg" />
+    <Content Include="Content\img\logo\laborers_logo.jpg" />
+    <Content Include="Content\img\logo\plumbers_logo.jpg" />
+    <Content Include="Content\img\logo\sheetmetal_logo.jpg" />
+    <Content Include="Content\img\logo\teamsters_logo.jpg" />
+    <Content Include="Content\img\logo\uaw_logo.jpg" />
     <Content Include="Content\img\Men.png" />
     <Content Include="Content\img\user.png" />
     <Content Include="Content\reset.css" />

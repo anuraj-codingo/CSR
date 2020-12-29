@@ -5,6 +5,10 @@
         <thead>
             <tr>
                 <th class="w-122">Select</th>
+                @if ((bool)ViewBag.GlobalSearch)
+                {
+                    <th>Client</th>
+                }
                 <th>SSN</th>
                 <th>Member</th>
                 <th>ID</th>
@@ -31,6 +35,10 @@
 
 
                 </td>
+                @if ((bool)ViewBag.GlobalSearch)
+                {
+                    <td>@item.Client</td>
+                }
                 <td> @(CustomerServicePortal.Common.StaticClass.SSN_DisplayForamatting(item.SSN))</td>
                 <td>@item.Member</td>
                 <td>@item.ID</td>
@@ -44,9 +52,9 @@
                 else
                 {
                     <td>N/A</td>
-                        }
+                }
 
-                </tr>
+            </tr>
             }
         </tbody>
     </table>

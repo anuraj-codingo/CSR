@@ -10,6 +10,9 @@ namespace CustomerServicePortal.Models
         [Display(Name = "ID")]
         public string ID { get; set; }
 
+        [Display(Name = "Client")]
+        public string Client { get; set; }
+
         [Display(Name = "SSN")]
         public string SSN { get; set; }
 

@@ -42,6 +42,10 @@ namespace CustomerServicePortal.Common
             string Commandtext = "select * from [BICC_REPORTING].dbo.EMPYP where EMPSSN='" + SSN+"'";
             DBManager db = new DBManager("CustomerServicePortal");
          object Client=   db.GetScalarValue(Commandtext, CommandType.Text);
+            if (Client==null)
+            {
+                Client = "ABC";
+            }
             return Client.ToString();
 
 

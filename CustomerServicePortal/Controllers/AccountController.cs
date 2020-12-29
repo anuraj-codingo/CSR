@@ -87,27 +87,7 @@ namespace CustomerServicePortal.Controllers
             }
             return View();
         }
-        [HttpGet]
-        public JsonResult ChangePassWord(ChangepassWord changepass)
-        {
-            try
-            {
-                if (Session["UserModel"] !=null)
-                {
-                    UserModel userModel = new UserModel();
-                    userModel = (UserModel)Session["UserModel"];
-                    string CommanText = "  update [UserLogin] set PassWord='" + changepass.NewPassWord + "'   where Id=" + userModel.UserId;
-                    var obj = db.GetScalarValue(CommanText, CommandType.Text);
-                }
-
-            }
-            catch (Exception)
-            {
-
-                return Json(false, JsonRequestBehavior.AllowGet);
-            }
-            return Json(true, JsonRequestBehavior.AllowGet);
-        }
+    
         public ActionResult Logout()
         {
             Session.Clear();

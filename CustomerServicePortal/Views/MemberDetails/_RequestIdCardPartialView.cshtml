@@ -21,8 +21,8 @@
 {
     <div class="modal-body EditAddresshtml">
 
-        <div class="row">
-            <div class="col-md-12">
+        <div class="row htmladd">
+               <div class="col-md-12">
                 <div class="form-group">
                     @Html.HiddenFor(x => x.EMSSN)
                     @Html.HiddenFor(x => x.Name)
@@ -30,33 +30,35 @@
                     <label class="control-label col-md-2">Notes</label>
                     @Html.TextAreaFor(model => model.RquestNotes, new { @class = "form-control", @placeholder = "Notes" })
                 </div>
-            </div>
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label class="control-label col-md-2">Type</label>
-                    @Html.DropDownListFor(model => model.IDCardType,
-             new List<SelectListItem> {
-                  new SelectListItem { Value = "Disabled" , Text = "Disabled" },
-                  new SelectListItem { Value = "Normal" , Text = "Normal" }
-               }, "Select Type",
-             new { @class = "form-control" })
-                                            </div>
-            
-                        </div>
-            
+              </div>
+           
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Type</label>
+                        @Html.DropDownListFor(model => model.iDCardType_Quantities[0].IDCardType,
+                 new List<SelectListItem> {
+                      new SelectListItem { Value = "Disabled" , Text = "Disabled" },
+                      new SelectListItem { Value = "Normal" , Text = "Normal" }
+                   }, "Select Type",
+                 new { @class = "form-control IDCardType" })
+                    </div>
 
-                        <div class="col-md-12">
-                <div class="form-group">
-                    <label class="control-label col-md-2">Quantity</label>
-
-                    @Html.DropDownListFor(m => m.IDCardQuantity, Enumerable.Range(0, 6).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }))
-                    @*@Html.TextBoxFor(model => model.IDCardQuantity, new { @class = "form-control", @placeholder = "Address 1" })*@
                 </div>
-            </div>
 
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Quantity</label>
+
+                        @Html.DropDownListFor(m => m.iDCardType_Quantities[0].IDCardQuantity, Enumerable.Range(0, 6).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "w-100" })
+                    </div>
+                </div>
+         
+
+         
 
 
         </div>
+        <button onclick="AddIdCardType_Quantity();return false;" class="btn btn-primary">Add</button>
 
     </div>
     <div class="modal-footer">
@@ -68,3 +70,30 @@
 
 
 
+<script>
+    function AddIdCardType_Quantity() {
+        if ($('.IDCardType').length < 2) {
+            var Id = $('.IDCardType').length;
+            var html = '<div class="col-md-12"><div class="form-group">\
+                    <label class="control-label col-md-2">Type</label>\
+                    <select class="form-control IDCardType" id="iDCardType_Quantities_'+ Id + '__IDCardType" name="iDCardType_Quantities[' + Id +'].IDCardType"><option value="">Select Type</option>\
+<option value="Disabled">Disabled</option>\
+<option value="Normal">Normal</option>\
+</select></div></div><div class="col-md-12">\
+                <div class="form-group">\
+                    <label class="control-label col-md-2">Quantity</label>\
+                    <select class="w-100" data-val="true" data-val-number="The field IDCardQuantity must be a number." data-val-required="The IDCardQuantity field is required." id="iDCardType_Quantities_'+ Id + '__IDCardQuantity" name="iDCardType_Quantities[' + Id +'].IDCardQuantity"><option value="0">0</option>\
+<option value="1">1</option>\
+<option value="2">2</option>\
+<option value="3">3</option>\
+<option value="4">4</option>\
+<option value="5">5</option>\
+</select></div></div>';
+            $('.htmladd').append(html);
+        }
+    
+
+
+    }
+
+</script>

@@ -119,10 +119,13 @@
 
         </div>
         <div class="pull-right action-btn-block">
+            @Html.Hidden("GlobalSearch", (bool)ViewBag.GlobalSearch)
             <p class="m-0">User List</p>
         </div>
 
         <div class="tableWrap">
+          
+        
             @Html.Partial("_MemberListPartialView", Model)
 
         </div>
@@ -158,7 +161,7 @@
             $.ajax({
                 type: "GET",
                 url:'@Url.Action("GetMember", "Claims")',
-                data: { page: page, SearchMember: $('#SearchMember').val() },
+                data: { page: page, SearchMember: $('#SearchMember').val(), GlobalSearch: $('#GlobalSearch').val() },
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
                 success: function (response) {

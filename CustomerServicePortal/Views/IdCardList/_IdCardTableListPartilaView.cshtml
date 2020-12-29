@@ -84,18 +84,10 @@
     <td>
 
 
-        @if (item.Completestatus)
-        {
-
-        }
         <span class="badge badge-success CompleteBadge  @CompleteBadge">Completed</span>
         <button type="button" class="btn btn-primary btn-sm Completebutton @Completebutton" onclick="CompleteStatusNotes(@item.Id,this)">Complete</button>
     </td>
-    @*<td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>*@
+
 </tr>
     }
 

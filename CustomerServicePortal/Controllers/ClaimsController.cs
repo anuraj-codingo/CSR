@@ -26,6 +26,7 @@ namespace CustomerServicePortal.Controllers
             try
             {
                 TempData["GlobalSearch"] = GlobalSearch;
+                ViewBag.GlobalSearch = GlobalSearch;
                 if (GlobalSearch)
                 {
                    
@@ -51,9 +52,10 @@ namespace CustomerServicePortal.Controllers
             return View(memeberDetailsModels);
         }
 
-        public JsonResult GetMember(int page, string SearchMember)
+        public JsonResult GetMember(int page, string SearchMember,bool GlobalSearch)
         {
-            bool GlobalSearch = (bool)TempData.Peek("GlobalSearch");
+            ViewBag.GlobalSearch = GlobalSearch;
+            //bool GlobalSearch = (bool)TempData.Peek("GlobalSearch");
             List<MemeberDetailsModel> memeberDetailsModels = new List<MemeberDetailsModel>();
             string viewContent = "";
             int TotalCount = 0;
@@ -129,6 +131,10 @@ namespace CustomerServicePortal.Controllers
                     memeberDetailsModel.City = item["City"].ToString();
                     memeberDetailsModel.State = item["State"].ToString();
                     memeberDetailsModel.ID = item["ID"].ToString();
+                    if (dt.Columns.Contains("Client"))
+                    {
+                        memeberDetailsModel.Client = item["Client"].ToString();
+                    }
                     memeberDetailsModels.Add(memeberDetailsModel);
                 }
             }

@@ -35,9 +35,16 @@ namespace CustomerServicePortal.Models
     {
         public string EMSSN { get; set; }
         public string RquestNotes { get; set; }
-        public string IDCardType { get; set; }
+        public List<IDCardType_Quantity> iDCardType_Quantities { get; set; }
         public string Name { get; set; }
         public string Gender { get; set; }
+
+       
+
+    }
+    public class IDCardType_Quantity
+    {
+        public string IDCardType { get; set; }
         public int IDCardQuantity { get; set; }
     }
 }

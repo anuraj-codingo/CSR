@@ -84,7 +84,7 @@
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/Scripts/js/ASPSnippets_Pager.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
+  
 </head>
 
 <body>
@@ -100,19 +100,19 @@
                 <div class="container">
                     <div class="nav">
                         <ul>
-                            @if((Session["LayoutDetails"] as CustomerServicePortal.Models.LayoutModel).ShowMenuBar)
+                            @if ((Session["LayoutDetails"] as CustomerServicePortal.Models.LayoutModel).ShowMenuBar)
                             {
                                 <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i> Home</a></li>
                             }
 
                             @*<li class="disabled"><a href="#">Print</a></li>*@
-                                                <li><a class="" href="@Url.Action("UsersList", "Users")"><i class="fa fa-user"></i> Users</a></li>
-                                                <li><a class="" href="@Url.Action("Index", "IdCardList")"><i class="fa fa-user mr-1"></i>ID Card Requests</a></li>
-                                                @if (User.IsInRole("ABC_User") || User.IsInRole("Admin"))
-                                                {
-                                                    <li><a class="m-r-1" href="@Url.Action("Index", "ABCDashBoard")"><i class="fa fa-user mr-1"></i>Clients</a></li>
-                                                }
-                                            </ul>
+                            <li><a class="" href="@Url.Action("UsersList", "Users")"><i class="fa fa-user"></i> Users</a></li>
+                            <li><a class="" href="@Url.Action("Index", "IdCardList")"><i class="fa fa-user mr-1"></i>ID Card Requests</a></li>
+                            @if (User.IsInRole("ABC_User") || User.IsInRole("Admin"))
+                            {
+                                <li><a class="m-r-1" href="@Url.Action("Index", "ABCDashBoard")"><i class="fa fa-user mr-1"></i>Clients</a></li>
+                            }
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -123,21 +123,12 @@
         @Html.Action("LoadFooterHtml", "Home")
         <!--footer-->
     </div>
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                @{
-                    Html.RenderPartial("_ChangePasswordPartial", new CustomerServicePortal.Models.ChangepassWord());
-                }
 
-            </div>
-        </div>
-    </div>
     <div class="alert alert-success" role="alert" id="ChangepasswordAlert">
         Password Changed
     </div>
     <!--/wrapper-->
-    @*@Scripts.Render("~/bundles/bootstrap")*@
+    @*   @Scripts.Render("~/bundles/bootstrap")*@
     @*<link href="~/Content/bootstrap.css" rel="stylesheet" />*@
 
     @RenderSection("scripts", required: false)
@@ -161,7 +152,7 @@
                 e.stopPropagation();
             });
             $('.pwdModal').click(function (e) {
-                $('#exampleModal').modal('toggle');
+                $('#PasswordCHangeModal').modal('toggle');
                 $(".user-popup-main").removeClass("focused");
                 //e.stopPropagation();
             });
@@ -170,6 +161,8 @@
             });
 
         })
+
+
     </script>
 </body>
 </html>

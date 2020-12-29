@@ -25,7 +25,19 @@ namespace CustomerServicePortal.Controllers
 
             try
             {
-                GetLayoutSessionClass.GetLayoutModel(Common.StaticClass.GetClientFromSSN(SSN));
+                try
+                {
+                    if ((bool)TempData.Peek("GlobalSearch"))
+                    {
+                        GetLayoutSessionClass.GetLayoutModel(Common.StaticClass.GetClientFromSSN(SSN));
+                    }
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+               
+                
 
                 List<DEDMET_OOP_Model> dEDMET_OOP_CurrentYear_Models = GetDEDMETOOP(SSN,DateTime.Now.Year);
                 claimDetailDashBoardModel.dEDMETModelCurentYear = dEDMET_OOP_CurrentYear_Models;
@@ -212,16 +224,23 @@ namespace CustomerServicePortal.Controllers
             try
             {
                 DBManager db = new DBManager("CustomerServicePortal");
-                string Commandtext = "Fill_IDCardRequestDetails";
+                foreach (var item in iDCardRequest.iDCardType_Quantities)
+                {
+                    string Commandtext = "Fill_IDCardRequestDetails";
                 var parameters = new List<IDbDataParameter>();
                 parameters.Add(db.CreateParameter("@SSN", iDCardRequest.EMSSN, DbType.String));
                 parameters.Add(db.CreateParameter("@RequestNotes", iDCardRequest.RquestNotes, DbType.String));
                 parameters.Add(db.CreateParameter("@Name", iDCardRequest.Name, DbType.String));
                 parameters.Add(db.CreateParameter("@Gender", iDCardRequest.Gender, DbType.String));
-                parameters.Add(db.CreateParameter("@IDCardType", iDCardRequest.IDCardType, DbType.String));
-                parameters.Add(db.CreateParameter("@IDCardQuantity", iDCardRequest.IDCardQuantity, DbType.String));
+               
                 parameters.Add(db.CreateParameter("@Requester", User.Identity.Name, DbType.String));
-                db.Insert(Commandtext,CommandType.StoredProcedure, parameters.ToArray());
+
+               
+                    parameters.Add(db.CreateParameter("@IDCardType",item.IDCardType, DbType.String));
+                    parameters.Add(db.CreateParameter("@IDCardQuantity",item.IDCardQuantity, DbType.String));
+                    db.Insert(Commandtext, CommandType.StoredProcedure, parameters.ToArray());
+                }
+                
 
             }
             catch (Exception EX)
@@ -317,20 +336,170 @@ namespace CustomerServicePortal.Controllers
         private static List<DEDMET_OOP_Model> GetDEDMETOOP(string SSN, int Year)
         {
             DataTable dt = new DataTable();
-            dt = Db2Connnect.GetDataTable(GetSqlQuery.GetDEDMET_OOP_Details(Year, SSN, 0), CommandType.Text);
+            //dt = Db2Connnect.GetDataTable(GetSqlQuery.GetDEDMET_OOP_Details(Year, SSN, 0), CommandType.Text);
             List<DEDMET_OOP_Model> dEDMET_OOP_Models = new List<DEDMET_OOP_Model>();
-            foreach (DataRow item in dt.Rows)
-            {
-                DEDMET_OOP_Model dEDMET_OOP_Model = new DEDMET_OOP_Model();
-                dEDMET_OOP_Model.APPLIED = ((decimal)item["APPLIED"]).ToString("C", CultureInfo.CurrentCulture);
-                dEDMET_OOP_Model.MAXIMUM = ((decimal)item["MAXIMUM"]).ToString("C", CultureInfo.CurrentCulture);
-                dEDMET_OOP_Model.REMAINING = ((decimal)item["REMAINING"]).ToString("C", CultureInfo.CurrentCulture);
-                dEDMET_OOP_Model.DESC = item["DESC"].ToString();
-                dEDMET_OOP_Model.DEEFDY = item["DEEFDY"].ToString();
-                dEDMET_OOP_Model.Year = (int)Year;
-                dEDMET_OOP_Models.Add(dEDMET_OOP_Model);
 
+      
+            DataTable dtDedScheduled = new DataTable();
+            DataTable dtOOPScheduled = new DataTable();
+            DataTable dtOOPMetFamily = new DataTable();
+            DataTable dtOOPMetIndividual = new DataTable();
+            DataTable dtDedMetIndividual = new DataTable();
+            DataTable dtDedMetFamily = new DataTable();
+
+            // This code will change based on client , MED is currently hardcoded for AMO
+            string DeductibleCode = "MED";
+            string FamilyCode = "F";
+            string IndividualCode = "I";
+            dtDedScheduled = Db2Connnect.GetDataTable(GetSqlQuery.GetDeductibleMax(DeductibleCode, Year.ToString()),CommandType.Text);
+            dtOOPScheduled = Db2Connnect.GetDataTable(GetSqlQuery.GetOOPMax(DeductibleCode, Year.ToString()), CommandType.Text);
+            dtOOPMetIndividual = Db2Connnect.GetDataTable(GetSqlQuery.GetOOPMet(DeductibleCode, Year.ToString(), IndividualCode, Convert.ToInt32(SSN)), CommandType.Text);
+            dtOOPMetFamily = Db2Connnect.GetDataTable(GetSqlQuery.GetOOPMet(DeductibleCode, Year.ToString(), FamilyCode, Convert.ToInt32(SSN)), CommandType.Text);
+            dtDedMetIndividual = Db2Connnect.GetDataTable(GetSqlQuery.GetDeductibleMet(DeductibleCode, Year.ToString(), IndividualCode, Convert.ToInt32(SSN)), CommandType.Text);
+            dtDedMetFamily = Db2Connnect.GetDataTable(GetSqlQuery.GetDeductibleMet(DeductibleCode, Year.ToString(), FamilyCode, Convert.ToInt32(SSN)), CommandType.Text);
+
+
+
+
+            // Individual Deductible
+            DEDMET_OOP_Model IndividualDeductible = new DEDMET_OOP_Model();
+            if (dtDedMetIndividual.Rows.Count > 0)
+            {
+                IndividualDeductible.APPLIED = ((decimal)dtDedMetIndividual.Rows[0]["DED_MET"]).ToString("C", CultureInfo.CurrentCulture);
             }
+            else
+            {
+                IndividualDeductible.APPLIED = (0).ToString("C", CultureInfo.CurrentCulture);
+            }
+
+            if (dtDedScheduled.Rows.Count>0)
+            {
+                IndividualDeductible.MAXIMUM = ((decimal)dtDedScheduled.Rows[0]["IND_DED_MAX"]).ToString("C", CultureInfo.CurrentCulture);
+            }
+            else
+            {
+                IndividualDeductible.MAXIMUM = (0).ToString("C", CultureInfo.CurrentCulture);
+            }
+
+            if ((Convert.ToDecimal(Decimal.Parse(IndividualDeductible.MAXIMUM, NumberStyles.Currency)) - Convert.ToDecimal(Decimal.Parse(IndividualDeductible.APPLIED, NumberStyles.Currency)))>=0)
+            {
+                IndividualDeductible.REMAINING = (Convert.ToDecimal(Decimal.Parse(IndividualDeductible.MAXIMUM, NumberStyles.Currency)) - Convert.ToDecimal(Decimal.Parse(IndividualDeductible.APPLIED, NumberStyles.Currency))).ToString("C", CultureInfo.CurrentCulture);
+            }
+            else
+            {
+                IndividualDeductible.REMAINING = (0).ToString("C", CultureInfo.CurrentCulture);
+            }
+           
+
+
+
+            IndividualDeductible.DESC = "Deductible -PPO- Individual";
+            IndividualDeductible.Year = Year;
+    
+            dEDMET_OOP_Models.Add(IndividualDeductible);
+
+            // Family Deductible
+            DEDMET_OOP_Model FamilyDeductible = new DEDMET_OOP_Model();
+            if (dtDedMetFamily.Rows.Count > 0)
+            {
+                FamilyDeductible.APPLIED = ((decimal)dtDedMetFamily.Rows[0]["DED_MET"]).ToString("C", CultureInfo.CurrentCulture);
+            }
+            else
+            {
+                FamilyDeductible.APPLIED = (0).ToString("C", CultureInfo.CurrentCulture);
+            }
+            if (dtDedScheduled.Rows.Count > 0)
+            {
+                FamilyDeductible.MAXIMUM = ((decimal)dtDedScheduled.Rows[0]["FAM_DED_MAX"]).ToString("C", CultureInfo.CurrentCulture);
+            }
+            else
+            {
+                FamilyDeductible.MAXIMUM = (0).ToString("C", CultureInfo.CurrentCulture);
+            }
+
+            if ((Convert.ToDecimal(Decimal.Parse(FamilyDeductible.MAXIMUM, NumberStyles.Currency)) - Convert.ToDecimal(Decimal.Parse(FamilyDeductible.APPLIED, NumberStyles.Currency)))>=0)
+            {
+                FamilyDeductible.REMAINING = (Convert.ToDecimal(Decimal.Parse(FamilyDeductible.MAXIMUM, NumberStyles.Currency)) - Convert.ToDecimal(Decimal.Parse(FamilyDeductible.APPLIED, NumberStyles.Currency))).ToString("C", CultureInfo.CurrentCulture);
+            }
+            else
+            {
+                FamilyDeductible.REMAINING = (0).ToString("C", CultureInfo.CurrentCulture);
+            }
+            
+
+            FamilyDeductible.DESC = "Deductible -PPO- Family";
+            FamilyDeductible.Year = Year;
+            dEDMET_OOP_Models.Add(FamilyDeductible);
+
+
+
+
+            // Individual OOP
+            DEDMET_OOP_Model IndividualOOP = new DEDMET_OOP_Model();
+            if (dtOOPMetIndividual.Rows.Count>0)
+            {
+                IndividualOOP.APPLIED = ((decimal)dtOOPMetIndividual.Rows[0]["OOP_MET"]).ToString("C", CultureInfo.CurrentCulture);
+            }
+            else
+            {
+                IndividualOOP.APPLIED = (0).ToString("C", CultureInfo.CurrentCulture);
+            }
+            if (dtOOPScheduled.Rows.Count > 0)
+            {
+                IndividualOOP.MAXIMUM = ((decimal)dtOOPScheduled.Rows[0]["IND_OOP_MAX"]).ToString("C", CultureInfo.CurrentCulture);
+            }
+            else
+            {
+                IndividualOOP.MAXIMUM = (0).ToString("C", CultureInfo.CurrentCulture);
+            }
+
+            if ((Convert.ToDecimal(Decimal.Parse(IndividualOOP.MAXIMUM, NumberStyles.Currency)) - Convert.ToDecimal(Decimal.Parse(IndividualOOP.APPLIED, NumberStyles.Currency)))>=0)
+            {
+                IndividualOOP.REMAINING = (Convert.ToDecimal(Decimal.Parse(IndividualOOP.MAXIMUM, NumberStyles.Currency)) - Convert.ToDecimal(Decimal.Parse(IndividualOOP.APPLIED, NumberStyles.Currency))).ToString("C", CultureInfo.CurrentCulture);
+            }
+            else
+            {
+                IndividualOOP.REMAINING = (0).ToString("C", CultureInfo.CurrentCulture);
+            }
+            
+            IndividualOOP.DESC = "OOP -PPO- Individual";
+            IndividualOOP.Year = Year;
+
+            dEDMET_OOP_Models.Add(IndividualOOP);
+
+            // Family OOP
+            DEDMET_OOP_Model FamilyOOP = new DEDMET_OOP_Model();
+
+
+            if (dtOOPMetFamily.Rows.Count>0)
+            {
+                FamilyOOP.APPLIED = ((decimal)dtOOPMetFamily.Rows[0]["OOP_MET"]).ToString("C", CultureInfo.CurrentCulture);
+            }
+            else
+            {
+                FamilyOOP.APPLIED = (0).ToString("C", CultureInfo.CurrentCulture);
+            }
+            if (dtOOPScheduled.Rows.Count > 0)
+            {
+                FamilyOOP.MAXIMUM = ((decimal)dtOOPScheduled.Rows[0]["FAM_OOP_MAX"]).ToString("C", CultureInfo.CurrentCulture);
+            }
+            else
+            {
+                FamilyOOP.MAXIMUM = (0).ToString("C", CultureInfo.CurrentCulture);
+            }
+
+            if ((Convert.ToDecimal(Decimal.Parse(FamilyOOP.MAXIMUM, NumberStyles.Currency)) - Convert.ToDecimal(Decimal.Parse(FamilyOOP.APPLIED, NumberStyles.Currency)))>=0)
+            {
+                FamilyOOP.REMAINING = (Convert.ToDecimal(Decimal.Parse(FamilyOOP.MAXIMUM, NumberStyles.Currency)) - Convert.ToDecimal(Decimal.Parse(FamilyOOP.APPLIED, NumberStyles.Currency))).ToString("C", CultureInfo.CurrentCulture);
+            }
+            else
+            {
+                FamilyOOP.REMAINING = (0).ToString("C", CultureInfo.CurrentCulture);
+            }
+         
+            FamilyOOP.DESC = "OOP -PPO- Family";
+            FamilyOOP.Year = Year;
+            dEDMET_OOP_Models.Add(FamilyOOP);
 
             return dEDMET_OOP_Models;
         }
