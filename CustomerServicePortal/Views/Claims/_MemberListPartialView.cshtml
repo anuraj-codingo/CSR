@@ -1,20 +1,59 @@
 ﻿@model List<CustomerServicePortal.Models.MemeberDetailsModel>
-
+<style>
+    th {
+        cursor: pointer;
+    }
+</style>
 <div class="table-responsive">
-    <table class="table w-100 table-striped">
+    <table class="table w-100 table-striped" id="MemeberDetailsTable">
         <thead>
             <tr>
                 <th class="w-122">Select</th>
                 @if ((bool)ViewBag.GlobalSearch)
                 {
-                    <th>Client</th>
+            <th onclick="SortingTable('Client')">
+                
+                <div class="d-flex justify-content-between align-items-center">
+                    Client: <i class="fa fa-sort"></i>
+                </div>
+            </th>
                 }
-                <th>SSN</th>
-                <th>Member</th>
-                <th>ID</th>
-                <th>City</th>
-                <th>State</th>
-                <th>DOB</th>
+            <th onclick="SortingTable('EMSSN')">
+                
+                <div class="d-flex justify-content-between align-items-center">
+                    SSN: <i class="fa fa-sort"></i>
+                </div>
+            </th>
+            <th onclick="SortingTable('EMNAME')">
+                
+                <div class="d-flex justify-content-between align-items-center">
+                    Member: <i class="fa fa-sort"></i>
+                </div>
+            </th>
+            <th onclick="SortingTable('EMMEM#')">
+                
+                <div class="d-flex justify-content-between align-items-center">
+                    ID: <i class="fa fa-sort"></i>
+                </div>
+            </th>
+            <th onclick="SortingTable('EMCITY')">
+                
+                <div class="d-flex justify-content-between align-items-center">
+                    City: <i class="fa fa-sort"></i>
+                </div>
+            </th>
+            <th onclick="SortingTable('EMST')">
+                
+                <div class="d-flex justify-content-between align-items-center">
+                    State: <i class="fa fa-sort"></i>
+                </div>
+            </th>
+            <th onclick="SortingTable('DOB')">
+                
+                <div class="d-flex justify-content-between align-items-center">
+                    DOB: <i class="fa fa-sort"></i>
+                </div>
+            </th>
             </tr>
         </thead>
         <tbody>
@@ -44,7 +83,7 @@
                 <td>@item.ID</td>
                 <td>@item.City</td>
                 <td>@item.State</td>
-                @if (item.Year != null && item.Month != null && item.Day != null && item.Year != "" && item.Month != "" && item.Day != "")
+                @if (item.Year != null && item.Month != null && item.Day != null && item.Year != "" && item.Month != "" && item.Day != "" && item.Year != "0" && item.Month != "0" && item.Day != "0")
                 {
                     <td>@(new DateTime(Convert.ToInt32(item.Year), Convert.ToInt32(item.Month), Convert.ToInt32(item.Day)).ToString("MM/dd/yyyy")) </td>
 
@@ -59,3 +98,5 @@
         </tbody>
     </table>
 </div>
+
+

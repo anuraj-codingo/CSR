@@ -1,19 +1,21 @@
-﻿using CustomerServicePortal.Common;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace CustomerServicePortal
+namespace DB2SQlClass.DB2
 {
-    public static class GetSqlQuery
+  public  class GetSqlQuery
     {
-        public static string GetEMployDetails(string SearchMember,string SortingColumn,string Orderby, int page, int size)
+        public static string GetEMployDetails(string SearchMember, string SortingColumn, string Orderby, int page, int size)
         {
 
             string Sqlquery = "";
             Sqlquery = @"SELECT EMSSN as SSN,EMNAME as Member,EMMEM# as ID,EMCITY as City,EMST as State,EMDOBY as Year,EMDOBM as Month,EMDOBD as Day
                     FROM EMPYP where EMDROP<> 'D'";
-          
-            if(SearchMember != "")
+
+            if (SearchMember != "")
             {
                 if ((SearchMember).All(char.IsNumber))
                 {
@@ -24,29 +26,29 @@ namespace CustomerServicePortal
                 else
                 {
                     string[] splitstring = SearchMember.Split(',', ' ');
-                   
+
                     foreach (var item in splitstring)
                     {
-                        if (item!="")
+                        if (item != "")
                         {
                             Sqlquery += @"and (LOWER(EMNAME) LIKE LOWER('%" + item + "%'))";
                         }
                     }
-                     
-                  
+
+
                 }
             }
-            if (SortingColumn !="" && Orderby !="")
+            if (SortingColumn != "" && Orderby != "")
             {
-                if (SortingColumn !="DOB")
+                if (SortingColumn != "DOB")
                 {
                     Sqlquery += @"ORDER BY " + SortingColumn + " " + Orderby + " ";
                 }
                 else
                 {
-                    Sqlquery += @"ORDER BY EMDOBY "+ Orderby + ", EMDOBM " + Orderby + ", EMDOBD " + Orderby + " ";
+                    Sqlquery += @"ORDER BY EMDOBY " + Orderby + ", EMDOBM " + Orderby + ", EMDOBD " + Orderby + " ";
                 }
-               
+
             }
             Sqlquery += @" OFFSET (" + page + " -1) * " + size + " ROWS FETCH NEXT " + size + " ROWS ONLY";
             return Sqlquery;
@@ -58,8 +60,8 @@ namespace CustomerServicePortal
             string Sqlquery = "";
             Sqlquery = @"SELECT Count(*) AS Total
                                      FROM EMPYP where EMDROP<> 'D'";
-     
-            if(SearchMember !="")
+
+            if (SearchMember != "")
             {
                 if ((SearchMember).All(char.IsNumber))
                 {
@@ -78,13 +80,13 @@ namespace CustomerServicePortal
                             Sqlquery += @"and (LOWER(EMNAME) LIKE LOWER('%" + item + "%'))";
                         }
                     }
-               
+
                 }
             }
             return Sqlquery;
-     
+
         }
-        public static string GetEMployDetails_GlobalSearch(string SearchMember,string SortingColumn,string Orderby, long UserId, int page, int size)
+        public static string GetEMployDetails_GlobalSearch(string SearchMember, string SortingColumn, string Orderby, long UserId, int page, int size)
         {
             string Sqlquery = "";
             Sqlquery = @"SELECT FUNDDS as Client,EMPSSN as SSN,fullname as Member,ALTID as ID,CITY as City,[State] as State,datepart(year, MBRDOB) as Year,datepart(month, MBRDOB) as Month,datepart(day, MBRDOB) as Day
@@ -93,19 +95,19 @@ namespace CustomerServicePortal
                                             inner join [BICC_REPORTING].dbo.CLIENTS_ABC CA on CA.CLIENT=UF.Fund 
                                             WHERE UF.UserId=" + UserId + " and  EMPYP_DROP <> 'D'";
 
- 
-            if(SearchMember != "")
+
+            if (SearchMember != "")
             {
                 if ((SearchMember).All(char.IsNumber))
                 {
 
                     Sqlquery += @"and (EMPSSN ='" + SearchMember + "' OR ALTID ='" + SearchMember + "')";
-                   
+
                 }
                 else
                 {
                     string[] splitstring = SearchMember.Split(',', ' ');
-          
+
                     foreach (var item in splitstring)
                     {
                         if (item != "")
@@ -113,13 +115,13 @@ namespace CustomerServicePortal
                             Sqlquery += @"and (LOWER(Fullname) LIKE LOWER('%" + item + "%'))";
                         }
                     }
-                                
+
 
                 }
             }
-            if (SortingColumn !="" && Orderby !="")
+            if (SortingColumn != "" && Orderby != "")
             {
-                if (SortingColumn== "EMSSN")
+                if (SortingColumn == "EMSSN")
                 {
                     Sqlquery += @"ORDER BY  EMPSSN " + Orderby + " ";
                 }
@@ -151,7 +153,7 @@ namespace CustomerServicePortal
                 {
                     Sqlquery += @"ORDER BY " + SortingColumn + " " + Orderby + " ";
                 }
-               
+
             }
             Sqlquery += @" OFFSET " + size + " * (" + page + " - 1) ROWS  FETCH NEXT " + size + " ROWS ONLY";
 
@@ -159,8 +161,8 @@ namespace CustomerServicePortal
         }
         public static string GlobalSearchTotalCount(string SearchMember, long UserId)
         {
-          
-                     string Sqlquery = "";
+
+            string Sqlquery = "";
             Sqlquery = @"SELECT count(*) As TotalCount
                                             FROM [BICC_REPORTING].dbo.EMPYP EMP
 											inner join [dbo].[User_Funds] UF on EMP.client=UF.Fund  
@@ -169,7 +171,7 @@ namespace CustomerServicePortal
 
             if (SearchMember == "")
             {
-              
+
                 return Sqlquery;
             }
             else
@@ -191,7 +193,7 @@ namespace CustomerServicePortal
                             Sqlquery += @"and (LOWER(Fullname) LIKE LOWER('%" + item + "%'))";
                         }
                     }
-                 
+
                     return Sqlquery;
 
                 }
@@ -225,9 +227,9 @@ namespace CustomerServicePortal
 
         }
 
-       
 
-        public static string GeTMemberClaims(string SSN, string ClaimNumber, DateTime? Fromdate, DateTime? Todate,string Dependent, string SortingColumn, string Orderby, int page, int size)
+
+        public static string GeTMemberClaims(string SSN, string ClaimNumber, DateTime? Fromdate, DateTime? Todate, string Dependent, string SortingColumn, string Orderby, int page, int size)
         {
 
             var FromDateQuery = "";
@@ -241,17 +243,17 @@ namespace CustomerServicePortal
                 ToDateQuery = @"  And (CHPRDY<" + Todate.Value.Year + " OR  (CHPRDY<=" + Todate.Value.Year + " AND CHPRDM<" + Todate.Value.Month + ") OR (CHPRDY<=" + Todate.Value.Year + " AND CHPRDM<=" + Todate.Value.Month + " AND CHPRDD<=" + Todate.Value.Day + ")) ";
 
             }
-              var SqlQUery = @"SELECT C.CHEOB# AS EOBNo,CHCLM# as ClaimNumber,P.PRPNAM AS PROVIDER, C.CHDEP#,CASE WHEN C.CHDEP# = 0 THEN REPLACE(EMNAME,'*',',')   ELSE REPLACE(d.DPNAME,'*',',')  END AS ForPerson,
+            var SqlQUery = @"SELECT C.CHEOB# AS EOBNo,CHCLM# as ClaimNumber,P.PRPNAM AS PROVIDER, C.CHDEP#,CASE WHEN C.CHDEP# = 0 THEN REPLACE(EMNAME,'*',',')   ELSE REPLACE(d.DPNAME,'*',',')  END AS ForPerson,
                       C.CHCLTP AS ClaimType,C.CHCLM$ AS ClaimAmount,C.CHPAY$  AS Paid,CHCOPA + CHDED$ + CHCO$  MemberPaid,CHPRDY as ClaimYear,CHPRDM ClaimMonth, CHPRDD ClaimDate
                         FROM CLMHP C INNER JOIN EMPYP e ON e.EMSSN = C.CHSSN LEFT JOIN DEPNP d  ON d.DPSSN = C.CHSSN  AND C.CHDEP# = d.DPSEQ
                          INNER JOIN AMBENDF.PROVP P ON P.PRNUM = C.CHPROV  AND P.PRSEQ# = C.CHSEQ#
                            WHERE CHSSN = '" + SSN + "'  AND CHCLM# like '%" + ClaimNumber + "%' ";
 
-            if (Dependent !="")
+            if (Dependent != "")
             {
-                SqlQUery += @" and C.CHDEP#='" + Dependent+"' ";
+                SqlQUery += @" and C.CHDEP#='" + Dependent + "' ";
             }
-            
+
 
             if (FromDateQuery != "")
             {
@@ -267,9 +269,9 @@ namespace CustomerServicePortal
                 if (SortingColumn == "ClaimDate")
                 {
                     SqlQUery += @" ORDER BY CHPRDY " + Orderby + ", CHPRDM " + Orderby + ", CHPRDD " + Orderby + " ";
-                   
+
                 }
-                else if(SortingColumn == "MemberPaid")
+                else if (SortingColumn == "MemberPaid")
                 {
                     SqlQUery += @" ORDER BY CHCOPA " + Orderby + ", CHDED$ " + Orderby + ", CHCO$ " + Orderby + " ";
                 }
@@ -307,9 +309,9 @@ namespace CustomerServicePortal
                         FROM CLMHP C INNER JOIN EMPYP e ON e.EMSSN = C.CHSSN LEFT JOIN DEPNP d  ON d.DPSSN = C.CHSSN  AND C.CHDEP# = d.DPSEQ
                          INNER JOIN AMBENDF.PROVP P ON P.PRNUM = C.CHPROV  AND P.PRSEQ# = C.CHSEQ#
                            WHERE CHSSN = '" + SSN + "'  AND CHCLM# like '%" + ClaimNumber + "%' ";
-            if (Seq !="0")
+            if (Seq != "0")
             {
-             SqlQUery+= @" And  C.CHDEP# =" + Seq + " ";
+                SqlQUery += @" And  C.CHDEP# =" + Seq + " ";
             }
             if (Dependent != "")
             {
@@ -324,9 +326,9 @@ namespace CustomerServicePortal
                 SqlQUery += ToDateQuery;
             }
             return SqlQUery;
-                
+
         }
-        public static string GeTDependentClaims(string SSN, string Seq, string ClaimNumber, DateTime? Fromdate, DateTime? Todate,string Dependent, string SortingColumn, string Orderby, int page, int size)
+        public static string GeTDependentClaims(string SSN, string Seq, string ClaimNumber, DateTime? Fromdate, DateTime? Todate, string Dependent, string SortingColumn, string Orderby, int page, int size)
         {
 
             var FromDateQuery = "";
@@ -369,11 +371,11 @@ namespace CustomerServicePortal
                     SqlQUery += @" ORDER BY " + SortingColumn + " " + Orderby + " ";
                 }
             }
-            if (page !=0 && size !=0)
+            if (page != 0 && size != 0)
             {
                 SqlQUery += @" OFFSET (" + page + " -1) * " + size + " ROWS FETCH NEXT " + size + " ROWS ONLY";
             }
-           
+
 
             return SqlQUery;
         }
@@ -707,32 +709,32 @@ namespace CustomerServicePortal
 
         }
 
-        public static string GetDeductibleMax(string Code,string EffectivePeriod)
+        public static string GetDeductibleMax(string Code, string EffectivePeriod)
         {
             string sQuery = @"SELECT DEINDA AS IND_DED_MAX,DEFAMA AS FAM_DED_MAX 
                               FROM DEDSP DS
-                              WHERE (DS.DEDCDE = '"+Code+@"') 
+                              WHERE (DS.DEDCDE = '" + Code + @"') 
                               AND 
                               (CAST(DEEFDY || '-' || DEEFDM || '-' || DEEFDD AS DATE) = (SELECT MAX(CAST(D2.DEEFDY || '-' || D2.DEEFDM || '-' || D2.DEEFDD AS DATE)) AS MAX_DATE 
 	                          FROM DEDSP AS D2 
-	                          WHERE (D2.DEDCDE = '"+Code+@"') 
+	                          WHERE (D2.DEDCDE = '" + Code + @"') 
 	                          AND 
-		                      (D2.DEEFDY <= "+EffectivePeriod+")) )";
+		                      (D2.DEEFDY <= " + EffectivePeriod + ")) )";
 
             return sQuery;
         }
 
 
-        public static string GetDeductibleMet(string Code, string EffectiveYear,string FamilyCode,int SSN)
+        public static string GetDeductibleMet(string Code, string EffectiveYear, string FamilyCode, int SSN)
         {
-            string sQuery = @"SELECT ADDED$ AS DED_MET FROM DEDAP WHERE (ADPSSN = "+SSN.ToString()+@") 
+            string sQuery = @"SELECT ADDED$ AS DED_MET FROM DEDAP WHERE (ADPSSN = " + SSN.ToString() + @") 
                             AND(ADDEPN = 0)
 
-                            AND ( ADEFDY = "+ EffectiveYear + @")
+                            AND ( ADEFDY = " + EffectiveYear + @")
 
-                            AND (ADFAMC = '"+FamilyCode+@"')
+                            AND (ADFAMC = '" + FamilyCode + @"')
 
-                            AND(ADACCD = '" + Code+"')";
+                            AND(ADACCD = '" + Code + "')";
 
             return sQuery;
         }
@@ -742,13 +744,13 @@ namespace CustomerServicePortal
         {
             string sQuery = @"SELECT OS.OPOPIT AS IND_OOP_MAX,OPOPFT AS FAM_OOP_MAX 
                               FROM OOPSP OS
-                                WHERE (OS.OPOCDE = '"+Code+@"') 
+                                WHERE (OS.OPOCDE = '" + Code + @"') 
                                 AND 
                                 (CAST(OPEFDY || '-' || OPEFDM || '-' || OPEFDD AS DATE) = (SELECT MAX(CAST(D2.OPEFDY || '-' || D2.OPEFDM || '-' || D2.OPEFDD AS DATE)) AS MAX_DATE 
                                 FROM OOPSP  AS D2 
-                                WHERE (D2.OPOCDE = '"+Code+@"') 
+                                WHERE (D2.OPOCDE = '" + Code + @"') 
 	                                AND 
-                                   (D2.OPEFDY  <= '"+EffectivePeriod+"')) )";
+                                   (D2.OPEFDY  <= '" + EffectivePeriod + "')) )";
 
             return sQuery;
         }
@@ -767,6 +769,7 @@ namespace CustomerServicePortal
 
             return sQuery;
         }
+
 
     }
 }

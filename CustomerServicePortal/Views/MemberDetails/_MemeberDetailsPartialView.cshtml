@@ -1,51 +1,99 @@
 ﻿@model List<CustomerServicePortal.Models.ClaimDetailModel>
-<div class="dataTable">
-    <div class="resultTable">
-        <div class="col-lg-12">
-            <div class="main-box clearfix m-30 pt-20">
+<style>
+    .table thead th {
+        padding: 5px 10px !important;
+    }
+</style>
+
+
+
+
                 <div class="tableWrap">
                     <div class="table-responsive">
-                        <table class="table user-list w-100 table-striped" cell>
+                        <table class="table user-list w-100 table-striped" id="MemberDetails" cell>
                             <thead>
                                 <tr>
-                                    <th>EOB No:</th>
-                                    <th>Claim No:</th>
-                                    <th>Date</th>
-                                    <th>For</th>
-                                    <th>Type</th>
-                                    <th>Provider</th>
-                                    <th>Total</th>
-                                    <th>Plan Paid</th>
-                                    <th>Member Resp</th>
+                                    <th onclick="SortingTable('CHEOB#')">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            EOB No: <i class="fa fa-sort"></i>
+                                        </div>
+                                    </th>
+                                    <th onclick="SortingTable('CHCLM#')">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            Claim No: <i class="fa fa-sort"></i>
+                                        </div>
+                                    </th>
+                                    <th onclick="SortingTable('ClaimDate')">
+                                        <div class="d-flex justify-content-between align-items-center mw-100">
+                                            Date: <i class="fa fa-sort"></i>
+                                        </div>
+                                    </th>
+                                    <th onclick="SortingTable('DPNAME')">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            For: <i class="fa fa-sort"></i>
+                                        </div>
+                                    </th>
+                                    <th onclick="SortingTable('CHCLTP')">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            Type: <i class="fa fa-sort"></i>
+                                        </div>
+                                    </th>
+                                    <th onclick="SortingTable('PRPNAM')">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            Provider: <i class="fa fa-sort"></i>
+                                        </div>
+
+                                    </th>
+                                    <th onclick="SortingTable('CHCLM$')">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            Total: <i class="fa fa-sort"></i>
+                                        </div>
+                                    </th>
+                                    <th onclick="SortingTable('CHPAY$')">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            Plan Paid: <i class="fa fa-sort"></i>
+                                        </div>
+                                    </th>
+                                    <th onclick="SortingTable('MemberPaid')">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            Member Resp: <i class="fa fa-sort"></i>
+                                        </div>
+                                    </th>
                                 </tr>
                             </thead>
                             @foreach (var item in Model)
                             {
-                        <tr class="tr">
-                            <td><a href="#" onclick="EOBExpanModelpopup('@item.SSN','@item.ClaimNo')">@item.EOBNO</a></td>
-                            <td><a href="#" onclick="ClaimExpanModelpopup('@item.SSN','@item.ClaimNo')">@item.ClaimNo</a></td>
-                            @if (item.ClaimYear !="0" && item.ClaimMonth !="0" && item.ClaimDate != "0" && item.ClaimYear != " " && item.ClaimMonth != " " && item.ClaimDate != " ")
-                            {
-                                <td>@(new DateTime(Convert.ToInt32(item.ClaimYear), Convert.ToInt32(item.ClaimMonth), Convert.ToInt32(item.ClaimDate)).ToString("MM/dd/yyyy"))</td>
+                                <tr>
+                                    <td class="text-left"><a href="#" onclick="EOBExpanModelpopup('@item.SSN','@item.ClaimNo')">@item.EOBNO</a></td>
+                                    <td class="text-left"><a href="#" onclick="ClaimExpanModelpopup('@item.SSN','@item.ClaimNo')">@item.ClaimNo</a></td>
+                                    @if (item.ClaimYear != "0" && item.ClaimMonth != "0" && item.ClaimDate != "0" && item.ClaimYear != " " && item.ClaimMonth != " " && item.ClaimDate != " ")
+                                    {
+                                        <td class="text-left">@(new DateTime(Convert.ToInt32(item.ClaimYear), Convert.ToInt32(item.ClaimMonth), Convert.ToInt32(item.ClaimDate)).ToString("MM/dd/yyyy"))</td>
 
-                            }
-                            else
-                            {
-                                <td>N/A</td>
-                            }
-                            <td>@item.For</td>
-                            <td>@item.Type</td>
-                            <td style="text-align:left">@item.Provider</td>
-                            <td>@item.Total</td>
-                            <td>@item.PlanPaid</td>
-                            <td>@item.MemerResp</td>
-                        </tr>
+                                    }
+                                    else
+                                    {
+                                        <td class="text-left">N/A</td>
+                                    }
+                                    <td class="text-left">@item.For</td>
+                                    <td class="text-left">@item.Type</td>
+                                    <td class="text-left">@item.Provider</td>
+                                    <td class="text-left">@item.Total</td>
+                                    <td class="text-left">@item.PlanPaid</td>
+                                    <td class="text-left">@item.MemerResp</td>
+                                </tr>
                             }
                         </table>
                     </div>
                 </div>
 
-            </div>
-        </div>
-    </div>
-</div>
+
+
+
+@*<script>
+    $(document).ready(function () {
+        $('#MemberDetails').DataTable({
+            searching: false, paging: false, info: false
+        });
+    });
+</script>*@

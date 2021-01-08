@@ -1,6 +1,7 @@
 ﻿using CustomerServicePortal.Common;
 using CustomerServicePortal.DAL;
 using CustomerServicePortal.Models;
+using DB2SQlClass.DB2;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -33,13 +34,13 @@ namespace CustomerServicePortal.Controllers
                     DataTable dt = new DataTable();
                     DBManager db = new DBManager("CustomerServicePortal");
                     UserModel userModel = (UserModel)Session["UserModel"];
-                    dt = db.GetDataTable(GetSqlQuery.GetEMployDetails_GlobalSearch(SearchMember,userModel.UserId, 1, 10), CommandType.Text);
+                    dt = db.GetDataTable(GetSqlQuery.GetEMployDetails_GlobalSearch(SearchMember,"EMNAME", "ASC",userModel.UserId, 1, 10), CommandType.Text);
                     GlobalAndLocalSearch_Datatable_TOList(memeberDetailsModels, dt);
                     ViewBag.TotalmemeberCount = db.GetScalarValue(GetSqlQuery.GlobalSearchTotalCount(SearchMember, userModel.UserId), CommandType.Text);
                 }
                 else
                 {
-                    GetmemeberListModel(SearchMember, memeberDetailsModels, 1);
+                    GetmemeberListModel(SearchMember, memeberDetailsModels, 1, "EMNAME","ASC");
                     ViewBag.TotalmemeberCount = (int)Db2Connnect.GetDataTable(GetSqlQuery.TotalMemeberCount(SearchMember), CommandType.Text).Rows[0]["Total"];
 
                 }
@@ -52,7 +53,7 @@ namespace CustomerServicePortal.Controllers
             return View(memeberDetailsModels);
         }
 
-        public JsonResult GetMember(int page, string SearchMember,bool GlobalSearch)
+        public JsonResult GetMember(int page, string SearchMember,bool GlobalSearch,string SortingColumn = "Member",string Orderby="ASC")
         {
             ViewBag.GlobalSearch = GlobalSearch;
             //bool GlobalSearch = (bool)TempData.Peek("GlobalSearch");
@@ -66,7 +67,7 @@ namespace CustomerServicePortal.Controllers
                     DataTable dt = new DataTable();
                     DBManager db = new DBManager("CustomerServicePortal");
                     UserModel userModel = (UserModel)Session["UserModel"];
-                    dt = db.GetDataTable(GetSqlQuery.GetEMployDetails_GlobalSearch(SearchMember, userModel.UserId,page, 10), CommandType.Text);
+                    dt = db.GetDataTable(GetSqlQuery.GetEMployDetails_GlobalSearch(SearchMember,SortingColumn, Orderby, userModel.UserId,page, 10), CommandType.Text);
                     GlobalAndLocalSearch_Datatable_TOList(memeberDetailsModels, dt);
                     viewContent = ConvertViewToString("_MemberListPartialView", memeberDetailsModels);
                     TotalCount = (int)db.GetScalarValue(GetSqlQuery.GlobalSearchTotalCount(SearchMember, userModel.UserId), CommandType.Text);
@@ -74,7 +75,7 @@ namespace CustomerServicePortal.Controllers
                 }
                 else
                 {
-                    GetmemeberListModel(SearchMember, memeberDetailsModels, page);
+                    GetmemeberListModel(SearchMember, memeberDetailsModels, page, SortingColumn, Orderby);
                     viewContent = ConvertViewToString("_MemberListPartialView", memeberDetailsModels);
                     TotalCount = (int)Db2Connnect.GetDataTable(GetSqlQuery.TotalMemeberCount(SearchMember), CommandType.Text).Rows[0]["Total"];
 
@@ -99,11 +100,11 @@ namespace CustomerServicePortal.Controllers
             }
         }
 
-        private static void GetmemeberListModel(string SearchMember, List<MemeberDetailsModel> memeberDetailsModels, int page)
+        private static void GetmemeberListModel(string SearchMember, List<MemeberDetailsModel> memeberDetailsModels, int page,string SortingColumn,string Orderby)
         {
             DataTable dt = new DataTable();
 
-            dt = Db2Connnect.GetDataTable(GetSqlQuery.GetEMployDetails(SearchMember, page, 10), CommandType.Text);
+            dt = Db2Connnect.GetDataTable(GetSqlQuery.GetEMployDetails(SearchMember, SortingColumn, Orderby, page, 10), CommandType.Text);
 
             GlobalAndLocalSearch_Datatable_TOList(memeberDetailsModels, dt);
         }
@@ -118,7 +119,7 @@ namespace CustomerServicePortal.Controllers
                     memeberDetailsModel.SSN = item["SSN"].ToString();
                     if (item["Member"].ToString().Contains("*"))
                     {
-                        memeberDetailsModel.Member = (item["Member"].ToString().Split('*')[1] + "*" + item["Member"].ToString().Split('*')[0]).Replace("*", "");
+                        memeberDetailsModel.Member = item["Member"].ToString().Replace("*", ",");
 
                     }
                     else

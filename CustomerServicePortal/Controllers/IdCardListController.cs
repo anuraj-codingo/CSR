@@ -1,5 +1,6 @@
 ﻿using CustomerServicePortal.DAL;
 using CustomerServicePortal.Models;
+using DB2SQlClass.DB2;
 using System;
 using System.Collections.Generic;
 using System.Data;

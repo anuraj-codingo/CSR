@@ -7,6 +7,7 @@ using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using DB2SQlClass.DB2;
 
 namespace CustomerServicePortal.Controllers
 {

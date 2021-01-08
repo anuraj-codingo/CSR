@@ -4,6 +4,37 @@
 }
 
 <style>
+    .Pager {
+        float: right;
+        margin: 10px 0px 0px 0px;
+    }
+
+        .Pager span {
+            color: #fff !important;
+            background-color: #333e75 !important;
+            border: 1px solid #333e75 !important;
+            border-radius: 30px;
+            width: 25px;
+            height: 25px;
+            min-width: 25px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .Pager a {
+            width: 25px;
+            color: #ffffff;
+            margin-right: 3px;
+            height: 25px;
+            border-radius: 30px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: none;
+            border: none;
+        }
+
     .modal.fade.in {
         opacity: 1;
     }
@@ -17,11 +48,13 @@
     .table th, .table td {
         border-top: none !important;
     }
+
     body .modal-dialog { /* Width */
         max-width: 80%;
-   /*     width: auto !important;
+        /*     width: auto !important;
         display: inline-block;*/
     }
+
         body .modal-dialog .IDcardrequestPopUp {
             max-width: 50%;
         }
@@ -48,7 +81,8 @@
                     </div>
                 </div>
                 <div class="intro">
-                    <a onclick="Reset(@Model.eMPdetails.EMSSN)" href="#"><h4>@Model.eMPdetails.Name</h4></a>
+                    <a onclick="Reset()" href="#"><h4>@Model.eMPdetails.Name</h4></a>
+                    <input type="hidden" value="@Model.eMPdetails.EMSSN" id="EMSSN_HiddenValue" />
                     <strong class="h6">ID: <span>@Model.eMPdetails.Id</span></strong>
                     <strong class="h6">Gender: <span>@Model.eMPdetails.Gender</span></strong>
                     @if (Model.eMPdetails.DOBYear != null && Model.eMPdetails.DOBMonth != null && Model.eMPdetails.DOBDay != null && Model.eMPdetails.DOBYear != "" && Model.eMPdetails.DOBMonth != "" && Model.eMPdetails.DOBDay != "" && Model.eMPdetails.DOBYear != "0" && Model.eMPdetails.DOBMonth != "0" && Model.eMPdetails.DOBDay != "0")
@@ -87,7 +121,7 @@
                     {
                         <tr>
                             <td>@item.Relation</td>
-                            <td><a onclick="GetSpouseCliamDetailTable(@item.SSN,@item.DependentSeq)" href="#"> @item.DependenetName</a> </td>
+                            <td><a onclick="GetSpouseCliamDetailTable(@item.DependentSeq)" href="#"> @item.DependenetName</a> </td>
                             <td>@item.Status</td>
                             <td>@item.Plan</td>
                             <td>@item.Class</td>
@@ -166,15 +200,15 @@
             }
 
 
-            @x <button class="editBtn-block" href="" onclick="EditAddress(@Model.eMPdetails.EMSSN)"><i class="fa fa-pencil"></i></button>
+            @x <button class="editBtn-block" href="" onclick="EditAddress()"><i class="fa fa-pencil"></i></button>
         </p>
     </div>
 
 
 </div>
-
-<div class="searchFilter">
-    <div class="download" onclick="ExportTable(@Model.eMPdetails.EMSSN)">
+<div class="col-12 p-0">
+<div class="searchFilter searchCustom-block pr-2">
+    <div class="download" onclick="ExportTable()">
         <span>
             <input type="hidden" value="0" id="DEPSEQ" />
             <img src="~/Content/img/excel-icon.png" alt="" />
@@ -183,11 +217,11 @@
     <div class="inputWrap">
         <div class="inputField">
             <label>Service Date</label>
-            <input type="text" name="servicedate" id="Fromservicedate" class="datepicker input-group date">
+            <input type="text" name="servicedate" autocomplete="off" id="Fromservicedate" class="datepicker input-group date date-input">
         </div>
         <div class="inputField">
             <label>To</label>
-            <input type="text" name="to" id="Toservicedate" class="datepicker input-group date">
+            <input type="text" name="to" id="Toservicedate" autocomplete="off"  class="datepicker input-group date date-input">
         </div>
         <div class="inputField">
             <label>Claim #</label>
@@ -195,15 +229,16 @@
         </div>
         <div class="inputField">
             <label>DEP #</label>
-            <input type="text" name="dep" id="dep">
+            <input type="text" class="allownumericwithoutdecimal" name="dep" id="dep">
         </div>
-        <div class="inputField">
-            <input type="submit" value="Search" onclick="GetCliamDetailTable(@Model.eMPdetails.EMSSN)">
+        <div class="inputField-block mr-2">
+            <input type="submit" value="Search" onclick="GetCliamDetailTable(1)">
         </div>
-        <div class="inputField">
-            <input type="reset" value="Reset" onclick="Reset(@Model.eMPdetails.EMSSN)">
+        <div class="inputField-block">
+            <input type="reset" value="Reset" onclick="Reset()">
         </div>
     </div>
+</div>
 </div>
 <div class="loader-main">
     <div class="loader-sub">
@@ -224,22 +259,7 @@
         </div>
     </div>
 </div>
-@*<div id="EditDependent" class="modal fade modalDependent" role="dialog">
-    <div class="modal-dialog  modal-lg" role="document" style="margin-top: 144px;">
-        <div class="modal-content">
 
-        </div>
-    </div>
-</div>*@
-
-@*<div id="ClaimExpanModel" class="modal fade modalAddress" role="dialog">
-    <div class="modal-dialog mx-w-1200" role="document" style="margin-top: 144px;">
-        <div class="modal-content">
-          
-
-        </div>
-    </div>
-</div>*@
 <div id="EOBExpanModel" class="modal fade modalAddress" role="dialog">
     <div class="modal-dialog mx-w-1200" role="document" style="margin-top: 144px;">
         <div class="modal-content">
@@ -260,12 +280,104 @@
         </div>
     </div>
 </div>
+<input type="hidden" value="ClaimDate" id="SortingColumn" />
+<input type="hidden" value="DESC" id="Orderby" />
 <!--/searchFilter-->
-<div id="claimDetailGrid">
-    @{Html.RenderPartial("_MemeberDetailsPartialView", Model.claimDetailModels);}
-</div>
-<script type=text/javascript>
-  
+    <div class="report">
+        <div class="col-12 main-box clearfix" id="claimDetailGrid">
+            @{Html.RenderPartial("_MemeberDetailsPartialView", Model.claimDetailModels);}
+        </div>
+        <div class="Pager mb-4"></div>
+    </div>
+
+    <script type=text/javascript>
+
+        $(".allownumericwithoutdecimal").on("keypress keyup blur", function (event) {
+            $(this).val($(this).val().replace(/[^\d].+/, ""));
+            if ((event.which < 48 || event.which > 57)) {
+                event.preventDefault();
+            }
+        });
+     $(".Pager").ASPSnippets_Pager({
+            ActiveCssClass: "current",
+            PagerCssClass: "pager",
+            PageIndex: 1,
+            PageSize: 10,
+            RecordCount: @ViewBag.TotalCount_claimDetails,
+     });
+    $("body").on("click", ".Pager .page", function () {
+
+
+        GetCliamDetailTable(parseInt($(this).attr('page')));
+    });
+    function SortingTable(SortingColumn) {
+        $('#SortingColumn').val(SortingColumn);
+        if ($('#Orderby').val() == "ASC") {
+            $('#Orderby').val("Desc");
+        }
+        else {
+            $('#Orderby').val("ASC")
+        }
+        GetCliamDetailTable(1);
+    }
+    function GetSpouseCliamDetailTable(DependentSeq) {
+        $('#claim').val("");
+        $('#servicedate').val("");
+        $('#to').val("");
+        $('#dep').val("");
+        $('#DEPSEQ').val(DependentSeq);
+        GetCliamDetailTable(1);
+    }
+    function Reset() {
+        $('#claim').val("");
+        $('#Fromservicedate').val("");
+        $('#Toservicedate').val("");
+        $('#dep').val("");
+        $('#DEPSEQ').val(0);
+        GetCliamDetailTable(1);
+    }
+    function GetCliamDetailTable(Page) {
+         var SSN = $('#EMSSN_HiddenValue').val();
+        var Fromdate = "";
+        var Todate = "";
+        if ($('#Fromservicedate').val() !="") {
+            Fromdate = (new Date($('#Fromservicedate').val())).toISOString();
+        }
+        if ($('#Toservicedate').val() != "") {
+            Todate = (new Date($('#Toservicedate').val())).toISOString();
+        }
+        $('.loader-main').show();
+
+            $.ajax({
+                type: "GET",
+                url:'@Url.Action("GetCliamDetailTable", "MemberDetails")',
+                data: { page: Page, PageSize: 10, SSN: SSN, DependentSeq: $('#DEPSEQ').val(), ClaimNumber: $('#claim').val(), Fromdate: Fromdate, Todate: Todate, Dependent: $('#dep').val(), SortingColumn: $('#SortingColumn').val(), Orderby: $('#Orderby').val()},
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    $('.loader-main').hide();
+
+                    $('#claimDetailGrid').html(response.viewContent);
+
+                    $(".Pager").ASPSnippets_Pager({
+                        ActiveCssClass: "current",
+                        PagerCssClass: "pager",
+                        PageIndex: response.Page,
+                        PageSize: 10,
+                        RecordCount: response.TotalCount,
+                    });
+
+                },
+                failure: function (response2) {
+                    $('.loader-main').hide();
+                    alert(response2.d);
+                },
+                error: function (response2) {
+                    $('.loader-main').hide();
+                    alert("Some error occured");
+                }
+            });
+    };
     $('.datepicker').datepicker({
         dateFormat: 'mm-dd-yy',
         changeMonth: true,
@@ -286,15 +398,13 @@
 
         var divContents = $(".EOBExpanModelBody").html();
         var printWindow = window.open('', '', 'height=400,width=800');
-        //printWindow.document.write('<html><head><title>DIV Contents</title>');
-        //printWindow.document.write('</head><body >');
         printWindow.document.write(divContents);
-        //printWindow.document.write('</body></html>');
         printWindow.document.close();
         printWindow.print();
 
     }
-    function EditAddress(SSN) {
+    function EditAddress() {
+var SSN = $('#EMSSN_HiddenValue').val();
         $('.loader-main').show();
                   $.ajax({
                 type: "GET",
@@ -328,7 +438,6 @@
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
                 success: function (response5) {
-                    debugger;
                     $('.loader-main').hide();
                     $('.EOBExpanModelBody').html(response5.viewContent);
 
@@ -397,57 +506,12 @@
             });
     }
 
-    function GetSpouseCliamDetailTable(ssn, DependentSeq) {
-        $('#claim').val("");
-        $('#servicedate').val("");
-        $('#to').val("");
-        $('#dep').val("");
-        $('#DEPSEQ').val(DependentSeq);
-        GetCliamDetailTable(ssn);
-    }
-    function Reset(SSN) {
-        debugger;
-        $('#claim').val("");
-        $('#Fromservicedate').val("");
-        $('#Toservicedate').val("");
-        $('#dep').val("");
-        $('#DEPSEQ').val(0);
-        GetCliamDetailTable(SSN);
-    }
-    function GetCliamDetailTable(SSN) {
 
-        var Fromdate = "";
-        var Todate = "";
-        if ($('#Fromservicedate').val() !="") {
-            Fromdate = (new Date($('#Fromservicedate').val())).toISOString();
-        }
-        if ($('#Toservicedate').val() != "") {
-            Todate = (new Date($('#Toservicedate').val())).toISOString();
-        }
-        $('.loader-main').show();
 
-            $.ajax({
-                type: "GET",
-                url:'@Url.Action("GetCliamDetailTable", "MemberDetails")',
-                data: { page: 1, SSN: SSN, DependentSeq: $('#DEPSEQ').val(), ClaimNumber: $('#claim').val(), Fromdate: Fromdate, Todate: Todate},
-                contentType: "application/json;charset=utf-8",
-                dataType: "json",
-                success: function (response2) {
-                    $('.loader-main').hide();
 
-                    $('#claimDetailGrid').html(response2.viewContent);
-
-                },
-                failure: function (response2) {
-                    alert(response2.d);
-                },
-                error: function (response2) {
-                    alert(response2.d);
-                }
-            });
-    };
-
-    function ExportTable(SSN) {
+        function ExportTable() {
+            $('.loader-main').show();
+        var SSN = $('#EMSSN_HiddenValue').val();
         var Fromdate = "";
         var Todate = "";
         if ($('#Fromservicedate').val() != "") {
@@ -462,8 +526,9 @@
             url: '@Url.Action("ExportExcel", "MemberDetails")',
             //contentType: "application/json; charset=utf-8",
              dataType: "json",
-             data: { SSN: SSN, DEPSEQ: $('#DEPSEQ').val(), claim: $('#claim').val(),Fromdate: Fromdate, Todate: Todate},
-        }).done(function (data) {
+             data: { SSN: SSN, DEPSEQ: $('#DEPSEQ').val(), claim: $('#claim').val(), Dependent: $('#dep').val(),Fromdate: Fromdate, Todate: Todate},
+         }).done(function (data) {
+             $('.loader-main').hide();
             //get the file name for download
             if (data.fileName != "") {
                 $("#wait").css("display", "none");
@@ -501,11 +566,11 @@
                 }
             });
 
-    
 
 
 
 
-     
+
+
     }
-</script>
+    </script>

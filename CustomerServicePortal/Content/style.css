@@ -61,9 +61,11 @@ body {
       padding: 0.5rem 0;
       display: inline-flex;
       align-items: center; }
-      .header .container .logo img {
-        max-width: 72px;
-        margin-right: 1rem; }
+        .header .container .logo img {
+            max-width: 72px;
+            margin-right: 1rem;
+            max-height: 76px;
+        }
       .header .container .logo h1 {
         margin: 0;
         color: #073a6f;
@@ -331,15 +333,17 @@ body {
   .report hr {
     width: 100%;
     float: left; }
-  .report .tableWrap {
-    width: 100%;
-    /*float: left;*/
-    overflow-x: scroll;
-    margin-bottom: 2rem; }
+    .report .tableWrap {
+        width: 100%;
+        /*float: left;*/
+        /*overflow-x: scroll;*/
+        margin-bottom: 2rem;
+    }
     .report .tableWrap .table {
       width: 100%;
       float: left;
-      /*margin-top: 2rem;*/ }
+      /*margin-top: 2rem;*/
+    }
       .report .tableWrap .table .tr {
         display: flex;
         flex-wrap: nowrap;
@@ -688,7 +692,6 @@ body {
 
 .searchFilter {
     width: 100%;
-    float: left;
     background: #FAFAFA;
     padding: 1.25rem 0;
     position: relative;
@@ -715,20 +718,18 @@ body {
         left: 50%;
         top: 50%;
         transform: translateX(-50%) translateY(-50%); }
-  .searchFilter .inputWrap {
-    width: 90%;
-    max-width: 1140px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between; }
-    .searchFilter .inputWrap .inputField {
+    .searchFilter .inputWrap {
+        width: calc(100% - 70px);
+        max-width: calc(100% - 70px);
         display: flex;
-        flex-direction: row;
-        grid-column-gap: 0.5rem;
-        align-items: center;
-        margin: 0px 15px;
+        margin: 0px 0px 0px 70px;
     }
+        .searchFilter .inputWrap .inputField {
+            display: flex;
+            align-items: center;
+            margin: 0px 15px;
+            justify-content: flex-start;
+        }
         .searchFilter .inputWrap .inputField input[type="text"] {
             display: inline-block;
             appearance: none;
@@ -744,7 +745,7 @@ body {
         .searchFilter .inputWrap .inputField input[type="text"]:focus {
           border: 1px solid #c4c1c1;
           outline: none; }
-      .searchFilter .inputWrap .inputField input[type="submit"] {
+      .searchFilter .inputWrap .inputField-block input[type="submit"] {
         display: inline-block;
         font-size: 1rem;
         appearance: none;
@@ -754,26 +755,31 @@ body {
         background: #cac7e4;
         color: #7769dd;
         transition: all 0.5s ease; }
-        .searchFilter .inputWrap .inputField input[type="submit"]:hover {
-          background: #b8b0ec; }
-        .searchFilter .inputWrap .inputField input[type="submit"]:focus {
-          border: none;
-          outline: none; }
-      .searchFilter .inputWrap .inputField input[type="reset"] {
-        display: inline-block;
-        font-size: 1rem;
-        appearance: none;
-        border: none;
-        border-radius: 2rem;
-        padding: 0.25rem 1.5rem;
-        background: #bfe9d3;
-        color: #00a651;
-        transition: all 0.5s ease; }
-        .searchFilter .inputWrap .inputField input[type="reset"]:hover {
-          background: #99dcb9; }
-        .searchFilter .inputWrap .inputField input[type="reset"]:focus {
-          border: none;
-          outline: none; }
+        .searchFilter .inputWrap .inputField-block input[type="submit"]:hover {
+            background: #b8b0ec;
+        }
+        .searchFilter .inputWrap .inputField-block input[type="submit"]:focus {
+            border: none;
+            outline: none;
+        }
+        .searchFilter .inputWrap .inputField-block input[type="reset"] {
+            display: inline-block;
+            font-size: 1rem;
+            appearance: none;
+            border: none;
+            border-radius: 2rem;
+            padding: 0.25rem 1.5rem;
+            background: #bfe9d3;
+            color: #00a651;
+            transition: all 0.5s ease;
+        }
+            .searchFilter .inputWrap .inputField-block input[type="reset"]:hover {
+                background: #99dcb9;
+            }
+            .searchFilter .inputWrap .inputField-block input[type="reset"]:focus {
+                border: none;
+                outline: none;
+            }
   @media only screen and (max-width: 992px) {
     .searchFilter {
       padding: 1rem 0; }
@@ -956,7 +962,7 @@ body {
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    margin: 0px;
+    margin: 0px 8px 0px 0px;
     font-family: 'Montserrat', sans-serif;
     font-size: 14px;
 }
@@ -1156,5 +1162,16 @@ body {
     .none-btn i:hover {
         opacity: 1;
     }
+.mw-100
+{
+    min-width: 100px;
+}
+.searchCustom-block .inputField{
+    width: 20%;
+}
+.searchCustom-block .inputField date-input {
+    max-width:110px;
+}
         /*# sourceMappingURL=style.css.map */
+
 

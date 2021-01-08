@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DB2SQlClass.Model;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 

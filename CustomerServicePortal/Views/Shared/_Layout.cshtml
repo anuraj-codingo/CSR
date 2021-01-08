@@ -78,13 +78,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://getbootstrap.com/docs/4.1/assets/js/vendor/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    @*<script src="~/Scripts/bootstrap.js"></script>*@
     <script src="~/Scripts/jquery-ui.js"></script>
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/Scripts/js/ASPSnippets_Pager.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-  
+    <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+
 </head>
 
 <body>
@@ -94,20 +94,18 @@
         @Html.Action("LoadHeaderHtml", "Home")
         <!--/header-->  <!--pageBody-->
         <div class="pageBody" id="pageBody">
-            <!--banner-->
-            <!--navigation-->
             <div class="navigation">
                 <div class="container">
                     <div class="nav">
                         <ul>
+                            <li>    @Session.Timeout  </li>
                             @if ((Session["LayoutDetails"] as CustomerServicePortal.Models.LayoutModel).ShowMenuBar)
                             {
                                 <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i> Home</a></li>
+                                <li><a class="" href="@Url.Action("Index", "IdCardList")"><i class="fa fa-user mr-1"></i>ID Card Requests</a></li>
                             }
-
-                            @*<li class="disabled"><a href="#">Print</a></li>*@
                             <li><a class="" href="@Url.Action("UsersList", "Users")"><i class="fa fa-user"></i> Users</a></li>
-                            <li><a class="" href="@Url.Action("Index", "IdCardList")"><i class="fa fa-user mr-1"></i>ID Card Requests</a></li>
+
                             @if (User.IsInRole("ABC_User") || User.IsInRole("Admin"))
                             {
                                 <li><a class="m-r-1" href="@Url.Action("Index", "ABCDashBoard")"><i class="fa fa-user mr-1"></i>Clients</a></li>

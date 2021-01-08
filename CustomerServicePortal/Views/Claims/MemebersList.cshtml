@@ -103,7 +103,7 @@
         align-items: center;
         justify-content: center;
         height: 100%;
-        background: rgb(255 255 255 / 50%);
+        /*background: rgb(255 255 255 / 50%);*/
     }
 </style>
 <div class="report">
@@ -122,10 +122,11 @@
             @Html.Hidden("GlobalSearch", (bool)ViewBag.GlobalSearch)
             <p class="m-0">User List</p>
         </div>
-
+        <input type="hidden" value="Member" id="SortingColumn"/>
+        <input type="hidden" value="ASC" id="Orderby"/>
         <div class="tableWrap">
-          
-        
+
+
             @Html.Partial("_MemberListPartialView", Model)
 
         </div>
@@ -149,6 +150,17 @@
             RecordCount: @ViewBag.TotalmemeberCount,
         });
 
+            function SortingTable(SortingColumn) {
+                $('#SortingColumn').val(SortingColumn);
+                if ($('#Orderby').val() == "ASC") {
+                    $('#Orderby').val("Desc");
+                }
+                else {
+                    $('#Orderby').val("ASC")
+                }
+                GetMemebrTable(1);
+            }
+
                 $("body").on("click", ".Pager .page", function () {
 
 
@@ -156,12 +168,14 @@
                 });
 
 
-        function GetMemebrTable(page) {
+            function GetMemebrTable(page) {
+                var SortingColumn = $('#SortingColumn').val();
+                var Orderby = $('#Orderby').val();
             $('.loader-main').show();
             $.ajax({
                 type: "GET",
                 url:'@Url.Action("GetMember", "Claims")',
-                data: { page: page, SearchMember: $('#SearchMember').val(), GlobalSearch: $('#GlobalSearch').val() },
+                data: { page: page, SearchMember: $('#SearchMember').val(), GlobalSearch: $('#GlobalSearch').val(), SortingColumn: SortingColumn, Orderby: Orderby },
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
                 success: function (response) {
@@ -187,6 +201,7 @@
         };
                 function SearchMember() {
                     GetMemebrTable(1);
-        }
+            }
+
         </script>
     }
